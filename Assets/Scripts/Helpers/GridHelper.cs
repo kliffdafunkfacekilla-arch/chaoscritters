@@ -11,11 +11,17 @@ namespace ChaosCritters.Helpers
         // We will assume 3D world where we map to (X, 0, Z) or 2D (X, Y). 
         // Let's assume 2D for tilemaps first (X, Y).
         
-        public static Vector3 HexToPixel(int q, int r, float size = 1.0f)
+        public enum Orientation { XY_2D, XZ_3D }
+
+        public static Vector3 HexToPixel(int q, int r, float size = 1.0f, Orientation orientation = Orientation.XZ_3D)
         {
             float x = size * (Mathf.Sqrt(3) * q + Mathf.Sqrt(3) / 2 * r);
             float y = size * (3f / 2 * r);
-            return new Vector3(x, y, 0); // Z=0 for 2D
+            
+            if (orientation == Orientation.XY_2D)
+                return new Vector3(x, y, 0); 
+            else
+                return new Vector3(x, 0, y); // Map Y to Z for Tabletop
         }
 
         public static Vector2Int PixelToHex(float x, float y, float size = 1.0f)
