@@ -12,6 +12,9 @@ class EntityState(BaseModel):
     composure: int
     max_composure: int
     team: str = "Player" # Player vs Enemy
+    x: int = 0
+    y: int = 0
+    image_id: str = "default.png"
 
 class TurnManager:
     def __init__(self):

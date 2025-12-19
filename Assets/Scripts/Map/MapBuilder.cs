@@ -88,7 +88,7 @@ namespace ChaosCritters.Map
         {
             if (tilemap == null)
             {
-                Debug.LogError("No Tilemap assigned!");
+                Debug.LogError($"No Tilemap assigned! Error is coming from GameObject: '{gameObject.name}'. Please check this specific object.");
                 return;
             }
 
@@ -108,6 +108,28 @@ namespace ChaosCritters.Map
                     tilemap.SetTile(pos, tileToUse);
                 }
             }
+            
+            Debug.Log($"Found Tilemap: {tilemap.name}. Painting {data.tiles.Count} tiles...");
+
+            int tilesPainted = 0;
+            foreach (var tile in data.tiles)
+            {
+                // Direct Square Grid Mapping
+                Vector3Int pos = new Vector3Int(tile.x, tile.y, 0);
+
+                TileBase tileToUse = defaultTile;
+                if (_tileLookup.ContainsKey(tile.terrain))
+                {
+                    tileToUse = _tileLookup[tile.terrain];
+                }
+
+                if (tileToUse != null)
+                {
+                    tilemap.SetTile(pos, tileToUse);
+                    tilesPainted++;
+                }
+            }
+            Debug.Log($"Successfully Painted {tilesPainted} tiles.");
             
             // Recalculate bounds to ensure camera centers correctly later
             tilemap.CompressBounds();
