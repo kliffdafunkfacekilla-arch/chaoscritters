@@ -15,9 +15,19 @@ app = FastAPI(title="The Shattered World Backend")
 
 engine = MechanicsEngine()
 from backend.engine.grid import GridManager
+from backend.engine.procgen import ProcGen
+
+from backend.engine.turn_manager import TurnManager, EntityState
+from backend.engine.actions import ActionResolver
+
+from backend.engine.session import SessionManager
 
 grid_manager = GridManager(radius=5)
-grid_manager.generate_empty_map()
+# grid_manager.generate_empty_map() # Procgen will handle this
+proc_gen = ProcGen()
+turn_manager = TurnManager()
+action_resolver = ActionResolver(grid_manager)
+session_manager = SessionManager()
 
 # --- Models ---
 class MapRequest(BaseModel):
@@ -117,23 +127,119 @@ async def validate_character(sheet: CharacterSheet):
 async def generate_map(req: MapRequest):
     grid_manager.radius = req.radius
     grid_manager.generate_empty_map()
-    # Simple placeholder: Fill with random types for now
-    import random
-    types = ["Grass", "Dirt", "Stone", "Water"]
-    count = 0
-    tile_data = []
     
-    for (q, r), _ in grid_manager.cells.items():
-        terrain = random.choice(types)
-        grid_manager.cells[(q, r)] = terrain
-        tile_data.append({"q": q, "r": r, "terrain": terrain})
-        count += 1
+    # Use Procedural Generation
+    map_data = proc_gen.generate_terrain(grid_manager, req.biome)
+    
+    tile_data = []
+    for (q, r), data in map_data.items():
+        tile_data.append({
+            "q": q, "r": r, 
+            "terrain": data["type"],
+            "cost": data["cost"],
+            "height": data["height"]
+        })
         
     return {
         "radius": req.radius,
         "biome": req.biome,
-        "tile_count": count,
+        "tile_count": len(tile_data),
         "tiles": tile_data
+    }
+
+@app.post("/battle/start")
+async def start_battle():
+    # Setup dummy entities for testing
+    p1 = EntityState(id="P1", name="Ursine Warrior", hp=30, max_hp=30, composure=15, max_composure=15)
+    e1 = EntityState(id="E1", name="Gravity Bear", hp=40, max_hp=40, composure=10, max_composure=10, team="Enemy")
+    
+    turn_manager.entities = {}
+    turn_manager.add_entity(p1)
+    turn_manager.add_entity(e1)
+    
+    turn_manager.roll_initiative()
+    current = turn_manager.get_current_actor()
+    
+    return {
+        "message": "Battle Started",
+        "turn_order": turn_manager.turn_order,
+        "current_turn": current.id
+    }
+
+
+# --- Action Models ---
+class MoveRequest(BaseModel):
+    actor_id: str
+    target_pos: list  # [q, r]
+    
+@app.post("/battle/action/move")
+async def execute_move(req: MoveRequest):
+    actor = turn_manager.entities.get(req.actor_id)
+    if not actor:
+        raise HTTPException(status_code=404, detail="Actor not found")
+        
+    # Placeholder for current position mechanism (would be in EntityState eventually)
+    current_pos = (0, 0) 
+    
+    result = action_resolver.resolve_move(
+        req.actor_id, 
+        current_pos, 
+        tuple(req.target_pos), 
+        actor.ap
+    )
+    
+    if result["success"]:
+        actor.ap -= result["cost"]
+        
+    return {"result": result, "remaining_ap": actor.ap}
+
+
+
+
+# --- Action Models ---
+class BattleAttackRequest(BaseModel):
+    actor_id: str
+    target_id: str
+
+@app.post("/battle/action/attack")
+async def execute_attack(req: BattleAttackRequest):
+    attacker = turn_manager.entities.get(req.actor_id)
+    target = turn_manager.entities.get(req.target_id)
+    
+    if not attacker or not target:
+        raise HTTPException(status_code=404, detail="Entity not found")
+        
+    result = action_resolver.resolve_attack(attacker, target, engine)
+    
+    if result["success"]:
+        attacker.ap -= result["cost"]
+        
+    return {"result": result, "attacker_ap": attacker.ap}
+
+
+# --- Session Models ---
+class SessionRequest(BaseModel):
+    session_id: str
+
+@app.post("/session/save")
+async def save_session(req: SessionRequest):
+    # Placeholder history
+    history = ["Battle started", "P1 moved", "P1 attacked E1"] 
+    path = session_manager.save_game(req.session_id, turn_manager, grid_manager, history)
+    return {"message": "Game Saved", "path": path}
+
+@app.post("/session/load")
+async def load_session(req: SessionRequest):
+    success = session_manager.load_game(req.session_id, turn_manager, grid_manager)
+    if not success:
+        raise HTTPException(status_code=404, detail="Save file not found")
+        
+    current = turn_manager.get_current_actor()
+    return {
+        "message": "Game Loaded",
+        "round": turn_manager.round,
+        "current_turn": current.id if current else "None",
+        "map_tiles": len(grid_manager.cells)
     }
 
 @app.post("/mechanics/clash")
