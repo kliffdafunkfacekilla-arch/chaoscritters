@@ -37,8 +37,20 @@ def test_move(actor_id):
     except Exception as e:
         print(f"Exception: {e}")
 
+def test_brain(actor_id):
+    print(f"\nTesting /brain/command for {actor_id}...")
+    try:
+        # Prompt: "Move directly to 2, 2" - should map to Move(target_pos=[2, 2])
+        cmd = "Move to coordinates 2, 2"
+        r = requests.post(f"{base_url}/brain/command", json={"text": cmd, "actor_id": actor_id})
+        print(f"Status: {r.status_code}")
+        print("Response:", r.text)
+    except Exception as e:
+        print(f"Exception: {e}")
+
 if __name__ == "__main__":
-    test_map()
+    # test_map()
     data = test_battle()
     if data and "current_turn" in data:
-        test_move(data["current_turn"])
+        # test_move(data["current_turn"])
+        test_brain(data["current_turn"])

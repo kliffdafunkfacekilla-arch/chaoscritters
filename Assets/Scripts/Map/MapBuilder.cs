@@ -138,5 +138,61 @@ namespace ChaosCritters.Map
             // Recalculate bounds to ensure camera centers correctly later
             tilemap.CompressBounds();
         }
+        [ContextMenu("Auto-Discover Tiles")]
+        public void AutoDiscoverTiles()
+        {
+#if UNITY_EDITOR
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:TileBase");
+            terrainTiles = new List<TerrainTile>();
+            
+            // Map standard biome names to likely filenames (case-insensitive partial match)
+            // Backend Types: Grass, Water, Sand, Forest, Stone, Mountain
+            var mapping = new Dictionary<string, string>
+            {
+                { "Grass", "GrassTile" },
+                { "Water", "WaterTile" },
+                { "Sand", "sandTile" },
+                { "Forest", "ForestTile" },
+                { "Stone", "StoneTile" },
+                { "Mountain", "MountainTile" }
+            };
+
+            foreach (var kvp in mapping)
+            {
+                foreach (string guid in guids)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    string filename = System.IO.Path.GetFileNameWithoutExtension(path);
+                    
+                    if (filename.Equals(kvp.Value, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        var tile = UnityEditor.AssetDatabase.LoadAssetAtPath<TileBase>(path);
+                        if (tile != null)
+                        {
+                            terrainTiles.Add(new TerrainTile { terrainName = kvp.Key, tile = tile });
+                            Debug.Log($"[MapBuilder] Auto-Linked '{kvp.Key}' -> {path}");
+                            break; // Found it
+                        }
+                    }
+                }
+            }
+            
+            // Re-build lookup immediately
+            _tileLookup = new Dictionary<string, TileBase>();
+            foreach (var tt in terrainTiles)
+            {
+                if (!_tileLookup.ContainsKey(tt.terrainName) && tt.tile != null)
+                    _tileLookup.Add(tt.terrainName, tt.tile);
+            }
+#endif
+        }
+
+        private void OnValidate()
+        {
+            if (terrainTiles == null || terrainTiles.Count == 0)
+            {
+                AutoDiscoverTiles();
+            }
+        }
     }
 }
