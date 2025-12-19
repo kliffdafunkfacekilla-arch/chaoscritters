@@ -1,0 +1,1594 @@
+{
+    "Chaos": {
+        "resource": "Instinct",
+        "associated_stat": "Intuition",
+        "branches": [
+            {
+                "branch": "Control (Unpredictable Hindrance)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Minor Shift",
+                        "description": "Create a 1m patch of random, chaotic terrain (e.g., ice, mud, thorns).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "create_area",
+                                "shape": "radius",
+                                "range": 1,
+                                "duration": 3,
+                                "effect_id": "Random Terrain"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Random Stumble",
+                        "description": "Inflict a random -1 penalty on one of target's Derived Stats (Con, End, Agi, Aware) for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "random_stat_debuff",
+                                "amount": -1,
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Unstable Field",
+                        "description": "Create a 3m radius field. All characters (friend or foe) in it suffer a -1 penalty to one randomly determined core stat.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "create_area",
+                                "shape": "radius",
+                                "range": 3,
+                                "duration": 3,
+                                "effect_id": "Unstable Field"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Area Mutate",
+                        "description": "Create a 5m radius field of chaotic terrain, imposing a -1 penalty on Agility for 2 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "create_area",
+                                "shape": "radius",
+                                "range": 5,
+                                "duration": 2,
+                                "effect_id": "Mutated Terrain"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Psychic Feedback",
+                        "description": "Target must pass a Willpower check (DC 15) or suffer Composure damage equal to the resource cost of their last ability used.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "special_action_roll",
+                                "effect_id": "Psychic Feedback",
+                                "save_stat": "Willpower",
+                                "dc": 15
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Curse of Probability",
+                        "description": "Target an enemy (Willpower save DC 15). For 3 rounds, any time they roll a 1d20, they must roll twice and take the worse result (Disadvantage).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Disadvantage",
+                                "duration": 3,
+                                "save_stat": "Willpower",
+                                "dc": 15
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Reality Ripple",
+                        "description": "All non-essential objects in a 10m area are randomly destroyed, moved, or turned into something else.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "special_action",
+                                "effect_id": "Reality Ripple"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Mass Instability",
+                        "description": "Create a 5m radius field. All characters (friend or foe) in it must pass a Willpower check (DC 17) or be Stunned for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "aoe_status_roll",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Stunned",
+                                "duration": 1,
+                                "save_stat": "Willpower",
+                                "dc": 17
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Full Entropy",
+                        "description": "Cause Minor Injuries to 1d4 randomly determined limbs on 1 target (Willpower save DC 18 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 8
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_injury_roll",
+                                "severity": "Minor",
+                                "location": "random",
+                                "count": "1d4",
+                                "save_stat": "Willpower",
+                                "dc": 18
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Offense (Randomized Assault)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Random Blast",
+                        "description": "Deal 1d10 damage of a randomly determined type.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "direct_damage",
+                                "amount": "1d10",
+                                "damage_type": "random"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Unstable Bolt",
+                        "description": "Deal 2d6 damage. If the damage roll is even, the target is Staggered. If it's odd, they are Hindered (Movement).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "direct_damage",
+                                "amount": "2d6"
+                            },
+                            {
+                                "type": "random_status",
+                                "status_list": [
+                                    "Staggered",
+                                    "Hindered (Movement)"
+                                ],
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Chaos Field",
+                        "description": "Create a 3m radius field that deals 1d6 random damage to any (friend or foe) character that starts its turn there.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "create_area",
+                                "shape": "radius",
+                                "range": 3,
+                                "duration": 3,
+                                "effect_id": "Chaos Field (1d6)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Volatile Charge",
+                        "description": "Attack deals 2d6 damage, and the target must pass a Vitality save (DC 14) or immediately suffer a T1 Poison or Bleed status (randomly determined).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "direct_damage",
+                                "amount": "2d6"
+                            },
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "random_T1_dot",
+                                "save_stat": "Vitality",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Unpredictable Nova",
+                        "description": "Deal 6d6 damage, split randomly between 1d6 targets (friend or foe) in a 10m radius.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "special_damage",
+                                "effect_id": "Unpredictable Nova (6d6)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Chain Chaos",
+                        "description": "Your next attack deals 3d6 random elemental damage. If it hits, it immediately arcs to a random target within 5m (friend or foe) for 2d6 random damage.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "modify_attack",
+                                "damage_boost": "3d6",
+                                "damage_type": "random",
+                                "add_effect": {
+                                    "type": "chain_attack_random",
+                                    "range": 5,
+                                    "damage": "2d6"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Full Cataclysm",
+                        "description": "Deal 6d6 damage that is randomly split between HP, Composure, and primary Resource pools of the target.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "special_damage",
+                                "effect_id": "Full Cataclysm (6d6)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Paradox Strike",
+                        "description": "Deal damage equal to your Intuition score multiplied by 3 to a randomly determined target (friend or foe) within 10m.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "direct_damage_stat_mult",
+                                "amount_formula": "Intuition * 3",
+                                "target": "random"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Dimensional Rift",
+                        "description": "Create a 5m radius rift. All characters (friend or foe) in the area suffer 5d6 random damage and 2d6 Composure damage.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 8
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "aoe_damage",
+                                "shape": "radius",
+                                "range": 5,
+                                "damage": "5d6",
+                                "damage_type": "random"
+                            },
+                            {
+                                "type": "aoe_composure_damage",
+                                "shape": "radius",
+                                "range": 5,
+                                "amount": "2d6"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Support (Mutation/Alteration)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Minor Surge",
+                        "description": "Randomly boost one of your core stats (A-L) by +1 for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "random_stat_buff",
+                                "amount": 1,
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Resist Random",
+                        "description": "Gain a +2 bonus resistance against the next 2 instances of random damage or status effects.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Resist Random (+2)",
+                                "duration": 2
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Ally Mutation",
+                        "description": "Target an ally. Randomly grant them a T2-level physical advantage (e.g., hardened skin, speed boost) for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "ally",
+                        "effects": [
+                            {
+                                "type": "random_buff",
+                                "tier": 2,
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Self-Morph",
+                        "description": "You mutate your form for 3 rounds. Choose one: Gills (breathe water), Claws (1d6 Unarmed damage), or Wings (Flight 5m).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "apply_status_choice",
+                                "status_list": [
+                                    "Gills",
+                                    "Claws (1d6)",
+                                    "Wings (5m)"
+                                ],
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Weapon Mutation",
+                        "description": "Permanently change your weapon's damage type (e.g., Slashing -> Impact) and grant it +1 damage bonus.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "special_buff",
+                                "effect_id": "Weapon Mutation"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Elemental Randomize",
+                        "description": "Grant all allies immunity to a T1 elemental damage type (randomly determined) for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Immunity (Random Element T1)",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Reality Shift",
+                        "description": "Instantly change the weather or environmental lighting for the remainder of the encounter.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "special_action",
+                                "effect_id": "Reality Shift (Weather)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Full Mutation",
+                        "description": "Grant yourself 1d4 randomly determined T3 physical bonuses (e.g., Flight, Regeneration) for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "random_buff",
+                                "tier": 3,
+                                "count": "1d4",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Reality Inversion",
+                        "description": "(Full Action) You tear a hole in reality. All allies in 10m are healed for 4d6 HP. All enemies in 10m suffer 4d6 direct damage. You, the caster, must pass a Willpower save (DC 18) or be Stunned for 1 round by the backlash.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 9
+                        },
+                        "target_type": "area",
+                        "effects": [
+                            {
+                                "type": "aoe_heal",
+                                "shape": "radius",
+                                "range": 10,
+                                "target": "ally",
+                                "amount": "4d6"
+                            },
+                            {
+                                "type": "aoe_damage",
+                                "shape": "radius",
+                                "range": 10,
+                                "target": "enemy",
+                                "damage": "4d6",
+                                "damage_type": "random"
+                            },
+                            {
+                                "type": "apply_status_roll",
+                                "target": "self",
+                                "status_id": "Stunned",
+                                "duration": 1,
+                                "save_stat": "Willpower",
+                                "dc": 18,
+                                "self_roll": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Psionics": {
+        "resource": "Instinct",
+        "associated_stat": "Willpower",
+        "branches": [
+            {
+                "branch": "Control (Mental Stun)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Distract",
+                        "description": "Target 1 enemy. Suffer a -1 penalty to all actions for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Distracted (-1 All)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Push Object",
+                        "description": "Telekinetically move a small object (max weight 10kg) 5m.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "object",
+                        "effects": [
+                            {
+                                "type": "special_move",
+                                "effect_id": "Push Object (10kg, 5m)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Daze",
+                        "description": "Target 1 enemy. Impose the Staggered status effect for 1 round (Willpower save DC 14 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Staggered",
+                                "duration": 1,
+                                "save_stat": "Willpower",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Mental Confusion",
+                        "description": "Target suffers a -2 penalty to all Willpower checks for 3 rounds (Willpower save DC 14 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Confused (-2 Will)",
+                                "duration": 3,
+                                "save_stat": "Willpower",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Unravel Focus",
+                        "description": "Target immediately loses Focus and cannot use abilities that require concentration for 2 rounds (Willpower save DC 15 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Focus Broken",
+                                "duration": 2,
+                                "save_stat": "Willpower",
+                                "dc": 15
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Mind Spike",
+                        "description": "Deal 3d6 direct Composure damage (Willpower save DC 15 for half) and drain 1d4 Guile.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "composure_damage_roll",
+                                "amount": "3d6",
+                                "save_stat": "Willpower",
+                                "dc": 15
+                            },
+                            {
+                                "type": "resource_damage",
+                                "resource": "Guile",
+                                "amount": "1d4"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Brain Lock",
+                        "description": "Inflict 2d6 Composure damage. If this drops Composure to zero, the target is instantly Immobilized in Fear for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "composure_damage",
+                                "amount": "2d6"
+                            },
+                            {
+                                "type": "special_effect",
+                                "effect_id": "Brain Lock"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Puppet Master",
+                        "description": "Gain temporary control of a non-hostile NPC for 1 round (Willpower save DC 17 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "npc",
+                        "effects": [
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Dominated (Minor)",
+                                "duration": 1,
+                                "save_stat": "Willpower",
+                                "dc": 17
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Mindwipe",
+                        "description": "Erase the target's memory of the last 10 minutes (Willpower save DC 18 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 8
+                        },
+                        "target_type": "enemy_or_npc",
+                        "effects": [
+                            {
+                                "type": "special_action_roll",
+                                "effect_id": "Mindwipe",
+                                "save_stat": "Willpower",
+                                "dc": 18
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Offense (Telekinetic Assault)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Mental Echo",
+                        "description": "Deal 1d6 direct Composure damage.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "composure_damage",
+                                "amount": "1d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Object Hurl",
+                        "description": "Deal 1d10 damage by violently throwing a nearby object at the target.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "direct_damage",
+                                "amount": "1d10",
+                                "damage_type": "physical"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Psychic Drain",
+                        "description": "Drain 1d6 from the target's Instinct pool (Willpower save DC 14 for half).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "resource_damage_roll",
+                                "resource": "Instinct",
+                                "amount": "1d6",
+                                "save_stat": "Willpower",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Psychic Crush",
+                        "description": "Deal 3d6 direct Composure damage (Willpower save DC 14 for half).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "composure_damage_roll",
+                                "amount": "3d6",
+                                "save_stat": "Willpower",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Psychic Scream",
+                        "description": "Deal 2d6 damage to the Composure pools of all targets in a 5m cone.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "area_enemy",
+                        "effects": [
+                            {
+                                "type": "aoe_composure_damage",
+                                "shape": "cone",
+                                "range": 5,
+                                "amount": "2d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Targeted Concussion",
+                        "description": "Deal 3d6 damage. Target must pass a Vitality check (DC 15) or be Stunned for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "direct_damage",
+                                "amount": "3d6"
+                            },
+                            {
+                                "type": "apply_status_roll",
+                                "status_id": "Stunned",
+                                "duration": 1,
+                                "save_stat": "Vitality",
+                                "dc": 15
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Mental Disintegration",
+                        "description": "Target's armor suffers a Major Injury (becomes broken/unusable) as you telekinetically tear it apart (Willpower save DC 16 to resist).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_injury_roll",
+                                "severity": "Major",
+                                "location": "Armor",
+                                "save_stat": "Willpower",
+                                "dc": 16
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Composure Collapse",
+                        "description": "Inflict 5d6 points of Major Composure damage.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "composure_damage",
+                                "amount": "5d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Mass Hurl",
+                        "description": "Throw up to 3 enemies 5m away (Willpower save DC 18 to remain in place).",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 8
+                        },
+                        "target_type": "area_enemy",
+                        "effects": [
+                            {
+                                "type": "aoe_move",
+                                "shape": "radius",
+                                "range": 10,
+                                "num_targets": 3,
+                                "distance": 5,
+                                "direction": "away",
+                                "save_stat": "Willpower",
+                                "dc": 18
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Support (Psychic Barrier)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Mind Shield",
+                        "description": "Gain a +2 bonus defense to your next Composure check.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 1
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Mind Shield (+2)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Barrier",
+                        "description": "Create a temporary shield that absorbs the next 1d8 damage instances.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "self_or_ally",
+                        "effects": [
+                            {
+                                "type": "temp_hp",
+                                "amount": "1d8"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Group Defense",
+                        "description": "Grant +1 defense to all allies within 5m for 1 round.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 2
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Group Defense (+1)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Telekinetic Shield",
+                        "description": "Create a sustained barrier that absorbs up to 15 total points of damage for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 3
+                        },
+                        "target_type": "self_or_ally",
+                        "effects": [
+                            {
+                                "type": "temp_hp",
+                                "amount": 15,
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Psychic Repulsion",
+                        "description": "Enemies attempting to enter a 3m radius around you suffer 1d6 Composure damage.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 4
+                        },
+                        "target_type": "self",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Psychic Repulsion (1d6)",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Clarity",
+                        "description": "Restore 2d6 Composure to yourself or an ally and remove the Shaken status.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 5
+                        },
+                        "target_type": "ally_or_self",
+                        "effects": [
+                            {
+                                "type": "composure_heal",
+                                "amount": "2d6"
+                            },
+                            {
+                                "type": "remove_status",
+                                "status_id": "Shaken"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Projected Will",
+                        "description": "Transfer your Willpower score as a bonus to an ally's Defense for 3 rounds.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 6
+                        },
+                        "target_type": "ally",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Projected Will",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Mass Clarity",
+                        "description": "Restore 3d6 Composure to all allies within 5m.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 7
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_composure_heal",
+                                "shape": "radius",
+                                "range": 5,
+                                "amount": "3d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Mind Fortress",
+                        "description": "(Full Action) Create a 10m aura for 3 rounds. All allies in the aura are immune to all Composure damage and mental status effects (Fear, Charm, Stun). You, the caster, gain +5 to your Willpower stat for the duration.",
+                        "cost": {
+                            "resource": "Instinct",
+                            "amount": 9
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 10,
+                                "status_id": "Immunity (Mental)",
+                                "duration": 3
+                            },
+                            {
+                                "type": "apply_status",
+                                "target": "self",
+                                "status_id": "Willpower Boost (+5)",
+                                "duration": 3
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "Command": {
+        "resource": "Presence",
+        "associated_stat": "Charm",
+        "branches": [
+            {
+                "branch": "Control (Distraction/Confusion)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Fluster",
+                        "description": "Target 1 enemy. They suffer a -1 penalty to their next Defense roll.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Flustered (-1 Def)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Draw Gaze",
+                        "description": "Compel target to only look at you for 1 round.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Distracted (Self)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Vulnerable Posture",
+                        "description": "Target suffers a -2 penalty to their next Willpower check.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 2
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Vulnerable (-2 Will)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Target Lock",
+                        "description": "Compel a group of enemies (3m radius) to prioritize a single designated target (Willpower save DC 14).",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 3
+                        },
+                        "target_type": "area_enemy",
+                        "effects": [
+                            {
+                                "type": "aoe_status_roll",
+                                "shape": "radius",
+                                "range": 3,
+                                "status_id": "Target Lock",
+                                "duration": 1,
+                                "save_stat": "Willpower",
+                                "dc": 14
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Mass Confusion",
+                        "description": "All enemies in a 5m radius suffer a -1 penalty to Awareness checks for 3 rounds.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 4
+                        },
+                        "target_type": "area_enemy",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Confused (-1 Awa)",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Opening Attack",
+                        "description": "Grant the next ally attacking the target a +2 bonus to their attack roll.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 5
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Marked (+2 Atk)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Mass Demoralize",
+                        "description": "Target all enemies in a 5m radius. Inflict 2d6 Composure damage.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 6
+                        },
+                        "target_type": "area_enemy",
+                        "effects": [
+                            {
+                                "type": "aoe_composure_damage",
+                                "shape": "radius",
+                                "range": 5,
+                                "amount": "2d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Compel Surrender",
+                        "description": "Force a non-hostile NPC to immediately surrender (Willpower save DC 17).",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 7
+                        },
+                        "target_type": "npc",
+                        "effects": [
+                            {
+                                "type": "special_action_roll",
+                                "effect_id": "Surrender",
+                                "save_stat": "Willpower",
+                                "dc": 17
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Total Loyalty",
+                        "description": "Instantly turn a hostile NPC of T4 or lower into a temporary ally for the remainder of the encounter.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 9
+                        },
+                        "target_type": "npc",
+                        "effects": [
+                            {
+                                "type": "special_action",
+                                "effect_id": "Total Loyalty"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Offense (Opening Attack)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Marked Target",
+                        "description": "Designate one target. The next ally to attack them gets a +1 bonus to their attack roll.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Marked (+1 Atk)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Exploit Opportunity",
+                        "description": "Target an enemy. Grant the next ally attacking them a +1d4 bonus to their damage roll.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 1
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Marked (+1d4 Dmg)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Piercing Command",
+                        "description": "Your next attack also gives an adjacent ally +2 Armor Pierce against that target for 1 round.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 2
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "modify_attack",
+                                "add_effect": {
+                                    "type": "apply_status",
+                                    "target": "ally",
+                                    "status_id": "Piercing (+2 AP)",
+                                    "duration": 1
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Coordinated Strike",
+                        "description": "Grant all adjacent allies a +1d4 bonus damage roll on their next successful attack against that target.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 3
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 2,
+                                "status_id": "Coordinated (+1d4 Dmg)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Strategic Opening",
+                        "description": "Target an enemy. The enemy suffers a -2 penalty to Defense against all incoming attacks for 1 round.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 4
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Strategic Opening (-2 Def)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Focus Fire",
+                        "description": "Grant all allies a +1 bonus to all attack rolls against a single designated target for 2 rounds.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 5
+                        },
+                        "target_type": "enemy_and_allies",
+                        "effects": [
+                            {
+                                "type": "special_action",
+                                "effect_id": "Focus Fire (+1 Atk)"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Leadership Momentum",
+                        "description": "Deliver an attack. If successful, all allies in the encounter gain +2m movement on their next turn.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 6
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "modify_attack",
+                                "add_effect": {
+                                    "type": "aoe_status",
+                                    "target": "ally",
+                                    "shape": "radius",
+                                    "range": 99,
+                                    "status_id": "Momentum (+2m)",
+                                    "duration": 1
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Coordinated Assault",
+                        "description": "Your successful attack also grants an adjacent ally a free T1 (1d4 damage) attack against the target.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 7
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "modify_attack",
+                                "add_effect": {
+                                    "type": "special_action",
+                                    "target": "ally",
+                                    "effect_id": "Free Attack (T1)"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Rally Strike of Annihilation",
+                        "description": "Your successful attack allows all allies to make a free T1 (1d4 damage) attack against the target immediately.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 9
+                        },
+                        "target_type": "enemy",
+                        "effects": [
+                            {
+                                "type": "modify_attack",
+                                "add_effect": {
+                                    "type": "special_action",
+                                    "target": "ally",
+                                    "effect_id": "Free Attack (T1)",
+                                    "all": true
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "branch": "Support (Composure Buff)",
+                "tiers": [
+                    {
+                        "tier": "T1",
+                        "name": "Inspiring Word",
+                        "description": "Restore 1d6 Composure OR 1d4 HP to yourself or an adjacent ally.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 1
+                        },
+                        "target_type": "ally_or_self",
+                        "effects": [
+                            {
+                                "type": "choice",
+                                "options": [
+                                    {
+                                        "type": "composure_heal",
+                                        "amount": "1d6"
+                                    },
+                                    {
+                                        "type": "heal",
+                                        "amount": "1d4"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T2",
+                        "name": "Remove Shaken",
+                        "description": "Instantly remove the Shaken status from an ally.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 2
+                        },
+                        "target_type": "ally",
+                        "effects": [
+                            {
+                                "type": "remove_status",
+                                "status_id": "Shaken"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T3",
+                        "name": "Rallying Cry",
+                        "description": "Restore 2d4 Composure to all allies within 5m.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 3
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_composure_heal",
+                                "shape": "radius",
+                                "range": 5,
+                                "amount": "2d4"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T4",
+                        "name": "Unbreakable Morale",
+                        "description": "Grant all allies immunity to T1 Fear effects for 3 rounds.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 4
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Immunity (Fear T1)",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T5",
+                        "name": "Group Resolve",
+                        "description": "All allies within 5m gain a +2 bonus to all Willpower checks for 3 rounds.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 4
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Group Resolve (+2 Will)",
+                                "duration": 3
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T6",
+                        "name": "Battlefield Command",
+                        "description": "Grant up to 2 allies a bonus 2m movement on their next turn.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 5
+                        },
+                        "target_type": "ally_multi",
+                        "num_targets": 2,
+                        "effects": [
+                            {
+                                "type": "apply_status",
+                                "status_id": "Momentum (+2m)",
+                                "duration": 1
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T7",
+                        "name": "Mass Clarity",
+                        "description": "Restore 3d6 Composure to all allies within 10m.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 6
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_composure_heal",
+                                "shape": "radius",
+                                "range": 10,
+                                "amount": "3d6"
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T8",
+                        "name": "Immunity Aura",
+                        "description": "Grant all allies immunity to Composure loss for 2 rounds.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 7
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 5,
+                                "status_id": "Immunity (Composure Loss)",
+                                "duration": 2
+                            }
+                        ]
+                    },
+                    {
+                        "tier": "T9",
+                        "name": "Total Dominance",
+                        "description": "Grant all allies a temporary +2 increase to their Charm stat for the remainder of the encounter.",
+                        "cost": {
+                            "resource": "Presence",
+                            "amount": 8
+                        },
+                        "target_type": "area_ally",
+                        "effects": [
+                            {
+                                "type": "aoe_status",
+                                "shape": "radius",
+                                "range": 10,
+                                "status_id": "Dominance (+2 Charm)",
+                                "duration": "scene"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

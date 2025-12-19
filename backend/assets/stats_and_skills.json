@@ -1,0 +1,118 @@
+{
+  "attributes": {
+    "red": ["Might", "Finesse", "Awareness", "Logic", "Intuition", "Charm"],
+    "blue": ["Endurance", "Reflexes", "Knowledge", "Fortitude", "Willpower", "Vitality"]
+  },
+  "kingdoms": {
+    "Mammal": {
+      "stats": {"Might": 12, "Finesse": 10, "Awareness": 9, "Logic": 10, "Intuition": 11, "Charm": 12, "Endurance": 10, "Reflexes": 9, "Knowledge": 8, "Fortitude": 8, "Willpower": 10, "Vitality": 11}
+    },
+    "Avian": {
+      "stats": {"Might": 8, "Finesse": 11, "Awareness": 12, "Logic": 10, "Intuition": 10, "Charm": 11, "Endurance": 9, "Reflexes": 12, "Knowledge": 10, "Fortitude": 10, "Willpower": 8, "Vitality": 10}
+    },
+    "Reptile": {
+      "stats": {"Might": 11, "Finesse": 10, "Awareness": 8, "Logic": 9, "Intuition": 10, "Charm": 9, "Endurance": 10, "Reflexes": 10, "Knowledge": 10, "Fortitude": 12, "Willpower": 12, "Vitality": 8}
+    },
+    "Insect": {
+      "stats": {"Might": 10, "Finesse": 8, "Awareness": 10, "Logic": 12, "Intuition": 9, "Charm": 8, "Endurance": 12, "Reflexes": 10, "Knowledge": 11, "Fortitude": 11, "Willpower": 10, "Vitality": 9}
+    },
+    "Aquatic": {
+      "stats": {"Might": 10, "Finesse": 12, "Awareness": 10, "Logic": 8, "Intuition": 12, "Charm": 10, "Endurance": 11, "Reflexes": 8, "Knowledge": 9, "Fortitude": 9, "Willpower": 11, "Vitality": 10}
+    },
+    "Plant": {
+      "stats": {"Might": 9, "Finesse": 10, "Awareness": 11, "Logic": 10, "Intuition": 8, "Charm": 10, "Endurance": 8, "Reflexes": 10, "Knowledge": 12, "Fortitude": 11, "Willpower": 9, "Vitality": 12}
+    }
+  },
+  "skills": {
+    "Might": ["Breaker", "Intimidation", "Labor", "Military"],
+    "Finesse": ["Duelist", "Slight of Hand", "Artifice", "Outlaw"],
+    "Awareness": ["Marksman", "Insight", "Investigation", "Astrology"],
+    "Logic": ["Artificer", "Rhetoric", "Ingenuity", "Trades"],
+    "Intuition": ["Brawler", "Empathy", "Thaumaturgy", "Religion"],
+    "Charm": ["Commander", "Persuasion", "Expression", "Politics"],
+    "Endurance": ["Juggernaut", "Resilience", "Security", "Civilization"],
+    "Reflexes": ["Skirmisher", "Evasion", "Kinetics", "Travel"],
+    "Knowledge": ["Tactician", "Debate", "Scholarship", "Science"],
+    "Fortitude": ["Ascetic", "Discipline", "Environment", "Miners"],
+    "Willpower": ["Guardian", "Negotiations", "Coordination", "Law"],
+    "Vitality": ["Shaper", "Comfort", "Provisioning", "Agriculture"]
+  },
+  "origins": {
+    "Volcanic": ["Might", "Fortitude"],
+    "Deep Ocean": ["Endurance", "Willpower"],
+    "Canopy": ["Finesse", "Reflexes"],
+    "Tundra": ["Fortitude", "Logic"],
+    "Ruins": ["Logic", "Awareness"],
+    "Underdark": ["Awareness", "Intuition"],
+    "Plains": ["Reflexes", "Vitality"],
+    "Swamp": ["Vitality", "Fortitude"],
+    "High Court": ["Charm", "Knowledge"],
+    "Desert": ["Endurance", "Logic"],
+    "Island": ["Knowledge", "Intuition"]
+  },
+  "diets": {
+    "Apex Hunter": ["Might", "Reflexes"],
+    "Ambush Predator": ["Finesse", "Awareness"],
+    "Persistence Hunter": ["Endurance", "Vitality"],
+    "Traqqer/Sapper": ["Logic", "Knowledge"],
+    "Social Parasite": ["Charm", "Vitality"],
+    "Grazer/Gatherer": ["Fortitude", "Endurance"],
+    "Opportunist": ["Intuition", "Finesse"],
+    "Mind Eater": ["Willpower", "Knowledge"],
+    "Cultivator": ["Vitality", "Logic"],
+    "Man Eater": ["Might", "Vitality"],
+    "Filter Feeder": ["Awareness", "Fortitude"]
+  },
+  "conflicts": {
+    "The Breaker": ["Might", "Logic"],
+    "The Duelist": ["Finesse", "Intuition"],
+    "The Warlord": ["Might", "Charm"],
+    "The Sniper": ["Awareness", "Finesse"],
+    "The Tank": ["Endurance", "Fortitude"],
+    "The Berserker": ["Vitality", "Willpower"],
+    "The Assassin": ["Reflexes", "Logic"],
+    "The Monk": ["Fortitude", "Willpower"],
+    "The Brawler": ["Might", "Intuition"],
+    "The Tactician": ["Knowledge", "Endurance"],
+    "The Swarm": ["Reflexes", "Charm"]
+  },
+  "social_roles": {
+    "The Alpha": ["Might", "Awareness"],
+    "The Diplomat": ["Charm", "Logic"],
+    "The Elder": ["Knowledge", "Willpower"],
+    "The Scout": ["Reflexes", "Awareness"],
+    "The Trickster": ["Finesse", "Charm"],
+    "The Caregiver": ["Vitality", "Intuition"],
+    "The Guard": ["Endurance", "Awareness"],
+    "The Judge": ["Logic", "Willpower"],
+    "The Storyteller": ["Knowledge", "Charm"],
+    "The Merchant": ["Logic", "Intuition"],
+    "The Enforcer": ["Endurance", "Charm"]
+  },
+  "defenses": {
+    "Thick Hide": ["Endurance", "Logic"],
+    "Evasion": ["Reflexes", "Knowledge"],
+    "Camouflage": ["Finesse", "Logic"],
+    "Warning": ["Awareness", "Knowledge"],
+    "Sixth Sense": ["Intuition", "Awareness"],
+    "Iron Will": ["Willpower", "Endurance"],
+    "Adrenaline": ["Vitality", "Reflexes"],
+    "Bluff": ["Charm", "Finesse"],
+    "Hardened": ["Fortitude", "Knowledge"],
+    "Intimidating Presence": ["Might", "Willpower"],
+    "Unnatural Luck": ["Intuition", "Fortitude"]
+  },
+  "ascensions": {
+    "The Titan": ["Might", "Endurance"],
+    "The Ghost": ["Finesse", "Willpower"],
+    "The Storm": ["Reflexes", "Willpower"],
+    "The Void": ["Logic", "Intuition"],
+    "The Oracle": ["Knowledge", "Awareness"],
+    "The Idol": ["Charm", "Fortitude"],
+    "The Lich": ["Vitality", "Knowledge"],
+    "The Beast": ["Might", "Finesse"],
+    "The Construct": ["Endurance", "Finesse"],
+    "The Shadow": ["Awareness", "Logic"],
+    "The Prophet": ["Willpower", "Charm"]
+  }
+}

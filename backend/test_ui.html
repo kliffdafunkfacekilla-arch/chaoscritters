@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shattered World - Dumb Terminal</title>
+    <style>
+        body { font-family: monospace; background: #0d0d0d; color: #00ff00; padding: 20px; }
+        .box { border: 1px solid #333; padding: 10px; margin-bottom: 10px; }
+        button { background: #004400; color: #fff; border: none; padding: 10px; cursor: pointer; }
+        button:hover { background: #006600; }
+        input, select { background: #222; color: #fff; border: 1px solid #444; padding: 5px; }
+        #log { white-space: pre-wrap; height: 300px; overflow-y: scroll; border: 1px solid #333; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>THE SHATTERED WORLD // DUMB TERMINAL</h1>
+    
+    <div class="box">
+        <h3>Server Status</h3>
+        <button onclick="ping()">Ping Server</button>
+        <button onclick="getStats()">Fetch Rules</button>
+    </div>
+
+    <div class="box">
+        <h3>Combat Engine</h3>
+        Atk Stat: <input type="number" id="atk" value="10"> 
+        Skill: <input type="number" id="skill" value="2"> <br><br>
+        Def Stat: <input type="number" id="def" value="10">
+        Armor: <input type="number" id="armor" value="0"> <br><br>
+        <button onclick="testAttack()">RESOLVE ATTACK</button>
+    </div>
+
+    <div class="box">
+        <h3>Wheel of Pain</h3>
+        Attacker: 
+        <select id="p1_card">
+            <option>PRESS</option>
+            <option>MANEUVER</option>
+            <option>DISENGAGE</option>
+            <option>TACTIC</option>
+        </select>
+        vs
+        Defender:
+        <select id="p2_card">
+            <option>PRESS</option>
+            <option>MANEUVER</option>
+            <option>DISENGAGE</option>
+            <option>TACTIC</option>
+        </select>
+        <button onclick="testClash()">RESOLVE CLASH</button>
+    </div>
+
+    <div id="log">Logs will appear here...</div>
+
+    <script>
+        const API_URL = "http://localhost:8000";
+
+        async function log(msg) {
+            const el = document.getElementById("log");
+            el.innerHTML = `> ${msg}\n${el.innerHTML}`;
+        }
+
+        async function ping() {
+            try {
+                const res = await fetch(`${API_URL}/`);
+                const data = await res.json();
+                log(JSON.stringify(data));
+            } catch (e) { log("Error: " + e); }
+        }
+
+        async function getStats() {
+            try {
+                const res = await fetch(`${API_URL}/stats`);
+                const data = await res.json();
+                log("Received " + Object.keys(data).length + " data keys.");
+            } catch (e) { log("Error: " + e); }
+        }
+
+        async function testAttack() {
+            const body = {
+                attack_stat: parseInt(document.getElementById("atk").value),
+                skill_bonus: parseInt(document.getElementById("skill").value),
+                defense_stat: parseInt(document.getElementById("def").value),
+                armor_bonus: parseInt(document.getElementById("armor").value)
+            };
+            try {
+                const res = await fetch(`${API_URL}/mechanics/attack`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                log(`RESULT: ${data.result} | Margin: ${data.margin} | ${data.effect}`);
+            } catch (e) { log("Error: " + e); }
+        }
+
+        async function testClash() {
+            const body = {
+                attacker_card: document.getElementById("p1_card").value,
+                defender_card: document.getElementById("p2_card").value
+            };
+            try {
+                const res = await fetch(`${API_URL}/mechanics/clash`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                log(`WINNER: ${data.winner}\n${data.message}`);
+            } catch (e) { log("Error: " + e); }
+        }
+    </script>
+</body>
+</html>
