@@ -1,7 +1,7 @@
 import random
 import math
 from typing import Dict, Tuple, List
-from backend.engine.grid import GridManager, Hex
+from backend.engine.grid import GridManager
 
 try:
     from perlin_noise import PerlinNoise
@@ -31,13 +31,13 @@ class ProcGen:
         # Biome Settings (Elevation Thresholds)
         # Deep Water < Water < Sand < Grass < Forest < Mountain < Peak
         
-        for (q, r) in grid.cells.keys():
-            # Normalize coords for noise (scale needs to be small)
-            # We use a scale factor relative to map radius to keep features reasonable
+        for (gx, gy) in grid.cells.keys():
+            # Normalize coords for noise
             scale = 0.15
             
-            x = q * scale
-            y = r * scale
+            # Simple offset to noise space
+            x = gx * scale
+            y = gy * scale
             
             elev = self.noise_elevation([x, y]) + 0.5 # Normalize roughly to 0-1
             moist = self.noise_moisture([x, y]) + 0.5
@@ -79,8 +79,8 @@ class ProcGen:
                         tile_type = "Rubble"
                         movement_cost = 2
                 
-            grid.cells[(q, r)] = tile_type
-            map_data[(q, r)] = {
+            grid.cells[(gx, gy)] = tile_type
+            map_data[(gx, gy)] = {
                 "type": tile_type,
                 "cost": movement_cost,
                 "height": height,
@@ -90,46 +90,5 @@ class ProcGen:
             
         return map_data
 
-    def visualize_map(self, map_data: Dict[Tuple[int, int], dict], output_path: str = "map_preview.png"):
-        """Generates a PNG preview of the map using Matplotlib"""
-        try:
-            import matplotlib.pyplot as plt
-            import matplotlib.patches as patches
-            
-            fig, ax = plt.subplots(figsize=(10, 10))
-            ax.set_aspect('equal')
-            
-            # Color map
-            colors = {
-                "Water": "#1f77b4",
-                "Sand": "#e3d5ca",
-                "Grass": "#2ca02c",
-                "Forest": "#006400",
-                "Stone": "#7f7f7f",
-                "Mountain": "#505050",
-                "Rubble": "#8c564b",
-                "Void": "#000000"
-            }
-            
-            # Convert hex to pixel for plotting
-            hex_size = 1.0
-            
-            for (q, r), data in map_data.items():
-                h = Hex(q, r, -q-r)
-                x, y = h.to_pixel(hex_size)
-                color = colors.get(data['type'], "pink")
-                
-                # Draw simple hexagon approximation (circle for speed) or actual hex
-                circle = patches.Circle((x, y), radius=hex_size * 0.9, color=color)
-                ax.add_patch(circle)
-                # ax.text(x, y, f"{q},{r}", fontsize=6, ha='center', va='center')
+    # Visualization removed to simplify dependencies
 
-            # Auto-scale
-            ax.autoscale_view()
-            plt.axis('off')
-            plt.savefig(output_path, bbox_inches='tight')
-            plt.close()
-            print(f"Map visualization saved to {output_path}")
-            
-        except ImportError:
-            print("Matplotlib not installed, skipping visualization.")

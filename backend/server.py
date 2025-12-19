@@ -144,27 +144,29 @@ async def validate_character(sheet: CharacterSheet):
     return {"valid": True, "message": "Character Sheet is valid."}
 
 @app.post("/map/generate")
-async def generate_map(req: MapRequest):
-    grid_manager.radius = req.radius
+async def generate_map(request: MapRequest):
+    grid_manager = GridManager(radius=request.radius)
     grid_manager.generate_empty_map()
     
-    # Use Procedural Generation
-    map_data = proc_gen.generate_terrain(grid_manager, req.biome)
+    proc_gen = ProcGen()
+    map_data = proc_gen.generate_terrain(grid_manager, biome_type=request.biome)
     
-    tile_data = []
-    for (q, r), data in map_data.items():
-        tile_data.append({
-            "q": q, "r": r, 
+    # Serialize for Frontend
+    tiles = []
+    for (x, y), data in map_data.items():
+        tiles.append({
+            "x": x, 
+            "y": y, 
             "terrain": data["type"],
             "cost": data["cost"],
             "height": data["height"]
         })
         
     return {
-        "radius": req.radius,
-        "biome": req.biome,
-        "tile_count": len(tile_data),
-        "tiles": tile_data
+        "radius": request.radius,
+        "biome": request.biome,
+        "tile_count": len(tiles),
+        "tiles": tiles
     }
 
 @app.post("/battle/start")

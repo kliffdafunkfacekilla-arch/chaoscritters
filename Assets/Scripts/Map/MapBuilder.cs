@@ -30,6 +30,22 @@ namespace ChaosCritters.Map
 
         private void Awake()
         {
+            // 1. Auto-Find Tilemap (So you don't have to drag it)
+            if (tilemap == null)
+                tilemap = GetComponentInChildren<Tilemap>();
+            
+            // 2. Auto-Create a Default Tile (So you don't have to make an asset)
+            if (defaultTile == null)
+            {
+                Tile t = ScriptableObject.CreateInstance<Tile>();
+                // Create a 1x1 white texture for the sprite
+                Texture2D texture = new Texture2D(16, 16);
+                for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++) texture.SetPixel(x, y, Color.white);
+                texture.Apply();
+                t.sprite = Sprite.Create(texture, new Rect(0, 0, 16, 16), new Vector2(0.5f, 0.5f), 16);
+                defaultTile = t;
+            }
+
             _tileLookup = new Dictionary<string, TileBase>();
             foreach (var tt in terrainTiles)
             {
@@ -40,8 +56,7 @@ namespace ChaosCritters.Map
 
         private void Start()
         {
-            // Optional auto-start
-            // GenerateMap();
+            GenerateMap();
         }
 
         [ContextMenu("Clear Map")]
@@ -79,10 +94,8 @@ namespace ChaosCritters.Map
 
             foreach (var tile in data.tiles)
             {
-                // Axial (q, r) to Offset might be needed depending on Grid setting.
-                // For now, mapping directly q->x, r->y works topologically 
-                // but might require "Point Top" hex settings in Unity.
-                Vector3Int pos = new Vector3Int(tile.q, tile.r, 0);
+                // Direct Square Grid Mapping
+                Vector3Int pos = new Vector3Int(tile.x, tile.y, 0);
 
                 TileBase tileToUse = defaultTile;
                 if (_tileLookup.ContainsKey(tile.terrain))

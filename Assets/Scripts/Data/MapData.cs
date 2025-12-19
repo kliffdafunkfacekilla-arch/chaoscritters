@@ -15,8 +15,8 @@ namespace ChaosCritters.Data
     [Serializable]
     public class TileData
     {
-        public int q;
-        public int r;
+        public int x; // Was q
+        public int y; // Was r
         public string terrain; // "Grass", "Water", etc.
         public int cost;
         public float height;
