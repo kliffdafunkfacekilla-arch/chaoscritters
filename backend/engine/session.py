@@ -25,28 +25,34 @@ class SessionManager:
             
     def save_game(self, session_id: str, turn_manager: TurnManager, grid: GridManager, history: List[str]):
         """Saves the current game state to a JSON file."""
-        
-        # Serialize grid
-        map_serialized = {}
-        for coord, type_str in grid.cells.items():
-            key = f"{coord[0]},{coord[1]}"
-            map_serialized[key] = {"type": type_str} # Extend with height/etc later
+        try:
+            # Serialize grid
+            map_serialized = {}
+            for coord, type_str in grid.cells.items():
+                key = f"{coord[0]},{coord[1]}"
+                map_serialized[key] = {"type": type_str} 
+                
+            state = GameState(
+                session_id=session_id,
+                timestamp=datetime.now().isoformat(),
+                round=turn_manager.round,
+                turn_index=turn_manager.current_index,
+                entities=turn_manager.entities,
+                map_data=map_serialized,
+                history=history
+            )
             
-        state = GameState(
-            session_id=session_id,
-            timestamp=datetime.now().isoformat(),
-            round=turn_manager.round,
-            turn_index=turn_manager.current_index,
-            entities=turn_manager.entities,
-            map_data=map_serialized,
-            history=history
-        )
-        
-        file_path = os.path.join(SAVE_DIR, f"{session_id}.json")
-        with open(file_path, 'w') as f:
-            f.write(state.json(indent=4))
-        print(f"Game saved to {file_path}")
-        return file_path
+            file_path = os.path.join(SAVE_DIR, f"{session_id}.json")
+            with open(file_path, 'w') as f:
+                json.dump(state.dict(), f, indent=4, default=str)
+                
+            print(f"Game saved to {file_path}")
+            return file_path
+        except Exception as e:
+            print(f"FAILED TO SAVE GAME: {e}")
+            import traceback
+            traceback.print_exc()
+            raise e
 
     def load_game(self, session_id: str, turn_manager: TurnManager, grid: GridManager) -> bool:
         """Loads a game state from JSON."""

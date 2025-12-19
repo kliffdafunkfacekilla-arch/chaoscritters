@@ -21,6 +21,10 @@ from backend.engine.turn_manager import TurnManager, EntityState
 from backend.engine.actions import ActionResolver
 
 from backend.engine.session import SessionManager
+from backend.interface.voice import VoiceInterface
+from backend.brain.llm_client import LLMClient
+from backend.brain.parser_agent import ParserAgent
+from backend.brain.narrator_agent import NarratorAgent
 
 grid_manager = GridManager(radius=5)
 # grid_manager.generate_empty_map() # Procgen will handle this
@@ -28,6 +32,13 @@ proc_gen = ProcGen()
 turn_manager = TurnManager()
 action_resolver = ActionResolver(grid_manager)
 session_manager = SessionManager()
+voice_interface = VoiceInterface()
+
+# Initialize Brain
+llm_client = LLMClient() 
+# llm_client.check_connection() # Optional: check on startup
+parser_agent = ParserAgent(llm_client)
+narrator_agent = NarratorAgent(llm_client)
 
 # --- Models ---
 class MapRequest(BaseModel):
@@ -249,6 +260,85 @@ async def resolve_clash(req: ClashRequest):
 
 # Serve static files for simple testing UI if needed
 # app.mount("/static", StaticFiles(directory="static"), name="static")
+
+from fastapi import File, UploadFile
+import shutil
+
+@app.post("/interface/stt")
+async def speech_to_text(file: UploadFile = File(...)):
+    temp_file = f"temp_{file.filename}"
+    with open(temp_file, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    text = voice_interface.transcribe(temp_file)
+    
+    # Cleanup
+    if os.path.exists(temp_file):
+        os.remove(temp_file)
+        
+    return {"text": text}
+
+class TTSRequest(BaseModel):
+    text: str
+
+from fastapi.responses import FileResponse
+
+@app.post("/interface/tts")
+async def text_to_speech(req: TTSRequest):
+    output_file = "tts_output.wav"
+    path = voice_interface.speak(req.text, output_file)
+    if path and os.path.exists(path):
+        return FileResponse(path, media_type="audio/wav", filename="speech.wav")
+    raise HTTPException(status_code=500, detail="TTS generation failed")
+
+
+class CommandRequest(BaseModel):
+    text: str
+    actor_id: str
+
+@app.post("/brain/command")
+async def process_command(req: CommandRequest):
+    actor = turn_manager.entities.get(req.actor_id)
+    if not actor:
+        raise HTTPException(status_code=404, detail="Actor not found")
+        
+    # Get visible entities (for now, all)
+    visible = list(turn_manager.entities.values())
+    
+    # Parse
+    intent = parser_agent.parse_command(req.text, actor, visible)
+    
+    # Execute if valid (Simplified)
+    execution_result = {}
+    if intent.get("action") == "Move":
+        params = intent.get("params", {})
+        target = params.get("target_pos")
+        if target:
+            # We assume LLM returns correct coords, or we validate
+            current_pos = (0, 0)
+            execution_result = action_resolver.resolve_move(actor.id, current_pos, tuple(target), actor.ap)
+            if execution_result["success"]:
+                actor.ap -= execution_result["cost"]
+                
+    elif intent.get("action") == "Attack":
+        params = intent.get("params", {})
+        target_id = params.get("target_id")
+        target_entity = turn_manager.entities.get(target_id)
+        if target_entity:
+            execution_result = action_resolver.resolve_attack(actor, target_entity, engine)
+            if execution_result["success"]:
+                actor.ap -= execution_result["cost"]
+
+    # Narrate
+    narrative = ""
+    if execution_result.get("success"):
+        narrative = narrator_agent.narrate_event([f"{actor.name} performed {intent.get('action')}", str(execution_result)])
+
+    return {
+        "intent": intent,
+        "execution": execution_result,
+        "narrative": narrative
+    }
 
 if __name__ == "__main__":
     import uvicorn
