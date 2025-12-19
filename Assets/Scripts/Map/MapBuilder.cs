@@ -36,7 +36,7 @@ namespace ChaosCritters.Map
             
             // Fallback: Search entire scene
             if (tilemap == null)
-                tilemap = FindObjectOfType<Tilemap>();
+                tilemap = FindFirstObjectByType<Tilemap>();
             
             // 2. Auto-Create a Default Tile (So you don't have to make an asset)
             if (defaultTile == null)

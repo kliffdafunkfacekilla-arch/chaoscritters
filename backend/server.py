@@ -216,6 +216,12 @@ async def execute_move(req: MoveRequest):
     
     if result["success"]:
         actor.ap -= result["cost"]
+        new_pos = result.get("new_pos")
+        if new_pos:
+            actor.x = new_pos[0]
+            actor.y = new_pos[1]
+    else:
+        print(f"Move Failed: {result.get('message')}")
         
     return {"result": result, "remaining_ap": actor.ap}
 

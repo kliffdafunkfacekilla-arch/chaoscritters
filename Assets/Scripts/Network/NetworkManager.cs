@@ -15,7 +15,7 @@ namespace ChaosCritters.Network
             {
                 if (_instance == null)
                 {
-                    _instance = FindObjectOfType<NetworkManager>();
+                    _instance = FindFirstObjectByType<NetworkManager>();
                     if (_instance == null)
                     {
                         GameObject go = new GameObject("NetworkManager");

@@ -27,18 +27,21 @@ namespace ChaosCritters.Units
                 return;
             }
             // Add a small delay to ensure backend is ready/connected
-            Invoke(nameof(RefreshEntities), 1.0f);
+            Invoke(nameof(InitializeBattle), 1.0f);
+        }
+
+        private void InitializeBattle()
+        {
+            NetworkManager.Instance.Post("/battle/start", "{}", 
+                onSuccess: (json) => RefreshEntities(),
+                onError: (err) => Debug.LogError($"Failed to start battle: {err}")
+            );
         }
 
         [ContextMenu("Refresh Entities")]
         public void RefreshEntities()
         {
-            // First, ensure we start a battle so entities actually exist on the server
-            // (In a real game, this would happen at a specific trigger, but for now we force it)
-            NetworkManager.Instance.Post("/battle/start", "{}", 
-                onSuccess: (json) => FetchEntityList(),
-                onError: (err) => Debug.LogError($"Failed to start battle: {err}")
-            );
+            FetchEntityList();
         }
 
         private void FetchEntityList()
@@ -65,6 +68,7 @@ namespace ChaosCritters.Units
                 if (_activeTokens.ContainsKey(data.id))
                 {
                     // Update existing
+                    Debug.Log($"Syncing Token {data.id}: Pos ({data.x}, {data.y})");
                     _activeTokens[data.id].MoveTo(data.x, data.y);
                 }
                 else

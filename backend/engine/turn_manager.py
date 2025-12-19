@@ -6,7 +6,7 @@ class EntityState(BaseModel):
     id: str
     name: str
     initiative: int = 0
-    ap: int = 2 # Standard Action Points
+    ap: int = 20 # Debug High AP
     hp: int
     max_hp: int
     composure: int
@@ -62,5 +62,5 @@ class TurnManager:
         
     def _start_turn_logic(self, actor: EntityState):
         # Reset AP, handle start-of-turn effects
-        actor.ap = 2 # Standard 2 AP per turn
+        actor.ap = 20 # Debug High AP
         print(f"Start Turn: {actor.name} (AP: {actor.ap})")

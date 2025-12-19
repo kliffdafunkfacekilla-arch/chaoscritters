@@ -14,7 +14,7 @@ namespace ChaosCritters.Units
         {
             Debug.Log($"CONTROLLER STARTED on {gameObject.name}");
             if (tilemap == null)
-                tilemap = FindObjectOfType<Tilemap>();
+                tilemap = FindFirstObjectByType<Tilemap>();
         }
 
         private void OnGUI()
