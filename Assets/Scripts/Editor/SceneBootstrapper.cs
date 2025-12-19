@@ -58,6 +58,14 @@ namespace ChaosCritters.Editor
                 cam.AddComponent<ChaosCritters.Core.CameraController>();
                 cam.GetComponent<Camera>().orthographic = true;
                 cam.GetComponent<Camera>().orthographicSize = 10;
+                
+                // Add Click Handler
+                if (cam.GetComponent<InteractionController>() == null)
+                {
+                    cam.AddComponent<InteractionController>();
+                    Debug.Log("Added InteractionController to Camera.");
+                }
+                
                 Debug.Log("Setup Camera.");
             }
 

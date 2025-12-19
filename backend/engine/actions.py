@@ -29,6 +29,12 @@ class ActionResolver:
         # For now, let's say 1 Move Action = 5 Tiles
         if start.distance(end) > 5:
              return {"success": False, "message": "Target too far for a single Move action."}
+
+        return {
+            "success": True, 
+            "cost": cost,
+            "new_pos": (end.x, end.y)
+        }
              
 
     def resolve_attack(self, attacker: 'EntityState', target: 'EntityState', engine: 'MechanicsEngine') -> Dict[str, Any]:
