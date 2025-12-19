@@ -8,18 +8,34 @@ namespace ChaosCritters.Network
 {
     public class NetworkManager : MonoBehaviour
     {
-        public static NetworkManager Instance { get; private set; }
+        private static NetworkManager _instance;
+        public static NetworkManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<NetworkManager>();
+                    if (_instance == null)
+                    {
+                        GameObject go = new GameObject("NetworkManager");
+                        _instance = go.AddComponent<NetworkManager>();
+                    }
+                }
+                return _instance;
+            }
+        }
 
         private const string BASE_URL = "http://127.0.0.1:8000";
 
         private void Awake()
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = this;
+                _instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            else
+            else if (_instance != this)
             {
                 Destroy(gameObject);
             }

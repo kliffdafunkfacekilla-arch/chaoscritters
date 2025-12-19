@@ -12,10 +12,6 @@ namespace ChaosCritters.Core
         {
             Vector3 pos = transform.position;
 
-        void Update()
-        {
-            Vector3 pos = transform.position;
-
             // Standard 2D Panning (X and Y)
             if (Input.GetKey("w") || Input.GetKey(KeyCode.UpArrow))
             {
