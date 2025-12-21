@@ -172,8 +172,18 @@ async def generate_map(request: MapRequest):
 @app.post("/battle/start")
 async def start_battle():
     # Setup dummy entities for testing
-    p1 = EntityState(id="P1", name="Ursine Warrior", hp=30, max_hp=30, composure=15, max_composure=15, x=2, y=2, image_id="Warrior")
-    e1 = EntityState(id="E1", name="Gravity Bear", hp=40, max_hp=40, composure=10, max_composure=10, team="Enemy", x=5, y=5, image_id="Bear")
+    p1 = EntityState(
+        id="P1", name="Ursine Warrior", 
+        hp=30, max_hp=30, composure=15, max_composure=15, 
+        x=2, y=2, image_id="Warrior",
+        visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"}
+    )
+    e1 = EntityState(
+        id="E1", name="Gravity Bear", 
+        hp=40, max_hp=40, composure=10, max_composure=10, team="Enemy", 
+        x=5, y=5, image_id="Bear",
+        visual_tags={"chassis": "Bear", "role": "Breaker", "infusion": "Gravity"}
+    )
     
     turn_manager.entities = {}
     turn_manager.add_entity(p1)

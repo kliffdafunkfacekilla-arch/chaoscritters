@@ -30,8 +30,25 @@ namespace ChaosCritters.Units
             transform.position = new Vector3(data.x, data.y, 0);
             targetPosition = transform.position;
             
-            // TODO: Load specific sprite based on data.image_id
-            spriteRenderer.color = data.team == "Player" ? Color.green : Color.red; 
+            // visual assembly
+            var assembler = GetComponent<SpriteAssembler>();
+            if (assembler == null) assembler = gameObject.AddComponent<SpriteAssembler>();
+            
+            if (data.visual_tags != null)
+            {
+                // Convert struct to dict for the assembler
+                var tags = new System.Collections.Generic.Dictionary<string, string>();
+                if (!string.IsNullOrEmpty(data.visual_tags.chassis)) tags.Add("chassis", data.visual_tags.chassis);
+                if (!string.IsNullOrEmpty(data.visual_tags.role)) tags.Add("role", data.visual_tags.role);
+                if (!string.IsNullOrEmpty(data.visual_tags.infusion)) tags.Add("infusion", data.visual_tags.infusion);
+                
+                assembler.Assemble(tags);
+            }
+            else
+            {
+                // Fallback debug colors
+                spriteRenderer.color = data.team == "Player" ? Color.green : Color.red; 
+            } 
         }
 
         public void MoveTo(int x, int y)

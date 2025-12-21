@@ -15,6 +15,7 @@ class EntityState(BaseModel):
     x: int = 0
     y: int = 0
     image_id: str = "default.png"
+    visual_tags: Dict[str, str] = {} # e.g. {"chassis": "Bear", "role": "Warrior", "infusion": "Gravity"}
 
 class TurnManager:
     def __init__(self):

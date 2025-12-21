@@ -14,6 +14,15 @@ namespace ChaosCritters.Data
         public int max_hp;
         public int ap;
         public string image_id; // For sprite lookup
+        public VisualTags visual_tags;
+    }
+
+    [Serializable]
+    public class VisualTags
+    {
+        public string chassis;
+        public string role;
+        public string infusion;
     }
 
     [Serializable]
