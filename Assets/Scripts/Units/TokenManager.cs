@@ -239,8 +239,9 @@ namespace ChaosCritters.Units
                 // We access the controller's transform, but better to check data if we had it.
                 // Or simply check coords. Transform is float, so we cast.
                 Vector3 pos = kvp.Value.transform.position;
-                // Assuming integer grid alignment
-                if (Mathf.RoundToInt(pos.x) == x && Mathf.RoundToInt(pos.y) == y)
+                // We check against FloorToInt because we shifted visual pos by +0.5f
+                // e.g. (2.5, 3.5) -> Cell (2, 3)
+                if (Mathf.FloorToInt(pos.x) == x && Mathf.FloorToInt(pos.y) == y)
                 {
                     return kvp.Key;
                 }
