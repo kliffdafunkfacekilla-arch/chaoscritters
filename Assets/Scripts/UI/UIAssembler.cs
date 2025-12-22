@@ -124,10 +124,10 @@ namespace ChaosCritters.UI
                      string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
                      
                      // Force fix if not a sprite
-                     TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
-                     if (importer != null && importer.textureType != TextureImporterType.Sprite)
+                     UnityEditor.TextureImporter importer = UnityEditor.AssetImporter.GetAtPath(path) as UnityEditor.TextureImporter;
+                     if (importer != null && importer.textureType != UnityEditor.TextureImporterType.Sprite)
                      {
-                         importer.textureType = TextureImporterType.Sprite;
+                         importer.textureType = UnityEditor.TextureImporterType.Sprite;
                          importer.SaveAndReimport();
                          Debug.Log("[UIAssembler] Auto-Fixed UI Sheet Import Settings.");
                      }
