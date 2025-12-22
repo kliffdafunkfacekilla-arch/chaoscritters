@@ -13,6 +13,8 @@ namespace ChaosCritters.Data
         public int hp;
         public int max_hp;
         public int ap;
+        public int composure;
+        public int max_composure;
         public string image_id; // For sprite lookup
         public VisualTags visual_tags;
     }

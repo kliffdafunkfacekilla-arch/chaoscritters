@@ -11,8 +11,25 @@ namespace ChaosCritters.Units
 
         [Header("Configuration")]
         public GameObject tokenPrefab; // User drags "Token" prefab here
+        
+        public string CurrentActorId { get; private set; }
 
         private Dictionary<string, TokenController> _activeTokens = new Dictionary<string, TokenController>();
+        
+        [System.Serializable]
+        public class BattleStartResponse
+        {
+            public string message;
+            public string[] turn_order;
+            public string current_turn;
+        }
+
+        [System.Serializable]
+        public class NarrativeWrapper
+        {
+            public string narrative;
+            public string message;
+        }
 
         private void Awake()
         {
@@ -33,7 +50,13 @@ namespace ChaosCritters.Units
         private void InitializeBattle()
         {
             NetworkManager.Instance.Post("/battle/start", "{}", 
-                onSuccess: (json) => RefreshEntities(),
+                onSuccess: (json) => 
+                {
+                    BattleStartResponse res = JsonUtility.FromJson<BattleStartResponse>(json);
+                    CurrentActorId = res.current_turn;
+                    Debug.Log($"Battle Initialized. Current Turn: {CurrentActorId}");
+                    RefreshEntities();
+                },
                 onError: (err) => Debug.LogError($"Failed to start battle: {err}")
             );
         }
@@ -70,6 +93,11 @@ namespace ChaosCritters.Units
                     // Update existing
                     Debug.Log($"Syncing Token {data.id}: Pos ({data.x}, {data.y})");
                     _activeTokens[data.id].MoveTo(data.x, data.y);
+                    
+                    if (data.id == CurrentActorId && UI.HUDController.Instance != null)
+                    {
+                        UI.HUDController.Instance.UpdatePlayerCard(data);
+                    }
                 }
                 else
                 {
@@ -107,9 +135,22 @@ namespace ChaosCritters.Units
                 onSuccess: (response) => 
                 {
                     Debug.Log("Move Approved by Backend.");
+                    // Check for narrative/messages
+                    // Simple manual parse for now
+                    if (response.Contains("\"narrative\":"))
+                    {
+                        var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
+                        if (!string.IsNullOrEmpty(wrapper.narrative))
+                            UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                    }
+                    
                     RefreshEntities(); // Re-sync positions
                 },
-                onError: (err) => Debug.LogError($"Move Rejected: {err}")
+                onError: (err) => 
+                {
+                    Debug.LogError($"Move Rejected: {err}");
+                    UI.NarratorController.Instance?.AddLine($"Move Failed: {err}");
+                }
             );
         }
     }

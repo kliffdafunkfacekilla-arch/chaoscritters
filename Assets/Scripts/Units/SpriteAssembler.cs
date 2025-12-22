@@ -35,6 +35,14 @@ namespace ChaosCritters.Units
 
         private void Awake()
         {
+            if (chassisDb == null) chassisDb = new List<VisualEntry>();
+            if (roleDb == null) roleDb = new List<VisualEntry>();
+            if (infusionDb == null) infusionDb = new List<VisualEntry>();
+
+#if UNITY_EDITOR
+            // Auto-populate for runtime testing if empty
+            if (chassisDb.Count == 0) AutoDiscoverSchemas();
+#endif
             InitializeLookups();
         }
 
@@ -49,6 +57,8 @@ namespace ChaosCritters.Units
 
         public void Assemble(Dictionary<string, string> visualTags)
         {
+            EnsureLayers();
+
             // 1. Chassis (Body)
             if (visualTags.ContainsKey("chassis"))
             {
@@ -104,15 +114,121 @@ namespace ChaosCritters.Units
         
         // Debug helper
         [ContextMenu("Test Assemble")]
-        public void TestAssemble()
+        [ContextMenu("Auto-Discover Schemas")]
+        public void AutoDiscoverSchemas()
         {
-            var tags = new Dictionary<string, string>
+#if UNITY_EDITOR
+            // 1. Chassis Discovery
+            _chassisLookup = new Dictionary<string, Sprite>();
+            chassisDb = new List<VisualEntry>();
+            string[] chassisIds = new string[] { "Bear", "Insect", "Human" }; // Visual Types from Backend
+            
+            foreach (var id in chassisIds)
             {
-                { "chassis", "Bear" },
-                { "role", "Warrior" },
-                { "infusion", "Gravity" }
-            };
-            Assemble(tags);
+                // Try find specific asset
+                string[] guids = UnityEditor.AssetDatabase.FindAssets($"{id} t:Sprite");
+                if (guids.Length > 0)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                    Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                    if (s != null)
+                    {
+                        chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
+                        Debug.Log($"[SpriteAssembler] Found Chassis: {id} -> {path}");
+                    }
+                }
+                else
+                {
+                    // Fallback 1: Specific placeholder
+                    string[] fallback = UnityEditor.AssetDatabase.FindAssets("roguelikeDungeon_transparent t:Sprite");
+                    if (fallback.Length == 0)
+                    {
+                        // Fallback 2: ABSOLUTELY ANY SPRITE
+                        fallback = UnityEditor.AssetDatabase.FindAssets("t:Sprite");
+                    }
+
+                    if (fallback.Length > 0)
+                    {
+                         string path = UnityEditor.AssetDatabase.GUIDToAssetPath(fallback[0]);
+                         Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                         if (s != null)
+                         {
+                             chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.gray }); 
+                             Debug.Log($"[SpriteAssembler] Fallback Chassis: {id} -> {path}");
+                         }
+                    }
+                }
+            }
+            
+            // 2. Role Discovery (Warrior, Breaker)
+            roleDb = new List<VisualEntry>();
+            string[] roleIds = new string[] { "Warrior", "Breaker", "Mage" };
+             foreach (var id in roleIds)
+            {
+                string[] guids = UnityEditor.AssetDatabase.FindAssets($"{id} t:Sprite");
+                 if (guids.Length > 0)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                    Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                    if (s != null) roleDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
+                }
+            }
+
+            // Refresh Lookups
+            InitializeLookups();
+#endif
+        }
+
+        private void OnValidate()
+        {
+            if (chassisDb == null || chassisDb.Count == 0)
+            {
+                AutoDiscoverSchemas();
+            }
+        }
+        private void EnsureLayers()
+        {
+            if (bodyLayer == null)
+            {
+                bodyLayer = GetComponent<SpriteRenderer>();
+                // If still null, add one
+                if (bodyLayer == null) bodyLayer = gameObject.AddComponent<SpriteRenderer>();
+            }
+
+            if (armorLayer == null)
+            {
+                // Try to find existing child first
+                var child = transform.Find("ArmorLayer");
+                if (child != null)
+                {
+                    armorLayer = child.GetComponent<SpriteRenderer>();
+                }
+                else
+                {
+                    var go = new GameObject("ArmorLayer");
+                    go.transform.SetParent(transform, false);
+                    go.transform.localPosition = Vector3.zero;
+                    armorLayer = go.AddComponent<SpriteRenderer>();
+                    armorLayer.sortingOrder = bodyLayer.sortingOrder + 1;
+                }
+            }
+
+            if (shadowLayer == null)
+            {
+                var child = transform.Find("ShadowLayer");
+                 if (child != null)
+                {
+                    shadowLayer = child.GetComponent<SpriteRenderer>();
+                }
+                else
+                {
+                    var go = new GameObject("ShadowLayer");
+                    go.transform.SetParent(transform, false);
+                    go.transform.localPosition = Vector3.zero;
+                    shadowLayer = go.AddComponent<SpriteRenderer>();
+                    shadowLayer.sortingOrder = bodyLayer.sortingOrder - 1;
+                }
+            }
         }
     }
 }
