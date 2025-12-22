@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using ChaosCritters.Data;
+using ChaosCritters.Units; // For InteractionController
 
 namespace ChaosCritters.UI
 {
@@ -14,11 +15,16 @@ namespace ChaosCritters.UI
 
         private void Start()
         {
-            // Hardcoded listeners for now until we have real ability data/logic
-            if (northBtn != null) northBtn.onClick.AddListener(() => OnAbilityClicked("Move"));
-            if (southBtn != null) southBtn.onClick.AddListener(() => OnAbilityClicked("EndTurn"));
-            if (westBtn != null) westBtn.onClick.AddListener(() => OnAbilityClicked("Physical"));
-            if (eastBtn != null) eastBtn.onClick.AddListener(() => OnAbilityClicked("Mental"));
+            Setup();
+        }
+
+        public void Setup()
+        {
+            // Clear existing to avoid duplicates if Setup called multiple times
+            if (northBtn != null) { northBtn.onClick.RemoveAllListeners(); northBtn.onClick.AddListener(() => OnAbilityClicked("Wait")); }
+            if (southBtn != null) { southBtn.onClick.RemoveAllListeners(); southBtn.onClick.AddListener(() => OnAbilityClicked("EndTurn")); }
+            if (westBtn != null) { westBtn.onClick.RemoveAllListeners(); westBtn.onClick.AddListener(() => OnAbilityClicked("Physical")); }
+            if (eastBtn != null) { eastBtn.onClick.RemoveAllListeners(); eastBtn.onClick.AddListener(() => OnAbilityClicked("Mental")); }
         }
 
         private void OnAbilityClicked(string action)
@@ -26,7 +32,15 @@ namespace ChaosCritters.UI
             Debug.Log($"[AbilityGrid] Clicked {action}");
             NarratorController.Instance?.AddLine($"Selected: {action}");
             
-            // TODO: In Sprint 3, this will trigger Targeting Mode or Backend Calls
+            if (action == "Physical" || action == "Mental")
+            {
+                 // Trigger Targeting
+                 InteractionController.Instance?.StartTargeting(action);
+            }
+            else if (action == "EndTurn")
+            {
+                // TODO: Backend End Turn
+            }
         }
 
         public void RefreshAbilities(EntityData data)

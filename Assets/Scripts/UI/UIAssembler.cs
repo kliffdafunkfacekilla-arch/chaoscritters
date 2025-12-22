@@ -7,7 +7,8 @@ namespace ChaosCritters.UI
 {
     public class UIAssembler : MonoBehaviour
     {
-        public static void BuildDefaultHUD()
+        // Changed from BuildDefaultHUD to VerifyHUD to allow re-entry
+        public static void VerifyHUD()
         {
             // 1. Find or Create Canvas
             Canvas canvas = FindFirstObjectByType<Canvas>();
@@ -20,6 +21,15 @@ namespace ChaosCritters.UI
                 canvasGO.AddComponent<GraphicRaycaster>();
             }
 
+            // 1.5 Ensure EventSystem
+            UnityEngine.EventSystems.EventSystem eventSystem = FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+            if (eventSystem == null)
+            {
+                GameObject esGO = new GameObject("EventSystem");
+                eventSystem = esGO.AddComponent<UnityEngine.EventSystems.EventSystem>();
+                esGO.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+            }
+
             // 2. Create HUD Manager
             GameObject hudManager = GameObject.Find("HUD_Manager");
             if (hudManager == null)
@@ -27,7 +37,6 @@ namespace ChaosCritters.UI
                 hudManager = new GameObject("HUD_Manager");
                 hudManager.transform.SetParent(canvas.transform, false);
                 
-                // Stretch to fill
                 RectTransform rt = hudManager.AddComponent<RectTransform>();
                 rt.anchorMin = Vector2.zero;
                 rt.anchorMax = Vector2.one;
@@ -40,31 +49,33 @@ namespace ChaosCritters.UI
             var gridCtrl = EnsureComponent<AbilityGridController>(hudManager);
             var narratorCtrl = EnsureComponent<NarratorController>(hudManager);
 
-            // 4. Build Player Card (Bottom Center)
+            // 4. Build Player Card
             if (hudCtrl.playerCardPanel == null)
             {
+                // ... (Existing implementation preserved via logic, but recreated here for safety if partial blocks not allowed)
+                // ACTUALLY, for tool efficiency, I will just patch the BuildDefaultHUD method logic.
+                // But I need to change the method name and the text raycast logic.
+                // Assuming I am replacing the WHOLE method based on lines 10-86 in original.
+                
                 GameObject card = CreatePanel(hudManager.transform, "PlayerCard", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(400, 150), new Vector2(0, 150/2 + 20));
                 hudCtrl.playerCardPanel = card.transform;
                 
-                // Background
-                Image bg = card.AddComponent<Image>();
+                Image bg = card.GetComponent<Image>();
                 bg.color = new Color(0.1f, 0.1f, 0.1f, 0.8f);
 
-                // Text
                 hudCtrl.nameText = CreateText(card.transform, "NameText", "Hero Name", 24, new Vector2(0, 50));
                 hudCtrl.classText = CreateText(card.transform, "ClassText", "Class / Role", 16, new Vector2(0, 25));
 
-                // Bars
                 hudCtrl.healthBar = CreateBar(card.transform, "HealthBar", Color.green, new Vector2(0, -10));
                 hudCtrl.staminaBar = CreateBar(card.transform, "StaminaBar", Color.red, new Vector2(-100, -50));
                 hudCtrl.focusBar = CreateBar(card.transform, "FocusBar", Color.blue, new Vector2(100, -50));
             }
 
-            // 5. Build Narrator (Top Right)
+            // 5. Build Narrator
             if (narratorCtrl.feedText == null)
             {
                  GameObject feed = CreatePanel(hudManager.transform, "NarratorFeed", new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(300, 200), new Vector2(-160, -110));
-                 Image bg = feed.AddComponent<Image>();
+                 Image bg = feed.GetComponent<Image>();
                  bg.color = new Color(0, 0, 0, 0.5f);
                  
                  narratorCtrl.feedText = CreateText(feed.transform, "FeedText", "Narrator Log...", 14, Vector2.zero);
@@ -72,18 +83,22 @@ namespace ChaosCritters.UI
                  narratorCtrl.maxLines = 8;
             }
 
-            // 6. Build Ability Grid (Buttons)
-            // Just simple layout for now
+            // 6. Build Ability Grid
             if (gridCtrl.northBtn == null)
             {
                  GameObject grid = CreatePanel(hudManager.transform, "AbilityGrid", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(200, 200), new Vector2(-150, 150));
                  
-                 gridCtrl.northBtn = CreateButton(grid.transform, "North", "Move", new Vector2(0, 60));
+                 gridCtrl.northBtn = CreateButton(grid.transform, "North", "Wait", new Vector2(0, 60));
                  gridCtrl.southBtn = CreateButton(grid.transform, "South", "End", new Vector2(0, -60));
                  gridCtrl.westBtn = CreateButton(grid.transform, "West", "Phys", new Vector2(-60, 0));
                  gridCtrl.eastBtn = CreateButton(grid.transform, "East", "Ment", new Vector2(60, 0));
             }
+            
+            // 7. Force Setup (Fixes race conditions if Start() ran before Buttons existed)
+            gridCtrl.Setup();
         }
+
+
 
         private static T EnsureComponent<T>(GameObject go) where T : Component
         {
@@ -152,6 +167,7 @@ namespace ChaosCritters.UI
             txt.fontSize = fontSize;
             txt.alignment = TextAlignmentOptions.Center;
             txt.color = Color.white;
+            txt.raycastTarget = false; // Fix: Text was blocking buttons
             return txt;
         }
 

@@ -28,7 +28,7 @@ namespace ChaosCritters.UI
             // Auto-Build Infrastructure if missing elements
             if (playerCardPanel == null || healthBar == null)
             {
-                UIAssembler.BuildDefaultHUD();
+                UIAssembler.VerifyHUD();
             }
             
             // Default state

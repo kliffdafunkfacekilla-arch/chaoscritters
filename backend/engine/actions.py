@@ -45,8 +45,17 @@ class ActionResolver:
         if attacker.ap < cost:
             return {"success": False, "message": "Not enough AP."}
             
-        # Distance check (Placeholder: Range 1 for melee)
-        # In a real system, we'd check grid distance between attacker.pos and target.pos
+        # Distance check (Range 1 for melee)
+        start = Point(attacker.x, attacker.y)
+        end = Point(target.x, target.y)
+        
+        # Manhattan distance for grid
+        dist = abs(start.x - end.x) + abs(start.y - end.y)
+        
+        attack_range = 1 # Hardcoded for now (Melee)
+        
+        if dist > attack_range:
+             return {"success": False, "message": f"Target out of range ({dist} > {attack_range})."}
         
         # Derived stats (Simple placeholder logic)
         atk_stat = 12 # attacker.stats['Might']

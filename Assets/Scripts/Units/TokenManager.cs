@@ -31,6 +31,28 @@ namespace ChaosCritters.Units
             public string message;
         }
 
+        [System.Serializable]
+        public class AttackResponse
+        {
+            public ActionResult result;
+            public int attacker_ap;
+        }
+
+        [System.Serializable]
+        public class ActionResult
+        {
+            public bool success;
+            public string message; // Error msg
+            public MechanicsResult mechanics;
+        }
+
+        [System.Serializable]
+        public class MechanicsResult
+        {
+            public int damage_amount;
+            public string damage_type;
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -152,6 +174,78 @@ namespace ChaosCritters.Units
                     UI.NarratorController.Instance?.AddLine($"Move Failed: {err}");
                 }
             );
+        }
+
+        public void RequestAttack(string actorId, string targetId)
+        {
+             // Construct JSON manually
+            string json = $"{{\"actor_id\": \"{actorId}\", \"target_id\": \"{targetId}\"}}";
+            Debug.Log($"Requesting Attack: {json}");
+            
+            NetworkManager.Instance.Post("/battle/action/attack", json,
+                onSuccess: (response) => 
+                {
+                    Debug.Log($"Attack Response: {response}"); // Debug log to see full JSON
+                    
+                    // Parse Response
+                    AttackResponse res = JsonUtility.FromJson<AttackResponse>(response);
+                    
+                    if (res != null && res.result != null && res.result.success)
+                    {
+                        // Show Narrative
+                        if (response.Contains("\"narrative\":"))
+                        {
+                             var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
+                             if (!string.IsNullOrEmpty(wrapper.narrative))
+                                 UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                        }
+
+                        // Show Damage Popup
+                        if (_activeTokens.ContainsKey(targetId))
+                        {
+                            TokenController targetToken = _activeTokens[targetId];
+                            int dmg = res.result.mechanics.damage_amount;
+                            string type = res.result.mechanics.damage_type;
+                            
+                            if (dmg > 0)
+                            {
+                                Color col = (type == "Meat") ? Color.red : Color.yellow;
+                                UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col);
+                            }
+                            else
+                            {
+                                UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, 0, Color.gray);
+                            }
+                        }
+                        
+                        RefreshEntities();
+                    }
+                    else
+                    {
+                         UI.NarratorController.Instance?.AddLine($"Attack Failed: {(res?.result?.message ?? "Unknown Error")}");
+                    }
+                },
+                onError: (err) => 
+                {
+                     UI.NarratorController.Instance?.AddLine($"Attack Error: {err}");
+                }
+            );
+        }
+
+        public string GetTokenAt(int x, int y)
+        {
+            foreach(var kvp in _activeTokens)
+            {
+                // We access the controller's transform, but better to check data if we had it.
+                // Or simply check coords. Transform is float, so we cast.
+                Vector3 pos = kvp.Value.transform.position;
+                // Assuming integer grid alignment
+                if (Mathf.RoundToInt(pos.x) == x && Mathf.RoundToInt(pos.y) == y)
+                {
+                    return kvp.Key;
+                }
+            }
+            return null;
         }
     }
 }

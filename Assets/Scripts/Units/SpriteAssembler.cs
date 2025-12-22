@@ -60,17 +60,24 @@ namespace ChaosCritters.Units
             EnsureLayers();
 
             // 1. Chassis (Body)
+            // 1. Chassis (Body)
             if (visualTags.ContainsKey("chassis"))
             {
                 string chassisId = visualTags["chassis"];
-                if (_chassisLookup.ContainsKey(chassisId))
+                if (_chassisLookup.ContainsKey(chassisId) && _chassisLookup[chassisId] != null)
                 {
                     bodyLayer.sprite = _chassisLookup[chassisId];
                 }
                 else
                 {
-                    Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found.");
+                    Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found. Using Fallback.");
+                    if (bodyLayer.sprite == null) bodyLayer.sprite = GetRuntimeFallbackSprite();
                 }
+            }
+            else
+            {
+                 // No tag? Use fallback.
+                 if (bodyLayer.sprite == null) bodyLayer.sprite = GetRuntimeFallbackSprite();
             }
 
             // 2. Role (Armor/Weapon overlay)
@@ -110,6 +117,21 @@ namespace ChaosCritters.Units
                     main.startColor = infusionColor;
                 }
             }
+        }
+
+        private Sprite _runtimeFallback;
+        private Sprite GetRuntimeFallbackSprite()
+        {
+            if (_runtimeFallback == null)
+            {
+                Texture2D tex = new Texture2D(32, 32);
+                Color[] pixels = new Color[32*32];
+                for(int i=0; i<pixels.Length; i++) pixels[i] = Color.white;
+                tex.SetPixels(pixels);
+                tex.Apply();
+                _runtimeFallback = Sprite.Create(tex, new Rect(0,0,32,32), new Vector2(0.5f, 0.5f));
+            }
+            return _runtimeFallback;
         }
         
         // Debug helper

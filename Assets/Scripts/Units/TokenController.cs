@@ -26,8 +26,8 @@ namespace ChaosCritters.Units
             entityId = data.id;
             name = data.name;
             
-            // Set initial position instantly
-            transform.position = new Vector3(data.x, data.y, 0);
+            // Set initial position instantly with 0.5f offset for cell center
+            transform.position = new Vector3(data.x + 0.5f, data.y + 0.5f, 0);
             targetPosition = transform.position;
             
             // visual assembly
@@ -53,7 +53,8 @@ namespace ChaosCritters.Units
 
         public void MoveTo(int x, int y)
         {
-            targetPosition = new Vector3(x, y, 0);
+            // Add offset here too
+            targetPosition = new Vector3(x + 0.5f, y + 0.5f, 0);
             StopAllCoroutines();
             StartCoroutine(SmooothMove());
         }
