@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 namespace ChaosCritters.UI
 {
@@ -10,12 +9,14 @@ namespace ChaosCritters.UI
             GameObject go = new GameObject("DamagePopup");
             go.transform.position = position;
             
-            // Text
-            TextMeshPro txt = go.AddComponent<TextMeshPro>(); // World Space Text
+            // Text (Legacy TextMesh for World Space without Canvas)
+            TextMesh txt = go.AddComponent<TextMesh>(); 
             txt.text = amount.ToString();
-            txt.fontSize = 6;
+            txt.fontSize = 24; // TextMesh needs larger generic size or looks blurry, scale down object if needed
+            txt.characterSize = 0.1f;
             txt.color = color;
-            txt.alignment = TextAlignmentOptions.Center;
+            txt.anchor = TextAnchor.MiddleCenter;
+            txt.alignment = TextAlignment.Center;
             
             DamagePopup popup = go.AddComponent<DamagePopup>();
         }
@@ -24,13 +25,16 @@ namespace ChaosCritters.UI
         {
             transform.position += Vector3.up * 2f * Time.deltaTime;
             
-            // Fade out?
-            var txt = GetComponent<TextMeshPro>();
-            var col = txt.color;
-            col.a -= Time.deltaTime;
-            txt.color = col;
+            // Fade out
+            var txt = GetComponent<TextMesh>();
+            if (txt != null)
+            {
+                var col = txt.color;
+                col.a -= Time.deltaTime;
+                txt.color = col;
 
-            if (col.a <= 0) Destroy(gameObject);
+                if (col.a <= 0) Destroy(gameObject);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Standard text mesh pro
+
 using ChaosCritters.Data;
 
 namespace ChaosCritters.UI
@@ -9,7 +9,7 @@ namespace ChaosCritters.UI
     {
         [Header("UI References")]
         public Image fillImage;
-        public TMP_Text valueText;
+        public UnityEngine.UI.Text valueText;
 
         [Header("Settings")]
         public Color barColor = Color.white;

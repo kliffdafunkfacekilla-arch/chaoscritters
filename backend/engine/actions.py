@@ -25,10 +25,15 @@ class ActionResolver:
         if current_ap < cost:
             return {"success": False, "message": "Not enough AP."}
             
+        # Validate Destination
+        if not self.grid.is_in_bounds(end):
+            return {"success": False, "message": f"Target {end} is out of bounds."}
+
         # Basic distance check (e.g., specific move limits from Agility)
         # For now, let's say 1 Move Action = 5 Tiles
-        if start.distance(end) > 5:
-             return {"success": False, "message": "Target too far for a single Move action."}
+        dist = start.distance(end)
+        if dist > 5:
+             return {"success": False, "message": f"Target too far ({dist} > 5)."}
 
         return {
             "success": True, 

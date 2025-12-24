@@ -22,6 +22,7 @@ namespace ChaosCritters.Units
             public string message;
             public string[] turn_order;
             public string current_turn;
+            public string narrative; // Added for AI logs
         }
 
         [System.Serializable]
@@ -62,8 +63,28 @@ namespace ChaosCritters.Units
         {
             if (tokenPrefab == null)
             {
-                Debug.LogError("TokenManager: No Token Prefab assigned!");
-                return;
+                // Fallback: Try to load from Resources
+                tokenPrefab = Resources.Load<GameObject>("Prefabs/Token");
+                if (tokenPrefab == null)
+                {
+                    Debug.LogWarning("[TokenManager] 'Prefabs/Token' not found. Creating programmatic placeholder.");
+                    // Create a runtime placeholder prefab
+                    tokenPrefab = new GameObject("RuntimeToken_Placeholder");
+                    tokenPrefab.AddComponent<TokenController>();
+                    var renderer = tokenPrefab.AddComponent<SpriteRenderer>();
+                    
+                    // Create a simple circle texture
+                    Texture2D tex = new Texture2D(32, 32);
+                    Color[] pixels = new Color[32*32];
+                    for(int i=0; i<pixels.Length; i++) pixels[i] = Color.white;
+                    tex.SetPixels(pixels);
+                    tex.Apply();
+                    renderer.sprite = Sprite.Create(tex, new Rect(0,0,32,32), new Vector2(0.5f, 0.5f), 32);
+                    
+                    // Keep it alive for instantiation
+                    DontDestroyOnLoad(tokenPrefab);
+                }
+                Debug.Log("[TokenManager] Token Prefab Ready.");
             }
             // Add a small delay to ensure backend is ready/connected
             Invoke(nameof(InitializeBattle), 1.0f);
@@ -103,6 +124,7 @@ namespace ChaosCritters.Units
 
         private void SyncTokens(EntityData[] entities)
         {
+            // Debug.Log($"[TokenManager] Syncing {entities.Length} entities from backend.");
             // 1. Mark all for potential deletion
             HashSet<string> seenIds = new HashSet<string>();
 
@@ -113,7 +135,7 @@ namespace ChaosCritters.Units
                 if (_activeTokens.ContainsKey(data.id))
                 {
                     // Update existing
-                    Debug.Log($"Syncing Token {data.id}: Pos ({data.x}, {data.y})");
+                    // Debug.Log($"Syncing Token {data.id}: Pos ({data.x}, {data.y})");
                     _activeTokens[data.id].MoveTo(data.x, data.y);
                     
                     if (data.id == CurrentActorId && UI.HUDController.Instance != null)
@@ -230,6 +252,57 @@ namespace ChaosCritters.Units
                      UI.NarratorController.Instance?.AddLine($"Attack Error: {err}");
                 }
             );
+        }
+
+        public void RequestEndTurn()
+        {
+            Debug.Log("[TokenManager] Requesting End Turn...");
+            NetworkManager.Instance.Post("/battle/turn/end", "{}", 
+                onSuccess: (response) => 
+                {
+                    BattleStartResponse res = JsonUtility.FromJson<BattleStartResponse>(response);
+                    CurrentActorId = res.current_turn;
+                    Debug.Log($"Turn Ended. Next Actor: {CurrentActorId}");
+                    
+                    if (UI.NarratorController.Instance != null)
+                    {
+                        if (!string.IsNullOrEmpty(res.narrative))
+                            UI.NarratorController.Instance.AddLine(res.narrative);
+                        
+                        UI.NarratorController.Instance.AddLine($"Turn: {CurrentActorId}");
+                    }
+
+                    RefreshEntities();
+
+                    // If it is NOT the player's turn, we must poll or wait for the AI to finish
+                    if (CurrentActorId != "P1")
+                    {
+                        Debug.Log("Waiting for AI...");
+                        StartCoroutine(WaitForPlayerTurn());
+                    }
+                },
+                onError: (err) => Debug.LogError($"End Turn Failed: {err}")
+            );
+        }
+
+        private System.Collections.IEnumerator WaitForPlayerTurn()
+        {
+            // Simple Polling to see if AI is done
+            while (CurrentActorId != "P1")
+            {
+                yield return new WaitForSeconds(1.0f);
+                RefreshEntities(); // Helper that now does both
+                
+                // We must query the state explicitly because RefreshEntities only got positions
+                NetworkManager.Instance.Get("/battle/state", 
+                    onSuccess: (json) => {
+                        BattleStartResponse res = JsonUtility.FromJson<BattleStartResponse>(json);
+                        CurrentActorId = res.current_turn;
+                        if (UI.NarratorController.Instance != null && CurrentActorId == "P1")
+                            UI.NarratorController.Instance.AddLine("Your Turn!");
+                    }
+                );
+            }
         }
 
         public string GetTokenAt(int x, int y)

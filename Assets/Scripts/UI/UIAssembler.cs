@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Standard text mesh pro
+// using TMPro; // Standard text mesh pro (Disabled for reliability)
 using ChaosCritters.Data;
 
 namespace ChaosCritters.UI
@@ -17,7 +17,13 @@ namespace ChaosCritters.UI
                 GameObject canvasGO = new GameObject("MainCanvas");
                 canvas = canvasGO.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                canvasGO.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                canvas.sortingOrder = 100; // Ensure on top
+                
+                CanvasScaler scaler = canvasGO.AddComponent<CanvasScaler>();
+                scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                scaler.referenceResolution = new Vector2(1920, 1080);
+                scaler.matchWidthOrHeight = 0.5f;
+                
                 canvasGO.AddComponent<GraphicRaycaster>();
             }
 
@@ -79,7 +85,7 @@ namespace ChaosCritters.UI
                  bg.color = new Color(0, 0, 0, 0.5f);
                  
                  narratorCtrl.feedText = CreateText(feed.transform, "FeedText", "Narrator Log...", 14, Vector2.zero);
-                 narratorCtrl.feedText.alignment = TextAlignmentOptions.TopLeft;
+                 narratorCtrl.feedText.alignment = TextAnchor.UpperLeft;
                  narratorCtrl.maxLines = 8;
             }
 
@@ -119,7 +125,7 @@ namespace ChaosCritters.UI
             
             // Visuals
             Image img = go.AddComponent<Image>();
-            img.color = new Color(1, 1, 1, 0.9f);
+            img.color = new Color(0.2f, 0.2f, 0.2f, 0.9f); // Dark Gray Panel
             
 #if UNITY_EDITOR
             // Try to find a nice panel sprite
@@ -154,7 +160,8 @@ namespace ChaosCritters.UI
             return go;
         }
 
-        private static TMP_Text CreateText(Transform parent, string name, string content, float fontSize, Vector2 pos)
+
+        private static Text CreateText(Transform parent, string name, string content, float fontSize, Vector2 pos)
         {
             GameObject go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -162,10 +169,19 @@ namespace ChaosCritters.UI
             rt.anchoredPosition = pos;
             rt.sizeDelta = new Vector2(300, 50);
             
-            TMP_Text txt = go.AddComponent<TextMeshProUGUI>();
+            Text txt = go.AddComponent<Text>();
             txt.text = content;
-            txt.fontSize = fontSize;
-            txt.alignment = TextAlignmentOptions.Center;
+            
+            Font font = Font.CreateDynamicFontFromOSFont("Arial", (int)fontSize);
+            if (font == null) 
+            {
+                var fonts = Resources.FindObjectsOfTypeAll<Font>();
+                if (fonts != null && fonts.Length > 0) font = fonts[0];
+            }
+            
+            txt.font = font;
+            txt.fontSize = (int)fontSize;
+            txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
             txt.raycastTarget = false; // Fix: Text was blocking buttons
             return txt;
@@ -216,7 +232,7 @@ namespace ChaosCritters.UI
             rt.sizeDelta = new Vector2(50, 50);
             
             Image img = go.AddComponent<Image>();
-            img.color = Color.white;
+            img.color = new Color(0.8f, 0.8f, 0.8f); // Light Gray for contrast against white panel
             
 #if UNITY_EDITOR
             // Try to find a nice button sprite

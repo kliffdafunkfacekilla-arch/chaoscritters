@@ -27,9 +27,21 @@ namespace ChaosCritters.UI
             if (eastBtn != null) { eastBtn.onClick.RemoveAllListeners(); eastBtn.onClick.AddListener(() => OnAbilityClicked("Mental")); }
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) OnAbilityClicked("EndTurn");
+            if (Input.GetKeyDown(KeyCode.Alpha1)) OnAbilityClicked("Physical");
+            if (Input.GetKeyDown(KeyCode.Alpha2)) OnAbilityClicked("Mental");
+        }
+
         private void OnAbilityClicked(string action)
         {
-            Debug.Log($"[AbilityGrid] Clicked {action}");
+            Debug.Log($"[ABILITY CLICK] Action: {action}");
+            if (action == "Wait")
+            {
+                 // Placeholder for skip turn
+                 Debug.Log("Waiting...");
+            }
             NarratorController.Instance?.AddLine($"Selected: {action}");
             
             if (action == "Physical" || action == "Mental")
@@ -39,7 +51,7 @@ namespace ChaosCritters.UI
             }
             else if (action == "EndTurn")
             {
-                // TODO: Backend End Turn
+                TokenManager.Instance.RequestEndTurn();
             }
         }
 

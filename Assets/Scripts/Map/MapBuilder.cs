@@ -96,25 +96,6 @@ namespace ChaosCritters.Map
                 return;
             }
 
-            foreach (var tile in data.tiles)
-            {
-                // Direct Square Grid Mapping
-                Vector3Int pos = new Vector3Int(tile.x, tile.y, 0);
-
-                TileBase tileToUse = defaultTile;
-                if (_tileLookup.ContainsKey(tile.terrain))
-                {
-                    tileToUse = _tileLookup[tile.terrain];
-                }
-
-                if (tileToUse != null)
-                {
-                    tilemap.SetTile(pos, tileToUse);
-                }
-            }
-            
-            Debug.Log($"Found Tilemap: {tilemap.name}. Painting {data.tiles.Count} tiles...");
-
             int tilesPainted = 0;
             foreach (var tile in data.tiles)
             {
@@ -133,6 +114,11 @@ namespace ChaosCritters.Map
                     tilesPainted++;
                 }
             }
+            
+            Debug.Log($"Found Tilemap: {tilemap.name}. Painting {data.tiles.Count} tiles...");
+
+
+
             Debug.Log($"Successfully Painted {tilesPainted} tiles.");
             
             // Recalculate bounds to ensure camera centers correctly later

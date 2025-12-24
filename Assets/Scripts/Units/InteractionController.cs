@@ -6,7 +6,32 @@ namespace ChaosCritters.Units
 {
     public class InteractionController : MonoBehaviour
     {
-        public static InteractionController Instance { get; private set; }
+        public static InteractionController Instance 
+        { 
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindFirstObjectByType<InteractionController>();
+                    if (_instance == null)
+                    {
+                        if (Camera.main != null)
+                        {
+                            _instance = Camera.main.gameObject.AddComponent<InteractionController>();
+                            Debug.Log("[InteractionController] Auto-Attached to Main Camera.");
+                        }
+                        else
+                        {
+                            GameObject go = new GameObject("InteractionController");
+                            _instance = go.AddComponent<InteractionController>();
+                            Debug.Log("[InteractionController] Auto-Created singleton object.");
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+        private static InteractionController _instance;
 
         public Tilemap tilemap;
         
@@ -19,14 +44,25 @@ namespace ChaosCritters.Units
 
         private void Awake()
         {
-            if (Instance == null) Instance = this;
+            if (_instance == null) _instance = this;
+            else if (_instance != this) Destroy(this);
         }
 
         private void Start()
         {
-            Debug.Log($"CONTROLLER STARTED on {gameObject.name}");
+            // Robust Tilemap Finding
             if (tilemap == null)
+            {
                 tilemap = FindFirstObjectByType<Tilemap>();
+                if (tilemap == null)
+                {
+                     // Last ditch: try to find the Grid and get component
+                     var grid = FindFirstObjectByType<Grid>();
+                     if (grid != null) tilemap = grid.GetComponentInChildren<Tilemap>();
+                }
+            }
+            
+            Debug.Log($"[InteractionController] Ready. Tilemap found: {(tilemap != null)}");
         }
 
         public void StartTargeting(string abilityName)
@@ -84,9 +120,16 @@ namespace ChaosCritters.Units
             else
             {
                 // Normal Move Logic
-                 if (TokenManager.Instance != null)
+                if (TokenManager.Instance != null)
                 {
-                    TokenManager.Instance.RequestMove(myActorId, cellPos.x, cellPos.y);
+                    if (TokenManager.Instance.CurrentActorId == myActorId)
+                    {
+                        TokenManager.Instance.RequestMove(myActorId, cellPos.x, cellPos.y);
+                    }
+                    else
+                    {
+                        NarratorController.Instance?.AddLine($"Not your turn! Current: {TokenManager.Instance.CurrentActorId}");
+                    }
                 }
                 else
                 {

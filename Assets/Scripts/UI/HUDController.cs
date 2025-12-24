@@ -13,8 +13,8 @@ namespace ChaosCritters.UI
         public StatBar healthBar;
         public StatBar staminaBar;
         public StatBar focusBar;
-        public TMPro.TMP_Text nameText;
-        public TMPro.TMP_Text classText;
+        public UnityEngine.UI.Text nameText;
+        public UnityEngine.UI.Text classText;
 
         [Header("Status Icons")]
         public Transform iconContainer;

@@ -31,8 +31,9 @@ class TurnManager:
         """Rolls initiative for all entities and sorts the turn order."""
         for eid, entity in self.entities.items():
             # Simple d20 + Agility (implied) or just d20 for now
-            roll = random.randint(1, 20)
-            entity.initiative = roll
+            if entity.initiative < 90:
+                roll = random.randint(1, 20)
+                entity.initiative = roll
             
         # Sort by initiative descending
         self.turn_order = sorted(

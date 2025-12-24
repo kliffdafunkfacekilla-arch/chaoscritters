@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;
+
 using System.Collections.Generic;
 
 namespace ChaosCritters.UI
@@ -9,7 +9,7 @@ namespace ChaosCritters.UI
         public static NarratorController Instance { get; private set; }
 
         [Header("UI References")]
-        public TMP_Text feedText;
+        public UnityEngine.UI.Text feedText;
         public int maxLines = 5;
 
         private Queue<string> _log = new Queue<string>();

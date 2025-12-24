@@ -77,7 +77,11 @@ namespace ChaosCritters.Units
             else
             {
                  // No tag? Use fallback.
-                 if (bodyLayer.sprite == null) bodyLayer.sprite = GetRuntimeFallbackSprite();
+                 if (bodyLayer.sprite == null) 
+                 {
+                     bodyLayer.sprite = GetRuntimeFallbackSprite();
+                     bodyLayer.color = Color.magenta;   
+                 }
             }
 
             // 2. Role (Armor/Weapon overlay)
@@ -109,7 +113,7 @@ namespace ChaosCritters.Units
                 }
                 
                 // Tint the body slightly? Or just the aura.
-                // bodyLayer.color = infusionColor; 
+                bodyLayer.color = infusionColor; 
                 
                 if (vfxSystem != null)
                 {

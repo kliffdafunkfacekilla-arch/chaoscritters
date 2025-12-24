@@ -36,7 +36,7 @@ from backend.brain.parser_agent import ParserAgent
 from backend.brain.narrator_agent import NarratorAgent
 
 grid_manager = GridManager(radius=5)
-# grid_manager.generate_empty_map() # Procgen will handle this
+grid_manager.generate_empty_map() # Initialize default map
 proc_gen = ProcGen()
 turn_manager = TurnManager()
 action_resolver = ActionResolver(grid_manager)
@@ -145,7 +145,9 @@ async def validate_character(sheet: CharacterSheet):
 
 @app.post("/map/generate")
 async def generate_map(request: MapRequest):
-    grid_manager = GridManager(radius=request.radius)
+    # Use Global GridManager
+    global grid_manager 
+    grid_manager.radius = request.radius
     grid_manager.generate_empty_map()
     
     proc_gen = ProcGen()
@@ -175,7 +177,7 @@ async def start_battle():
     p1 = EntityState(
         id="P1", name="Ursine Warrior", 
         hp=30, max_hp=30, composure=15, max_composure=15, 
-        x=2, y=2, image_id="Warrior",
+        x=2, y=2, image_id="Warrior", initiative=100,
         visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"}
     )
     e1 = EntityState(
@@ -203,6 +205,16 @@ async def get_entities():
     return {"entities": list(turn_manager.entities.values())}
 
 
+@app.get("/battle/state")
+async def get_battle_state():
+    current = turn_manager.get_current_actor()
+    return {
+        "turn_order": turn_manager.turn_order,
+        "current_turn": current.id if current else None,
+        "round": turn_manager.round
+    }
+
+
 # --- Action Models ---
 class MoveRequest(BaseModel):
     actor_id: str
@@ -215,7 +227,8 @@ async def execute_move(req: MoveRequest):
         raise HTTPException(status_code=404, detail="Actor not found")
         
     # Placeholder for current position mechanism (would be in EntityState eventually)
-    current_pos = (0, 0) 
+    current_pos = (actor.x, actor.y)
+    print(f"[Move] Request for {req.actor_id}: {current_pos} -> {req.target_pos}")
     
     result = action_resolver.resolve_move(
         req.actor_id, 
@@ -230,8 +243,9 @@ async def execute_move(req: MoveRequest):
         if new_pos:
             actor.x = new_pos[0]
             actor.y = new_pos[1]
+            print(f"[Move] Success. New Pos: ({actor.x}, {actor.y}). AP: {actor.ap}")
     else:
-        print(f"Move Failed: {result.get('message')}")
+        print(f"[Move] Failed: {result.get('message')}")
         
     return {"result": result, "remaining_ap": actor.ap}
 
@@ -258,6 +272,50 @@ async def execute_attack(req: BattleAttackRequest):
         
     return {"result": result, "attacker_ap": attacker.ap}
 
+
+
+from backend.engine.ai_engine import AIEngine
+ai_engine = AIEngine(action_resolver, engine)
+
+@app.post("/battle/turn/end")
+async def end_turn():
+    # 1. Advance to next actor initially
+    current = turn_manager.next_turn()
+    log_events = []
+    
+    # 2. Loop while it is an Enemy's turn
+    # Safety break: max 10 steps to prevent infinite loops if everyone is AI
+    steps = 0
+    while current.team == "Enemy" and steps < 10:
+        steps += 1
+        
+        try:
+            # Calculate Action
+            print(f"[Loop] Processing AI Turn for {current.id} ({current.name})")
+            action_log = ai_engine.process_turn(current, turn_manager)
+            log_events.append(f"{current.name}: {action_log}")
+        except Exception as e:
+            print(f"[Loop] CRITICAL AI ERROR: {e}")
+            log_events.append(f"{current.name}: ERROR {e}")
+
+        # Advance Turn
+        current = turn_manager.next_turn()
+        print(f"[Loop] Advanced to {current.id}. Team: {current.team}")
+        
+    # AI Hook: If next actor is Enemy/AI, we should trigger AI logic here or return a flag
+    # For now, just return the state
+    
+    # Narrator needs to speak these events?
+    narrative = ""
+    if log_events:
+        narrative = narrator_agent.narrate_event(log_events) # Just feed raw logs for now
+
+    return {
+        "message": "Turn Ended",
+        "current_turn": current.id,
+        "round": turn_manager.round,
+        "narrative": narrative
+    }
 
 # --- Session Models ---
 class SessionRequest(BaseModel):

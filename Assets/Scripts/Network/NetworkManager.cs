@@ -26,7 +26,7 @@ namespace ChaosCritters.Network
             }
         }
 
-        private const string BASE_URL = "http://127.0.0.1:8000";
+        private const string BASE_URL = "http://localhost:8000";
 
         private void Awake()
         {
