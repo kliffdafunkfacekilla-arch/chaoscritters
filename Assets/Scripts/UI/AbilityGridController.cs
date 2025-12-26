@@ -41,6 +41,7 @@ namespace ChaosCritters.UI
             {
                  // Placeholder for skip turn
                  Debug.Log("Waiting...");
+                 if (HUDController.Instance != null) HUDController.Instance.OnEndTurnClicked();
             }
             NarratorController.Instance?.AddLine($"Selected: {action}");
             
@@ -51,7 +52,10 @@ namespace ChaosCritters.UI
             }
             else if (action == "EndTurn")
             {
-                TokenManager.Instance.RequestEndTurn();
+                if (HUDController.Instance != null)
+                    HUDController.Instance.OnEndTurnClicked();
+                else
+                    TokenManager.Instance.RequestEndTurn();
             }
         }
 

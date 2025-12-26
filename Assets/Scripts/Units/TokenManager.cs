@@ -305,6 +305,12 @@ namespace ChaosCritters.Units
             }
         }
 
+        public TokenController GetToken(string id)
+        {
+            if (_activeTokens.ContainsKey(id)) return _activeTokens[id];
+            return null;
+        }
+
         public string GetTokenAt(int x, int y)
         {
             foreach(var kvp in _activeTokens)

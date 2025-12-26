@@ -282,6 +282,7 @@ async def end_turn():
     # 1. Advance to next actor initially
     current = turn_manager.next_turn()
     log_events = []
+    ai_actions = [] 
     
     # 2. Loop while it is an Enemy's turn
     # Safety break: max 10 steps to prevent infinite loops if everyone is AI
@@ -293,7 +294,16 @@ async def end_turn():
             # Calculate Action
             print(f"[Loop] Processing AI Turn for {current.id} ({current.name})")
             action_log = ai_engine.process_turn(current, turn_manager)
+            
+            # Enrich with actor_id for frontend animation
+            action_log["actor_id"] = current.id
+            ai_actions.append(action_log)
+            
             log_events.append(f"{current.name}: {action_log}")
+            
+            # IMPORTANT: ai_engine.process_turn MUST update backend state (AP, Position, HP)
+            # We assume it does.
+            
         except Exception as e:
             print(f"[Loop] CRITICAL AI ERROR: {e}")
             log_events.append(f"{current.name}: ERROR {e}")
@@ -314,7 +324,8 @@ async def end_turn():
         "message": "Turn Ended",
         "current_turn": current.id,
         "round": turn_manager.round,
-        "narrative": narrative
+        "narrative": narrative,
+        "ai_actions": ai_actions
     }
 
 # --- Session Models ---

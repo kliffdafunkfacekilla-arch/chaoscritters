@@ -74,15 +74,27 @@ namespace ChaosCritters.Units
                 {
                     // Runtime Resource Load Strategy
                     Sprite loaded = Resources.Load<Sprite>($"Sprites/{chassisId}");
+                    if (loaded == null)
+                    {
+                        // Try loading as Texture2D in case import settings are wrong
+                        Texture2D tex = Resources.Load<Texture2D>($"Sprites/{chassisId}");
+                        if (tex != null)
+                        {
+                            loaded = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+                            Debug.Log($"[SpriteAssembler] Loaded '{chassisId}' as Texture2D and converted to Sprite.");
+                        }
+                    }
+
                     if (loaded != null)
                     {
                          bodyLayer.sprite = loaded;
                          // Cache it
                          _chassisLookup[chassisId] = loaded;
+                         bodyLayer.color = Color.white; // Reset color from fallback
                     }
                     else
                     {
-                         Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found in Resources/Sprites. Using Fallback.");
+                         Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found in Resources/Sprites (checked Sprite and Texture2D). Using Fallback.");
                          if (bodyLayer.sprite == null) 
                          {
                              bodyLayer.sprite = GetRuntimeFallbackSprite();
@@ -136,6 +148,33 @@ namespace ChaosCritters.Units
                 {
                     var main = vfxSystem.main;
                     main.startColor = infusionColor;
+                }
+            }
+            
+            // 4. Scale Normalization
+            // Ensure the final sprite fits within a 0.8x0.8 box (leaving 0.1 padding)
+            if (bodyLayer.sprite != null)
+            {
+                // bounds.size is in Local Units (Pixels / PPU)
+                Vector3 spriteSize = bodyLayer.sprite.bounds.size;
+                float maxDim = Mathf.Max(spriteSize.x, spriteSize.y);
+                
+                if (maxDim > 0)
+                {
+                    float targetSize = 0.8f;
+                    float scaleFactor = targetSize / maxDim;
+                    
+                    // Apply to the root transform if bodyLayer is on root, or bodyLayer transform otherwise
+                    // Since TokenController moves the Root, and SpriteAssembler is on Root (usually),
+                    // We should scale the Root's visual children or the Root itself?
+                    // Scaling Root affects physics/movement logic potentially. 
+                    // Better to scale the bodyLayer's transform ONLY if it is a child.
+                    // But here bodyLayer = GetComponent<SpriteRenderer>() which implies Root.
+                    // safely scale the transform. TokenController should probably use a child for visuals if this is an issue.
+                    // For now, assuming direct scaling is fine for a simple token.
+                    
+                    transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+                    // Debug.Log($"[SpriteAssembler] Scaled {name} by {scaleFactor} to fit tile.");
                 }
             }
         }
