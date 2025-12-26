@@ -96,6 +96,10 @@ namespace ChaosCritters.Map
                 return;
             }
 
+            // Force rendering order to be background
+            var renderer = tilemap.GetComponent<TilemapRenderer>();
+            if (renderer != null) renderer.sortingOrder = -10;
+
             int tilesPainted = 0;
             foreach (var tile in data.tiles)
             {

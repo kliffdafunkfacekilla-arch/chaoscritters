@@ -63,15 +63,32 @@ namespace ChaosCritters.Units
             // 1. Chassis (Body)
             if (visualTags.ContainsKey("chassis"))
             {
-                string chassisId = visualTags["chassis"];
+                string chassisId = visualTags["chassis"]; // e.g. "Bear"
+                
+                // Try Lookup first
                 if (_chassisLookup.ContainsKey(chassisId) && _chassisLookup[chassisId] != null)
                 {
                     bodyLayer.sprite = _chassisLookup[chassisId];
                 }
                 else
                 {
-                    Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found. Using Fallback.");
-                    if (bodyLayer.sprite == null) bodyLayer.sprite = GetRuntimeFallbackSprite();
+                    // Runtime Resource Load Strategy
+                    Sprite loaded = Resources.Load<Sprite>($"Sprites/{chassisId}");
+                    if (loaded != null)
+                    {
+                         bodyLayer.sprite = loaded;
+                         // Cache it
+                         _chassisLookup[chassisId] = loaded;
+                    }
+                    else
+                    {
+                         Debug.LogWarning($"[SpriteAssembler] Chassis '{chassisId}' not found in Resources/Sprites. Using Fallback.");
+                         if (bodyLayer.sprite == null) 
+                         {
+                             bodyLayer.sprite = GetRuntimeFallbackSprite();
+                             bodyLayer.color = Color.magenta;   
+                         }
+                    }
                 }
             }
             else
@@ -80,7 +97,7 @@ namespace ChaosCritters.Units
                  if (bodyLayer.sprite == null) 
                  {
                      bodyLayer.sprite = GetRuntimeFallbackSprite();
-                     bodyLayer.color = Color.magenta;   
+                     bodyLayer.color = Color.gray;   
                  }
             }
 
@@ -147,43 +164,40 @@ namespace ChaosCritters.Units
             // 1. Chassis Discovery
             _chassisLookup = new Dictionary<string, Sprite>();
             chassisDb = new List<VisualEntry>();
-            string[] chassisIds = new string[] { "Bear", "Insect", "Human" }; // Visual Types from Backend
+            // Expanded list based on actual file existence
+            // Removed "Human", "Insect" as they likely don't exist as specific sprites or are groups
+            string[] chassisIds = new string[] { 
+                "Bear", "Wolf", "Fox", "Deer", "Eagle", "Falcon", 
+                "Owl", "Raven", "Frog", "Ant", "Badger", "Butterfly", "Crab", "Croc", 
+                "Lizard", "Mantis", "Mermaid", "Shark", "Spider", "Turtle" 
+            }; 
             
             foreach (var id in chassisIds)
             {
-                // Try find specific asset
+                // Try find specific asset in Resources first (Preferred)
                 string[] guids = UnityEditor.AssetDatabase.FindAssets($"{id} t:Sprite");
-                if (guids.Length > 0)
-                {
-                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
-                    Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
-                    if (s != null)
-                    {
-                        chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
-                        Debug.Log($"[SpriteAssembler] Found Chassis: {id} -> {path}");
-                    }
-                }
-                else
-                {
-                    // Fallback 1: Specific placeholder
-                    string[] fallback = UnityEditor.AssetDatabase.FindAssets("roguelikeDungeon_transparent t:Sprite");
-                    if (fallback.Length == 0)
-                    {
-                        // Fallback 2: ABSOLUTELY ANY SPRITE
-                        fallback = UnityEditor.AssetDatabase.FindAssets("t:Sprite");
-                    }
+                bool found = false;
 
-                    if (fallback.Length > 0)
+                foreach(var guid in guids)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    // Normalize path and check for Sprites folder case-insensitive
+                    string ptr = path.Replace("\\", "/").ToLower();
+                    
+                    if (ptr.Contains("/sprites/"))
                     {
-                         string path = UnityEditor.AssetDatabase.GUIDToAssetPath(fallback[0]);
-                         Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
-                         if (s != null)
-                         {
-                             chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.gray }); 
-                             Debug.Log($"[SpriteAssembler] Fallback Chassis: {id} -> {path}");
-                         }
+                        Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                        if (s != null)
+                        {
+                            chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
+                            // Debug.Log($"[SpriteAssembler] Found Chassis: {id}");
+                            found = true;
+                            break;
+                        }
                     }
                 }
+                
+                // Silent continue if not found to avoid error spam
             }
             
             // 2. Role Discovery (Warrior, Breaker)
@@ -192,11 +206,17 @@ namespace ChaosCritters.Units
              foreach (var id in roleIds)
             {
                 string[] guids = UnityEditor.AssetDatabase.FindAssets($"{id} t:Sprite");
-                 if (guids.Length > 0)
+                foreach(var guid in guids)
                 {
-                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    // Also filter roles if possible, or just accept best match
+                    // Accepting any match for Roles since they might be in UI folders
                     Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
-                    if (s != null) roleDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
+                    if (s != null) 
+                    {
+                        roleDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
+                        break;
+                    }
                 }
             }
 
@@ -214,12 +234,15 @@ namespace ChaosCritters.Units
         }
         private void EnsureLayers()
         {
+            int baseOrder = 10; // Ensure we are above map (Map is -10) or default (0)
+
             if (bodyLayer == null)
             {
                 bodyLayer = GetComponent<SpriteRenderer>();
                 // If still null, add one
                 if (bodyLayer == null) bodyLayer = gameObject.AddComponent<SpriteRenderer>();
             }
+            bodyLayer.sortingOrder = baseOrder;
 
             if (armorLayer == null)
             {
@@ -235,9 +258,9 @@ namespace ChaosCritters.Units
                     go.transform.SetParent(transform, false);
                     go.transform.localPosition = Vector3.zero;
                     armorLayer = go.AddComponent<SpriteRenderer>();
-                    armorLayer.sortingOrder = bodyLayer.sortingOrder + 1;
                 }
             }
+            armorLayer.sortingOrder = baseOrder + 1;
 
             if (shadowLayer == null)
             {
@@ -252,9 +275,9 @@ namespace ChaosCritters.Units
                     go.transform.SetParent(transform, false);
                     go.transform.localPosition = Vector3.zero;
                     shadowLayer = go.AddComponent<SpriteRenderer>();
-                    shadowLayer.sortingOrder = bodyLayer.sortingOrder - 1;
                 }
             }
+            shadowLayer.sortingOrder = baseOrder - 1;
         }
     }
 }
