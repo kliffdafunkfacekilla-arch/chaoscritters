@@ -37,7 +37,8 @@ namespace ChaosCritters.UI
 
             if (valueText != null)
             {
-                valueText.text = $"{current}/{max}";
+                valueText.gameObject.SetActive(true);
+                valueText.text = $"{current} / {max}";
             }
         }
     }

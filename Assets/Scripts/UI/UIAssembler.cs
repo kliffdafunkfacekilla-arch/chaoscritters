@@ -76,7 +76,8 @@ namespace ChaosCritters.UI
                 // But I need to change the method name and the text raycast logic.
                 // Assuming I am replacing the WHOLE method based on lines 10-86 in original.
                 
-                GameObject card = CreatePanel(hudManager.transform, "PlayerCard", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(400, 150), new Vector2(0, 150/2 + 20));
+                // Player Card - Top Left Corner
+                GameObject card = CreatePanel(hudManager.transform, "PlayerCard", new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(400, 150), new Vector2(210, -85));
                 hudCtrl.playerCardPanel = card.transform;
                 
                 Image bg = card.GetComponent<Image>();
@@ -105,7 +106,7 @@ namespace ChaosCritters.UI
             // 6. Build Action Bar (Replaces AbilityGrid)
             if (gridCtrl.northBtn == null)
             {
-                 // Bottom Center Bar (Centered)
+                 // Bottom Center Bar
                  GameObject grid = CreatePanel(hudManager.transform, "ActionBar", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(600, 100), new Vector2(0, 60));
                  
                  // Make panel background darker for readability

@@ -203,7 +203,9 @@ async def start_battle():
 
 @app.get("/entities")
 async def get_entities():
-    return {"entities": list(turn_manager.entities.values())}
+    # Only return living entities to cleanup dead tokens on frontend
+    living_entities = [e for e in turn_manager.entities.values() if e.hp > 0]
+    return {"entities": living_entities}
 
 
 @app.get("/battle/state")
@@ -266,10 +268,15 @@ async def execute_attack(req: BattleAttackRequest):
     if not attacker or not target:
         raise HTTPException(status_code=404, detail="Entity not found")
         
+    print(f"[Attack] Request: {attacker.id} -> {target.id} | AP: {attacker.ap}")
+    
     result = action_resolver.resolve_attack(attacker, target, engine)
     
     if result["success"]:
         attacker.ap -= result["cost"]
+        print(f"[Attack] Success. Damage: {result['mechanics'].get('damage_amount')}. Remaining AP: {attacker.ap}")
+    else:
+        print(f"[Attack] Failed: {result.get('message')} | AP: {attacker.ap}")
         
     return {"result": result, "attacker_ap": attacker.ap}
 

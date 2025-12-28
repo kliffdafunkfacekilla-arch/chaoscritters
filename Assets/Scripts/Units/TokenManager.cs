@@ -219,8 +219,28 @@ namespace ChaosCritters.Units
             foreach (var id in toRemove) _activeTokens.Remove(id);
         }
 
+        private void Update()
+        {
+            // Hotkey: Spacebar to End Turn
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (CurrentActorId == "P1")
+                {
+                    RequestEndTurn();
+                }
+            }
+        }
+
         public void RequestMove(string actorId, int targetX, int targetY)
         {
+            // Client-Side Predication Check
+            if (actorId == "P1" && _activeTokens.ContainsKey("P1"))
+            {
+                // We don't have easy access to AP here without referencing the UI card or EntityData cache.
+                // But we can let the backend handle it, OR we can show the error response clearly.
+                // Let's rely on the error response for truth, but make it Visible.
+            }
+        
             // Construct JSON manually to avoid creating another class file just for this
             string json = $"{{\"actor_id\": \"{actorId}\", \"target_pos\": [{targetX}, {targetY}]}}";
             
@@ -230,8 +250,6 @@ namespace ChaosCritters.Units
                 onSuccess: (response) => 
                 {
                     Debug.Log("Move Approved by Backend.");
-                    // Check for narrative/messages
-                    // Simple manual parse for now
                     if (response.Contains("\"narrative\":"))
                     {
                         var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
@@ -239,12 +257,19 @@ namespace ChaosCritters.Units
                             UI.NarratorController.Instance?.AddLine(wrapper.narrative);
                     }
                     
-                    RefreshEntities(); // Re-sync positions
+                    RefreshEntities(); 
                 },
                 onError: (err) => 
                 {
                     Debug.LogError($"Move Rejected: {err}");
                     UI.NarratorController.Instance?.AddLine($"Move Failed: {err}");
+                    
+                    // Visual Feedback
+                    if (_activeTokens.ContainsKey(actorId))
+                    {
+                        var token = _activeTokens[actorId];
+                        UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Blocked!");
+                    }
                 }
             );
         }
@@ -301,6 +326,12 @@ namespace ChaosCritters.Units
                 onError: (err) => 
                 {
                      UI.NarratorController.Instance?.AddLine($"Attack Error: {err}");
+                     
+                     if (_activeTokens.ContainsKey(actorId))
+                     {
+                         var token = _activeTokens[actorId];
+                         UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Full!"); // or Fail
+                     }
                 }
             );
         }
