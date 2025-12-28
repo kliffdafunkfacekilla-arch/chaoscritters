@@ -26,6 +26,19 @@ namespace ChaosCritters.UI
                 
                 canvasGO.AddComponent<GraphicRaycaster>();
             }
+            else
+            {
+               // Self-Healing
+               EnsureComponent<GraphicRaycaster>(canvas.gameObject);
+               var scaler = EnsureComponent<CanvasScaler>(canvas.gameObject);
+               // Don't override scaler settings aggressively if it exists, maybe user changed them.
+               // But ensure Raycaster is there.
+               if (canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == null)
+               {
+                   canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                   Debug.LogWarning("[UIAssembler] Fixed Canvas RenderMode from WorldSpace (No Camera) to Overlay.");
+               }
+            }
 
             // 1.5 Ensure EventSystem
             UnityEngine.EventSystems.EventSystem eventSystem = FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
@@ -89,22 +102,39 @@ namespace ChaosCritters.UI
                  narratorCtrl.maxLines = 8;
             }
 
-            // 6. Build Ability Grid
+            // 6. Build Action Bar (Replaces AbilityGrid)
             if (gridCtrl.northBtn == null)
             {
-                 GameObject grid = CreatePanel(hudManager.transform, "AbilityGrid", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(200, 200), new Vector2(-150, 150));
+                 // Bottom Center Bar (Centered)
+                 GameObject grid = CreatePanel(hudManager.transform, "ActionBar", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(600, 100), new Vector2(0, 60));
                  
-                 gridCtrl.northBtn = CreateButton(grid.transform, "North", "Wait", new Vector2(0, 60));
-                 gridCtrl.southBtn = CreateButton(grid.transform, "South", "End", new Vector2(0, -60));
-                 gridCtrl.westBtn = CreateButton(grid.transform, "West", "Phys", new Vector2(-60, 0));
-                 gridCtrl.eastBtn = CreateButton(grid.transform, "East", "Ment", new Vector2(60, 0));
+                 // Make panel background darker for readability
+                 grid.GetComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
+                 
+                 // Centered Horizontal Layout
+                 // Total items: 4. Widths: 100, 100, 100, 120. Spacing ~20.
+                 // Total substantial width: 420.
+                 // Start X = -210 + half button width? 
+                 // Let's use simple hardcoded offsets from center 0.
+                 
+                 float yPos = 0;
+                 
+                 gridCtrl.westBtn = CreateButton(grid.transform, "BtnAttack", "Attack", new Vector2(-180, yPos), new Vector2(100, 50));
+                 gridCtrl.eastBtn = CreateButton(grid.transform, "BtnSkill", "Skill", new Vector2(-60, yPos), new Vector2(100, 50));
+                 gridCtrl.northBtn = CreateButton(grid.transform, "BtnWait", "Wait", new Vector2(60, yPos), new Vector2(100, 50));
+                 
+                 gridCtrl.southBtn = CreateButton(grid.transform, "BtnEndTurn", "End Turn", new Vector2(200, yPos), new Vector2(120, 60));
+                 
+                 // Colors
+                 gridCtrl.southBtn.GetComponent<Image>().color = new Color(0.8f, 0.3f, 0.3f); // Reddish
+                 gridCtrl.westBtn.GetComponent<Image>().color = new Color(0.9f, 0.9f, 0.9f);
             }
             
-            // 7. Force Setup (Fixes race conditions if Start() ran before Buttons existed)
+            // 7. Force Setup
             gridCtrl.Setup();
         }
 
-
+        // ... helpers ...
 
         private static T EnsureComponent<T>(GameObject go) where T : Component
         {
@@ -125,7 +155,7 @@ namespace ChaosCritters.UI
             
             // Visuals
             Image img = go.AddComponent<Image>();
-            img.color = new Color(0.2f, 0.2f, 0.2f, 0.9f); // Dark Gray Panel
+            img.color = new Color(0.1f, 0.1f, 0.1f, 0.95f); // High opacity Dark
             
 #if UNITY_EDITOR
             // Try to find a nice panel sprite
@@ -139,18 +169,16 @@ namespace ChaosCritters.UI
             else
             {
                  // Fallback to the sheet
-                 guids = UnityEditor.AssetDatabase.FindAssets("uipack_rpg_sheet"); // Removed "t:Sprite" filter to find raw texture
+                 guids = UnityEditor.AssetDatabase.FindAssets("uipack_rpg_sheet"); 
                  if (guids.Length > 0)
                  {
                      string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
                      
-                     // Force fix if not a sprite
                      UnityEditor.TextureImporter importer = UnityEditor.AssetImporter.GetAtPath(path) as UnityEditor.TextureImporter;
                      if (importer != null && importer.textureType != UnityEditor.TextureImporterType.Sprite)
                      {
                          importer.textureType = UnityEditor.TextureImporterType.Sprite;
                          importer.SaveAndReimport();
-                         Debug.Log("[UIAssembler] Auto-Fixed UI Sheet Import Settings.");
                      }
 
                      img.sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
@@ -183,7 +211,7 @@ namespace ChaosCritters.UI
             txt.fontSize = (int)fontSize;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color = Color.white;
-            txt.raycastTarget = false; // Fix: Text was blocking buttons
+            txt.raycastTarget = false; 
             return txt;
         }
 
@@ -223,19 +251,19 @@ namespace ChaosCritters.UI
             return bar;
         }
         
-        private static Button CreateButton(Transform parent, string name, string label, Vector2 pos)
+        private static Button CreateButton(Transform parent, string name, string label, Vector2 pos, Vector2 size)
         {
             GameObject go = new GameObject(name);
             go.transform.SetParent(parent, false);
             RectTransform rt = go.AddComponent<RectTransform>();
             rt.anchoredPosition = pos;
-            rt.sizeDelta = new Vector2(50, 50);
+            rt.sizeDelta = size;
             
             Image img = go.AddComponent<Image>();
-            img.color = new Color(0.8f, 0.8f, 0.8f); // Light Gray for contrast against white panel
+            img.color = new Color(0.8f, 0.8f, 0.8f); 
+            img.raycastTarget = true;
             
 #if UNITY_EDITOR
-            // Try to find a nice button sprite
             string[] guids = UnityEditor.AssetDatabase.FindAssets("button t:Sprite");
             if (guids.Length > 0)
             {
@@ -250,6 +278,7 @@ namespace ChaosCritters.UI
             CreateText(go.transform, "Label", label, 10, Vector2.zero).color = Color.black;
             
             return btn;
+
         }
     }
 }

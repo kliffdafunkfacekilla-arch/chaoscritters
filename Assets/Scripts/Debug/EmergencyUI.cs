@@ -4,12 +4,13 @@ using ChaosCritters.UI;
 
 public class EmergencyUI : MonoBehaviour
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Init()
     {
-        GameObject go = new GameObject("EmergencyUI");
-        go.AddComponent<EmergencyUI>();
-        DontDestroyOnLoad(go);
+        // Disabled for now
+        // GameObject go = new GameObject("EmergencyUI");
+        // go.AddComponent<EmergencyUI>();
+        // DontDestroyOnLoad(go);
     }
 
     private void OnGUI()
@@ -25,9 +26,6 @@ public class EmergencyUI : MonoBehaviour
         {
             GUI.Label(new Rect(30, 40, 350, 30), $"Actor: {TokenManager.Instance.CurrentActorId}");
             
-            // Hacky reflection or just generic info? 
-            // We can't easily access the private dictionary in TokenManager without changing it.
-            // But we can check if we can find objects.
             var tokens = FindObjectsByType<TokenController>(FindObjectsSortMode.None);
             GUI.Label(new Rect(30, 70, 350, 30), $"Tokens Found: {tokens.Length}");
             
@@ -56,10 +54,26 @@ public class EmergencyUI : MonoBehaviour
             InteractionController.Instance.StartTargeting("Physical");
         }
 
-        if (GUI.Button(new Rect(250, 400, 100, 50), "WAIT"))
+        if (GUI.Button(new Rect(250, 400, 100, 50), "END TURN"))
         {
-            // Debug Log
             Debug.Log("Wait Clicked via Emergency UI");
+            
+            if (HUDController.Instance != null)
+                HUDController.Instance.OnEndTurnClicked();
+            else if (TokenManager.Instance != null)
+                TokenManager.Instance.RequestEndTurn();
+        }
+    } // Added missing brace
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Debug.Log("*** FORCE END TURN (K Pressed) ***");
+            if (TokenManager.Instance != null)
+            {
+                    TokenManager.Instance.RequestEndTurn();
+            }
         }
     }
 }

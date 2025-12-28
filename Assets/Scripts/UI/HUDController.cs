@@ -128,11 +128,6 @@ namespace ChaosCritters.UI
                             // "to" is float array? JsonUtility might fail on float[]
                             // Let's assume standard MoveRequest format: to=(x,y)
                             // Actually, backend sends "to": (x, y) tuple which is [x, y] in JSON
-                            // Unity JsonUtility DOES NOT support float[] directly in some versions or list inside list.
-                            // Better to parse manually or use a helper if this fails.
-                            // For prototype, we'll try simplistic parsing or string checks if JsonUtility fails.
-                            // BUT, let's assume it works for List<AIActionData> if properly typed.
-                            // actually float[] array is supported in newer Unity versions.
                             
                             if (action.to != null && action.to.Length >= 2)
                             {
@@ -144,14 +139,39 @@ namespace ChaosCritters.UI
                         }
                         else if (action.action == "Attack")
                         {
-                            // Trigger Attack Animation
-                            // token.Attack(target);
-                             yield return new WaitForSeconds(0.5f);
-                             // Show Damage on Target
-                             // Use 'action.target' name to find entity? Ideally we'd have target_id.
-                             // For now, simpler.
-                             DamagePopup.Create(token.transform.position, action.damage, Color.red);
-                             yield return new WaitForSeconds(0.5f);
+                             // Trigger Attack Animation
+                             Debug.Log($"[HUD] Action Attack: {action.actor_id} -> {action.target}");
+                             if (action.actor_id == action.target)
+                             {
+                                 Debug.LogError($"[HUD] SELF ATTACK DETECTED! Actor {action.actor_id} matches Target {action.target}!");
+                             }
+
+                              yield return new WaitForSeconds(0.5f);
+                              // Show Damage on Target
+                              // Ideally we find the Target Token, not the Actor token?
+                              // The original code used 'token' (Actor) for position, which is OK for popup if MELEE
+                              // But if proper target, we should find it.
+                              
+                              Transform targetT = token.transform; // Default to actor if target not found (fallback)
+                              if (!string.IsNullOrEmpty(action.target))
+                              {
+                                    var tTarget = ChaosCritters.Units.TokenManager.Instance.GetToken(action.target);
+                                    if(tTarget != null) targetT = tTarget.transform;
+                              }
+                              
+                              DamagePopup.Create(targetT.position, action.damage, Color.red);
+                              yield return new WaitForSeconds(0.5f);
+                        }
+                        else if (action.action == "Wait")
+                        {
+                            Debug.Log($"[HUD] {action.actor_id} is waiting.");
+                            // Maybe show a "Zzz" popup?
+                            DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.blue); // Blue 0 for wait/skip
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[HUD] Unknown AI Action: {action.action}");
                         }
                     }
                     else
@@ -168,7 +188,7 @@ namespace ChaosCritters.UI
             if(btn != null) btn.interactable = true;
             
             // Refresh Map Entities to sync positions/stats finally
-            // ChaosCritters.Units.TokenManager.Instance.RefreshEntities();
+            ChaosCritters.Units.TokenManager.Instance.RefreshEntities();
         }
     }
 }

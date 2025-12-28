@@ -7,7 +7,27 @@ namespace ChaosCritters.Units
 {
     public class TokenManager : MonoBehaviour
     {
-        public static TokenManager Instance { get; private set; }
+        private static TokenManager _instance;
+        public static TokenManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindFirstObjectByType<TokenManager>();
+                    if (_instance == null)
+                    {
+                        GameObject go = new GameObject("TokenManager");
+                        _instance = go.AddComponent<TokenManager>();
+                        // Initialization happens in Start via Invoke
+                        // But let's make sure it persists
+                        DontDestroyOnLoad(go);
+                    }
+                }
+                return _instance;
+            }
+            private set { _instance = value; }
+        }
 
         [Header("Configuration")]
         public GameObject tokenPrefab; // User drags "Token" prefab here
@@ -56,7 +76,15 @@ namespace ChaosCritters.Units
 
         private void Awake()
         {
-            Instance = this;
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (_instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void Start()

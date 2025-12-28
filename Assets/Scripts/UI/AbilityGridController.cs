@@ -41,6 +41,18 @@ namespace ChaosCritters.UI
             {
                  // Placeholder for skip turn
                  Debug.Log("Waiting...");
+                 
+                 // Visual Feedback
+                 if (TokenManager.Instance != null && !string.IsNullOrEmpty(TokenManager.Instance.CurrentActorId))
+                 {
+                     var token = TokenManager.Instance.GetToken(TokenManager.Instance.CurrentActorId);
+                     if (token != null)
+                     {
+                         // Show "WAIT" or "0" blue popup
+                         DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.blue);
+                     }
+                 }
+
                  if (HUDController.Instance != null) HUDController.Instance.OnEndTurnClicked();
             }
             NarratorController.Instance?.AddLine($"Selected: {action}");

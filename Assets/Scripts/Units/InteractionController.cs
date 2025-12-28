@@ -83,6 +83,19 @@ namespace ChaosCritters.Units
         {
             if (Input.GetMouseButtonDown(0)) // Left Click
             {
+                // Prevent click-through on UI
+                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                {
+                    Debug.Log("[InteractionController] Click blocked by uGUI.");
+                    return;
+                }
+                
+                // Prevent click-through on IMGUI (Emergency UI)
+                // GUIUtility.hotControl is 0 if nothing captured mouse. 
+                // But for a simple button click, it might only be set during the frame of interaction.
+                // A better check for IMGUI is hard without rect checks.
+                // However, blocking uGUI is the most important step for the real UI.
+                
                 HandleClick();
             }
         }

@@ -215,7 +215,6 @@ namespace ChaosCritters.Units
             {
                 // Try find specific asset in Resources first (Preferred)
                 string[] guids = UnityEditor.AssetDatabase.FindAssets($"{id} t:Sprite");
-                bool found = false;
 
                 foreach(var guid in guids)
                 {
@@ -230,7 +229,6 @@ namespace ChaosCritters.Units
                         {
                             chassisDb.Add(new VisualEntry { id = id, sprite = s, color = Color.white });
                             // Debug.Log($"[SpriteAssembler] Found Chassis: {id}");
-                            found = true;
                             break;
                         }
                     }
