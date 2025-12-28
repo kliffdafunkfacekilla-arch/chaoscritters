@@ -83,6 +83,7 @@ namespace ChaosCritters.UI
             public string message;
             public string current_turn;
             public string narrative;
+            public string battle_state; // Added to match JSON
             public List<AIActionData> ai_actions;
         }
 
@@ -182,13 +183,29 @@ namespace ChaosCritters.UI
             }
 
             // 3. Update Turn Indicator
-            Debug.Log($"[HUD] New Turn: {response.current_turn}");
+            Debug.Log($"[HUD] New Turn: {response.current_turn} | State: {response.battle_state}");
             
             // Re-enable button
             if(btn != null) btn.interactable = true;
             
+            // Check Game Over
+            if (response.battle_state == "Victory")
+            {
+                UIAssembler.ShowGameOver(true);
+                if(btn != null) btn.interactable = false;
+                // Disable controls via InteractionController?
+                yield break;
+            }
+            else if (response.battle_state == "Defeat")
+            {
+                UIAssembler.ShowGameOver(false);
+                if(btn != null) btn.interactable = false;
+                yield break;
+            }
+
             // Refresh Map Entities to sync positions/stats finally
             ChaosCritters.Units.TokenManager.Instance.RefreshEntities();
+            Debug.Log("[HUD] Response Processed.");
         }
     }
 }

@@ -278,7 +278,27 @@ namespace ChaosCritters.UI
             CreateText(go.transform, "Label", label, 10, Vector2.zero).color = Color.black;
             
             return btn;
+        }
 
+        public static void ShowGameOver(bool victory)
+        {
+            Canvas canvas = FindFirstObjectByType<Canvas>();
+            if (canvas == null) return;
+            
+            // Remove existing HUD manager to cleanup? Or just overlay?
+            // Overlay is safer.
+            
+            GameObject pnl = CreatePanel(canvas.transform, "GameOverPanel", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            Image img = pnl.GetComponent<Image>();
+            img.color = new Color(0,0,0, 0.85f);
+            
+            string msg = victory ? "VICTORY" : "DEFEAT";
+            Color col = victory ? Color.yellow : Color.red;
+            
+            Text txt = CreateText(pnl.transform, "Title", msg, 80, new Vector2(0, 50));
+            txt.color = col;
+            
+            Text sub = CreateText(pnl.transform, "Sub", "Press Alt+F4 to Quit (for now)", 20, new Vector2(0, -50));
         }
     }
 }

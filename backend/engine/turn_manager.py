@@ -6,7 +6,7 @@ class EntityState(BaseModel):
     id: str
     name: str
     initiative: int = 0
-    ap: int = 20 # Debug High AP
+    ap: int = 5 # Standard AP
     hp: int
     max_hp: int
     composure: int
@@ -15,7 +15,7 @@ class EntityState(BaseModel):
     x: int = 0
     y: int = 0
     image_id: str = "default.png"
-    visual_tags: Dict[str, str] = {} # e.g. {"chassis": "Bear", "role": "Warrior", "infusion": "Gravity"}
+    visual_tags: Dict[str, str] = {} 
 
 class TurnManager:
     def __init__(self):
@@ -30,12 +30,10 @@ class TurnManager:
     def roll_initiative(self):
         """Rolls initiative for all entities and sorts the turn order."""
         for eid, entity in self.entities.items():
-            # Simple d20 + Agility (implied) or just d20 for now
             if entity.initiative < 90:
                 roll = random.randint(1, 20)
                 entity.initiative = roll
             
-        # Sort by initiative descending
         self.turn_order = sorted(
             self.entities.keys(), 
             key=lambda x: self.entities[x].initiative, 
@@ -51,18 +49,39 @@ class TurnManager:
         return self.entities[self.turn_order[self.current_index]]
         
     def next_turn(self):
-        """Advances to the next actor, handling AP refresh."""
-        self.current_index += 1
-        if self.current_index >= len(self.turn_order):
-            self.current_index = 0
-            self.round += 1
-            print(f"--- Round {self.round} Start ---")
+        """Advances to the next living actor."""
+        # Loop until we find a living actor or exhaust list
+        attempts = 0
+        while attempts < len(self.turn_order):
+            self.current_index += 1
+            if self.current_index >= len(self.turn_order):
+                self.current_index = 0
+                self.round += 1
+                print(f"--- Round {self.round} Start ---")
             
-        actor = self.get_current_actor()
-        self._start_turn_logic(actor)
-        return actor
+            actor = self.get_current_actor()
+            if actor and actor.hp > 0:
+                self._start_turn_logic(actor)
+                return actor
+            
+            attempts += 1
+            
+        print("All entities dead?")
+        return None
         
     def _start_turn_logic(self, actor: EntityState):
-        # Reset AP, handle start-of-turn effects
-        actor.ap = 20 # Debug High AP
+        # Reset AP
+        actor.ap = 5 
         print(f"Start Turn: {actor.name} (AP: {actor.ap})")
+
+    def check_victory_condition(self) -> str:
+        """Returns 'Ongoing', 'Victory' (Player Win), or 'Defeat' (Player Loss)"""
+        players_alive = any(e.hp > 0 and e.team == "Player" for e in self.entities.values())
+        enemies_alive = any(e.hp > 0 and e.team == "Enemy" for e in self.entities.values())
+        
+        if not players_alive:
+            return "Defeat"
+        if not enemies_alive:
+            return "Victory"
+            
+        return "Ongoing"

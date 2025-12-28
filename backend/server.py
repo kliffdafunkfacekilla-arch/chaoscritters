@@ -197,7 +197,8 @@ async def start_battle():
     return {
         "message": "Battle Started",
         "turn_order": turn_manager.turn_order,
-        "current_turn": current.id
+        "current_turn": current.id,
+        "battle_state": turn_manager.check_victory_condition()
     }
 
 @app.get("/entities")
@@ -228,7 +229,7 @@ async def execute_move(req: MoveRequest):
         
     # Placeholder for current position mechanism (would be in EntityState eventually)
     current_pos = (actor.x, actor.y)
-    print(f"[Move] Request for {req.actor_id}: {current_pos} -> {req.target_pos}")
+    print(f"[Move] Request for {req.actor_id}: {current_pos} -> {req.target_pos} | Current AP: {actor.ap}")
     
     result = action_resolver.resolve_move(
         req.actor_id, 
@@ -243,9 +244,9 @@ async def execute_move(req: MoveRequest):
         if new_pos:
             actor.x = new_pos[0]
             actor.y = new_pos[1]
-            print(f"[Move] Success. New Pos: ({actor.x}, {actor.y}). AP: {actor.ap}")
+            print(f"[Move] Success. New Pos: ({actor.x}, {actor.y}). Remaining AP: {actor.ap}")
     else:
-        print(f"[Move] Failed: {result.get('message')}")
+        print(f"[Move] Failed: {result.get('message')} | AP: {actor.ap}")
         
     return {"result": result, "remaining_ap": actor.ap}
 

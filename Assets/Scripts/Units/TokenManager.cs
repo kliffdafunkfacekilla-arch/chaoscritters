@@ -42,7 +42,8 @@ namespace ChaosCritters.Units
             public string message;
             public string[] turn_order;
             public string current_turn;
-            public string narrative; // Added for AI logs
+            public string narrative; 
+            public string battle_state; // Added
         }
 
         [System.Serializable]
@@ -125,7 +126,7 @@ namespace ChaosCritters.Units
                 {
                     BattleStartResponse res = JsonUtility.FromJson<BattleStartResponse>(json);
                     CurrentActorId = res.current_turn;
-                    Debug.Log($"Battle Initialized. Current Turn: {CurrentActorId}");
+                    Debug.Log($"Battle Initialized. Current Turn: {CurrentActorId} | State: {res.battle_state}");
                     RefreshEntities();
                 },
                 onError: (err) => Debug.LogError($"Failed to start battle: {err}")
@@ -169,6 +170,28 @@ namespace ChaosCritters.Units
                     if (data.id == CurrentActorId && UI.HUDController.Instance != null)
                     {
                         UI.HUDController.Instance.UpdatePlayerCard(data);
+                    }
+                    
+                    // Auto-End Turn Check
+                    if (data.id == CurrentActorId && CurrentActorId == "P1")
+                    {
+                        // Assuming 1 AP is minimum for any action
+                        if (data.ap < 1)
+                        {
+                            Debug.Log("[TokenManager] Auto-Ending Turn due to Low AP");
+                            // Avoid spamming if already ended?
+                            // RequestEndTurn is async.
+                            // Ideally we flag this. But for now, just call it.
+                            // Risky if RefreshEntities is called often. 
+                            // Add a guard?
+                            // We can check if we are *already* ending.
+                            // But RequestEndTurn changes CurrentActorId promptly on success.
+                            
+                            // Let's rely on the user interface blocking or basic logic.
+                            // Actually, RequestEndTurn() will call next_turn() on backend, changing CurrentActorId.
+                            // So we just call it once.
+                            RequestEndTurn(); 
+                        }
                     }
                 }
                 else
