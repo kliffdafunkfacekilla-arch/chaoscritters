@@ -37,7 +37,8 @@ class AIEngine:
                 actor.ap -= result["cost"]
                 return {
                     "action": "Attack", 
-                    "target": target.name, 
+                    "target": target.id, 
+                    "target_name": target.name,
                     "damage": result["mechanics"].get("damage_amount", 0),
                     "type": result["mechanics"].get("damage_type", "None")
                 }
