@@ -257,7 +257,8 @@
                 "damage_type": "elemental"
             }
         ],
-        "narrative": "Deal 1d10 single-target elemental damage."
+        "narrative": "Deal 1d10 single-target elemental damage.",
+        "icon": "fireball"
     },
     {
         "id": "elemental__cascade",

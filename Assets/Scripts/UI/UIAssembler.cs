@@ -89,6 +89,26 @@ namespace ChaosCritters.UI
                 hudCtrl.healthBar = CreateBar(card.transform, "HealthBar", Color.green, new Vector2(0, -10));
                 hudCtrl.staminaBar = CreateBar(card.transform, "StaminaBar", Color.red, new Vector2(-100, -50));
                 hudCtrl.focusBar = CreateBar(card.transform, "FocusBar", Color.blue, new Vector2(100, -50));
+            
+                // Status Panel
+                GameObject statusPnl = new GameObject("StatusPanel");
+                statusPnl.transform.SetParent(card.transform, false);
+                RectTransform spRT = statusPnl.AddComponent<RectTransform>();
+                spRT.anchorMin = new Vector2(0, 0);
+                spRT.anchorMax = new Vector2(1, 0);
+                spRT.pivot = new Vector2(0.5f, 0f);
+                spRT.anchoredPosition = new Vector2(0, 10);
+                spRT.sizeDelta = new Vector2(-20, 30); // Padding left/right
+                
+                HorizontalLayoutGroup hlg = statusPnl.AddComponent<HorizontalLayoutGroup>();
+                hlg.childControlWidth = false;
+                hlg.childControlHeight = false;
+                hlg.childForceExpandWidth = false;
+                hlg.childForceExpandHeight = false;
+                hlg.spacing = 5;
+                hlg.alignment = TextAnchor.MiddleLeft;
+                
+                hudCtrl.iconContainer = statusPnl.transform;
             }
 
             // 5. Build Narrator
@@ -137,7 +157,71 @@ namespace ChaosCritters.UI
                  gridCtrl.westBtn.GetComponent<Image>().color = new Color(0.9f, 0.9f, 0.9f);
             }
             
-            // 7. Force Setup
+            // 7. Data Transfer Logic (One-time setup if needed)
+            
+            // 8. Build Skill Menu
+            var skillMenu = EnsureComponent<SkillMenuController>(hudManager);
+            if (skillMenu.menuPanel == null)
+            {
+                // Create Centered Panel
+                GameObject menu = CreatePanel(hudManager.transform, "SkillMenuPanel", new Vector2(0.3f, 0.2f), new Vector2(0.7f, 0.8f), Vector2.zero, Vector2.zero);
+                skillMenu.menuPanel = menu;
+                
+                // Add Title
+                CreateText(menu.transform, "Title", "Skill Menu (K)", 24, new Vector2(0, 250)).rectTransform.anchorMax = new Vector2(0.5f, 1f);
+
+                // Create Scroll View
+                GameObject scrollObj = new GameObject("ScrollView");
+                scrollObj.transform.SetParent(menu.transform, false);
+                RectTransform svRt = scrollObj.AddComponent<RectTransform>();
+                svRt.anchorMin = new Vector2(0.05f, 0.05f);
+                svRt.anchorMax = new Vector2(0.95f, 0.85f);
+                svRt.offsetMin = Vector2.zero;
+                svRt.offsetMax = Vector2.zero;
+                
+                ScrollRect sr = scrollObj.AddComponent<ScrollRect>();
+                sr.horizontal = false;
+                sr.vertical = true;
+                
+                // Viewport
+                GameObject viewport = new GameObject("Viewport");
+                viewport.transform.SetParent(scrollObj.transform, false);
+                RectTransform vpRt = viewport.AddComponent<RectTransform>();
+                vpRt.anchorMin = Vector2.zero;
+                vpRt.anchorMax = Vector2.one;
+                vpRt.offsetMin = Vector2.zero;
+                vpRt.offsetMax = Vector2.zero;
+                viewport.AddComponent<Mask>().showMaskGraphic = false;
+                Image vpImg = viewport.AddComponent<Image>();
+                vpImg.color = new Color(1,1,1,0.1f);
+                
+                sr.viewport = vpRt;
+                
+                // Content
+                GameObject content = new GameObject("Content");
+                content.transform.SetParent(viewport.transform, false);
+                RectTransform cRt = content.AddComponent<RectTransform>();
+                cRt.anchorMin = new Vector2(0f, 1f); // Top Left
+                cRt.anchorMax = new Vector2(1f, 1f); 
+                cRt.pivot = new Vector2(0.5f, 1f);
+                cRt.sizeDelta = new Vector2(0, 0); // Height driven by layout
+                
+                VerticalLayoutGroup vlg = content.AddComponent<VerticalLayoutGroup>();
+                vlg.childControlHeight = false; // Rows set their own height
+                vlg.childControlWidth = true;
+                vlg.childForceExpandWidth = true;
+                vlg.childForceExpandHeight = false;
+                vlg.spacing = 5;
+                vlg.padding = new RectOffset(10, 10, 10, 10);
+                
+                ContentSizeFitter csf = content.AddComponent<ContentSizeFitter>();
+                csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+                
+                sr.content = cRt;
+                skillMenu.contentRoot = cRt;
+            }
+            
+            // Final Setup
             gridCtrl.Setup();
         }
 

@@ -118,24 +118,16 @@ namespace ChaosCritters.Units
                 string targetId = TokenManager.Instance.GetTokenAt(cellPos.x, cellPos.y);
                 if (!string.IsNullOrEmpty(targetId))
                 {
-                    // Basic Mapping for Phase 1
-                    if (_pendingAbility == "Mental")
+                    // Generic Handling
+                    if (_pendingAbility == "Attack" || _pendingAbility == "Basic Attack" || _pendingAbility == "Physical")
                     {
-                        TokenManager.Instance.RequestAbility(myActorId, targetId, "focused__blast");
-                    }
-                    else if (_pendingAbility == "Heavy")
-                    {
-                        TokenManager.Instance.RequestAbility(myActorId, targetId, "concussive__strike");
-                    }
-                    else if (_pendingAbility == "Physical")
-                    {
-                         // Basic Attack (Standard)
+                         // Default Basic Attack
                         TokenManager.Instance.RequestAttack(myActorId, targetId);
                     }
                     else
                     {
-                        // Fallback
-                        TokenManager.Instance.RequestAttack(myActorId, targetId);
+                        // Assume it is a Skill ID (e.g. "focused__blast")
+                        TokenManager.Instance.RequestAbility(myActorId, targetId, _pendingAbility);
                     }
                     
                     // Reset

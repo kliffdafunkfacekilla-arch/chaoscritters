@@ -21,6 +21,8 @@ namespace ChaosCritters.Data
         public int max_focus;
         public string image_id; // For sprite lookup
         public VisualTags visual_tags;
+        public string[] known_skills;
+        public string[] status_effects;
     }
 
     [Serializable]

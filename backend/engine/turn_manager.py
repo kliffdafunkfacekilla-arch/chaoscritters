@@ -21,6 +21,8 @@ class EntityState(BaseModel):
     y: int = 0
     image_id: str = "default.png"
     visual_tags: Dict[str, str] = {} 
+    known_skills: List[str] = []
+    status_effects: List[str] = []
 
 class TurnManager:
     def __init__(self):

@@ -22,7 +22,8 @@
         "contest": "user"
       }
     ],
-    "narrative": "Push 1 target 1m. (Contested Might check)."
+    "narrative": "Push 1 target 1m. (Contested Might check).",
+    "icon": "shove"
   },
   {
     "id": "repel__step",
@@ -243,7 +244,8 @@
         "damage_boost": "1d4"
       }
     ],
-    "narrative": "Standard attack deals 1d4 extra non-lethal damage."
+    "narrative": "Standard attack deals 1d4 extra non-lethal damage.",
+    "icon": "hammer_drop"
   },
   {
     "id": "armor__shock",
@@ -457,7 +459,8 @@
         "duration": 1
       }
     ],
-    "narrative": "Increase jump distance/height by 100% for one turn."
+    "narrative": "Increase jump distance/height by 100% for one turn.",
+    "icon": "boot_stomp"
   },
   {
     "id": "light__step",

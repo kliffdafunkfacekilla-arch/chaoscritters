@@ -30,6 +30,7 @@ class Ability(BaseModel):
     targeting: AbilityTargeting
     effects: List[Effect]
     narrative: str
+    icon: str = "default_icon"
 
 class AbilityDatabase:
     def __init__(self):
@@ -70,6 +71,10 @@ class AbilityResolver:
         if not ability:
             return {"success": False, "message": f"Unknown Ability: {ability_id}"}
             
+        # 0. Check Ownership
+        if ability_id not in attacker.known_skills:
+             return {"success": False, "message": f"Skill Not Learned: {ability_id}"}
+
         # 1. Check Costs
         if attacker.ap < ability.costs.ap:
             return {"success": False, "message": "Not enough AP"}
@@ -87,6 +92,7 @@ class AbilityResolver:
         # 3. Resolve Effects
         total_damage = 0
         damage_type = "Meat"
+        applied_statuses = []
         
         # Determine Stats for Rolls
         atk_stat = 12
@@ -100,22 +106,31 @@ class AbilityResolver:
         
         # Process Effects
         for effect in ability.effects:
-            if effect.type == "Damage":
-                # Roll Dice?
-                # For now, simple logic: Base Mechanics Damage + Bonus
-                # If Mechanics says 0 damage (Miss), usually spell misses too?
-                # Or Spells are Save-based?
-                # Sticking to Attack Roll for now.
-                
-                base = mech_result.get("damage_amount", 0)
-                if base > 0:
-                    # Apply Dice Roll Logic if needed, or just flat bonus from JSON?
-                    # JSON says "dice": "1d10".
-                    # Let's say we roll that.
-                    roll = self.roll_dice(effect.dice)
-                    total_damage += roll + effect.bonus
-                    damage_type = effect.dmg_type or "Meat"
-        
+            if effect.type == "Damage" or effect.type == "direct_damage":
+                # Only apply if hit? Or always? Assuming hit required for now unless "guaranteed"
+                # For direct_damage, usually guaranteed but let's stick to Attack Roll gated for simplicity
+                if mech_result.get("hit", False) or True: # Assuming spells hit for now or implementing Save later
+                     base = mech_result.get("damage_amount", 0)
+                     # If it's a direct damage spell, we might ignore the weapon roll and use the spell's roll
+                     # But combining them is fine for "battlemage" feel.
+                     
+                     # Simple logic: If we have dice, roll it.
+                     if effect.amount: # JSON uses "amount": "1d10"
+                        roll = self.roll_dice(effect.amount)
+                        total_damage += roll
+                     
+                     if effect.dice:
+                        roll = self.roll_dice(effect.dice)
+                        total_damage += roll + effect.bonus
+                     
+                     damage_type = effect.dmg_type or effect.damage_type or "Meat"
+
+            elif effect.type == "apply_status" or effect.type == "Status":
+                # Check chance?
+                status_id = effect.status or effect.status_id
+                if status_id:
+                    applied_statuses.append(status_id)
+
         if total_damage > 0:
             mech_result["damage_amount"] = total_damage
             mech_result["damage_type"] = damage_type
@@ -126,6 +141,7 @@ class AbilityResolver:
             "resource_cost": ability.costs.resource,
             "resource_type": ability.costs.type,
             "mechanics": mech_result,
+            "applied_statuses": applied_statuses,
             "narrative": f"{attacker.name} {ability.narrative} at {target.name}!"
         }
 

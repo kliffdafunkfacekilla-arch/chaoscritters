@@ -116,6 +116,10 @@ namespace ChaosCritters.Units
                 }
                 Debug.Log("[TokenManager] Token Prefab Ready.");
             }
+            
+            // Initialize Systems
+            SkillDatabase.Instance.Initialize();
+            
             // Add a small delay to ensure backend is ready/connected
             Invoke(nameof(InitializeBattle), 1.0f);
         }
@@ -170,9 +174,18 @@ namespace ChaosCritters.Units
                     _activeTokens[data.id].UpdateHealth(data.hp, data.max_hp);
                     
                     // Always update Player Card if this is P1 (Free Roam or Turn)
-                    if (data.id == "P1" && UI.HUDController.Instance != null)
+                    // Always update Player Card if this is P1 (Free Roam or Turn)
+                    if (data.id == "P1")
                     {
-                        UI.HUDController.Instance.UpdatePlayerCard(data);
+                        if (UI.HUDController.Instance != null) UI.HUDController.Instance.UpdatePlayerCard(data);
+                        
+                        // Sync Hotbar
+                        var hotbar = FindFirstObjectByType<UI.AbilityGridController>();
+                        if (hotbar != null) hotbar.RefreshAbilities(data);
+                        
+                        // Sync Skill Menu
+                        var skillMenu = FindFirstObjectByType<UI.SkillMenuController>();
+                        if (skillMenu != null) skillMenu.LoadData(data);
                     }
                     
                     // Auto-End Turn Check

@@ -55,9 +55,69 @@ namespace ChaosCritters.UI
             if (staminaBar != null) staminaBar.SetValues(data.stamina, data.max_stamina);
             if (focusBar != null) focusBar.SetValues(data.focus, data.max_focus);
 
-            // Status (TODO: Add status list to EntityData)
+            // Status
+            RefreshStatusEffects(data.status_effects);
         }
-        
+
+        private void RefreshStatusEffects(string[] effects)
+        {
+            if (iconContainer == null) return;
+
+            // Clear existing
+            foreach (Transform child in iconContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            if (effects == null || effects.Length == 0) return;
+
+            // Create new
+            foreach (string effectId in effects)
+            {
+                if (string.IsNullOrEmpty(effectId)) continue;
+                
+                GameObject iconObj = null;
+                if (iconPrefab != null) iconObj = Instantiate(iconPrefab, iconContainer);
+                else 
+                {
+                    // Fallback creation
+                    iconObj = new GameObject("StatusIcon");
+                    iconObj.transform.SetParent(iconContainer, false);
+                    var t = iconObj.AddComponent<UnityEngine.UI.Text>();
+                    t.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                    t.color = Color.white;
+                    t.alignment = TextAnchor.MiddleCenter;
+                    t.resizeTextForBestFit = true;
+                }
+                
+                // Set Text to Emoji
+                var txt = iconObj.GetComponent<UnityEngine.UI.Text>();
+                if (txt == null) txt = iconObj.GetComponentInChildren<UnityEngine.UI.Text>();
+                
+                if (txt != null)
+                {
+                    txt.text = GetStatusEmoji(effectId);
+                }
+            }
+        }
+
+        private string GetStatusEmoji(string statusId)
+        {
+            string key = statusId.ToLower().Replace(" ", "_");
+            
+            if (key.Contains("burn")) return "🔥";
+            if (key.Contains("freeze") || key.Contains("chill")) return "❄️";
+            if (key.Contains("stun")) return "💫";
+            if (key.Contains("poison") || key.Contains("sick")) return "🤢";
+            if (key.Contains("haste") || key.Contains("speed")) return "⚡";
+            if (key.Contains("slow") || key.Contains("hinder")) return "🐌";
+            if (key.Contains("prone")) return "⬇️";
+            if (key.Contains("armor")) return "🛡️";
+            if (key.Contains("weak")) return "💔";
+            
+            // Default
+            return "❓"; 
+        }
         public void SetCombatMode(bool inCombat)
         {
             var grid = GetComponent<AbilityGridController>();

@@ -86,6 +86,11 @@ async def get_talents():
 async def get_abilities():
     return engine.abilities
 
+@app.get("/data/abilities/list")
+async def get_abilities_list():
+    # Return as { "skills": [ ... ] } for Unity
+    return {"skills": list(engine.abilities.skills.values())}
+
 @app.get("/data/all")
 async def get_all_data():
     return engine.data
@@ -184,7 +189,8 @@ async def start_battle():
         stamina=11, max_stamina=11, focus=9, max_focus=9,
         stats=p1_stats,
         x=2, y=2, image_id="Warrior", initiative=100,
-        visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"}
+        visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"},
+        known_skills=["concussive__strike", "focused__blast", "minor__shove", "quick__leap"]
     )
     
     # E1: Gravity Bear
@@ -196,7 +202,8 @@ async def start_battle():
         stamina=13, max_stamina=13, focus=8, max_focus=8,
         stats=e1_stats,
         x=5, y=5, image_id="Bear",
-        visual_tags={"chassis": "Bear", "role": "Breaker", "infusion": "Gravity"}
+        visual_tags={"chassis": "Bear", "role": "Breaker", "infusion": "Gravity"},
+        known_skills=["minor__shove", "concussive__strike"]
     )
     
     turn_manager.entities = {}
@@ -373,7 +380,14 @@ async def execute_ability(req: BattleAbilityRequest):
             if dtype == "Meat": target.hp = max(0, target.hp - dmg)
             else: target.composure = max(0, target.composure - dmg) # Shock/Burn?
             
-        print(f"[Ability] Success. Dmg: {dmg} ({dtype})")
+        # Apply Statuses
+        statuses = result.get("applied_statuses", [])
+        for s in statuses:
+            if s not in target.status_effects:
+                target.status_effects.append(s)
+                print(f"[Effect] Applied {s} to {target.name}")
+            
+        print(f"[Ability] Success. Dmg: {dmg} ({dtype}). Statuses: {statuses}")
         
     return {
         "result": result,
