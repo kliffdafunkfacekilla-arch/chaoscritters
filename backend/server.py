@@ -84,12 +84,12 @@ async def get_talents():
 
 @app.get("/data/abilities")
 async def get_abilities():
-    return engine.abilities
+    return DB.skills
 
 @app.get("/data/abilities/list")
 async def get_abilities_list():
     # Return as { "skills": [ ... ] } for Unity
-    return {"skills": list(engine.abilities.skills.values())}
+    return {"skills": list(DB.skills.values())}
 
 @app.get("/data/all")
 async def get_all_data():
@@ -189,7 +189,7 @@ async def start_battle():
         stamina=11, max_stamina=11, focus=9, max_focus=9,
         stats=p1_stats,
         x=2, y=2, image_id="Warrior", initiative=100,
-        visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"},
+        lineage="Ursine", heritage="Iron Caldera", background="Warrior",
         known_skills=["concussive__strike", "focused__blast", "minor__shove", "quick__leap"]
     )
     
@@ -202,7 +202,7 @@ async def start_battle():
         stamina=13, max_stamina=13, focus=8, max_focus=8,
         stats=e1_stats,
         x=5, y=5, image_id="Bear",
-        visual_tags={"chassis": "Bear", "role": "Breaker", "infusion": "Gravity"},
+        lineage="Construct", heritage="Void", background="Breaker",
         known_skills=["minor__shove", "concussive__strike"]
     )
     
@@ -337,7 +337,7 @@ async def execute_attack(req: BattleAttackRequest):
 
 
 
-from backend.engine.abilities import AbilityResolver
+from backend.engine.abilities import AbilityResolver, DB
 from backend.engine.ai_engine import AIEngine
 
 # ... inside startup or global ...

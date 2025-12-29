@@ -7,9 +7,11 @@ from pydantic import BaseModel
 class Effect(BaseModel):
     type: str # Damage, Heal, Status
     dice: Optional[str] = None
+    amount: Optional[str] = None # Added for consistency with JSON
     bonus: int = 0
     dmg_type: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[str] = None # For Pydantic model
+    status_id: Optional[str] = None # To catch JSON alias if needed
     duration: int = 0
 
 class AbilityCosts(BaseModel):

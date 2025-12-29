@@ -47,8 +47,16 @@ namespace ChaosCritters.UI
 
             // Text
             if (nameText != null) nameText.text = data.name;
-            if (classText != null && data.visual_tags != null) 
-                classText.text = $"{data.visual_tags.role} / {data.visual_tags.infusion}";
+            if (classText != null) 
+            {
+                if (!string.IsNullOrEmpty(data.lineage) && !string.IsNullOrEmpty(data.background))
+                    classText.text = $"{data.lineage} / {data.background}";
+                else if (data.visual_tags != null && !string.IsNullOrEmpty(data.visual_tags.role))
+                     // Fallback to legacy if new data missing
+                    classText.text = $"{data.visual_tags.role} / {data.visual_tags.infusion}";
+                else
+                    classText.text = "Wanderer";
+            }
 
             // Bars
             if (healthBar != null) healthBar.SetValues(data.hp, data.max_hp);

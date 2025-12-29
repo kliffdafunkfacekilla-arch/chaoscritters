@@ -20,17 +20,13 @@ namespace ChaosCritters.Data
         public int focus;
         public int max_focus;
         public string image_id; // For sprite lookup
-        public VisualTags visual_tags;
+        public string lineage;
+        public string heritage;
+        public string background;
+
+        public VisualTags visual_tags; // Deprecated, kept for safety until full cleanup
         public string[] known_skills;
         public string[] status_effects;
-    }
-
-    [Serializable]
-    public class VisualTags
-    {
-        public string chassis;
-        public string role;
-        public string infusion;
     }
 
     [Serializable]

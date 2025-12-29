@@ -76,19 +76,22 @@ namespace ChaosCritters.UI
                 // But I need to change the method name and the text raycast logic.
                 // Assuming I am replacing the WHOLE method based on lines 10-86 in original.
                 
-                // Player Card - Top Left Corner
-                GameObject card = CreatePanel(hudManager.transform, "PlayerCard", new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(400, 150), new Vector2(210, -85));
+                // Player Card - Top Left Corner (Larger)
+                GameObject card = CreatePanel(hudManager.transform, "PlayerCard", new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(600, 170), new Vector2(310, -95));
                 hudCtrl.playerCardPanel = card.transform;
                 
                 Image bg = card.GetComponent<Image>();
-                bg.color = new Color(0.1f, 0.1f, 0.1f, 0.8f);
+                bg.color = new Color(0.1f, 0.1f, 0.1f, 0.9f); // Darker
 
-                hudCtrl.nameText = CreateText(card.transform, "NameText", "Hero Name", 24, new Vector2(0, 50));
-                hudCtrl.classText = CreateText(card.transform, "ClassText", "Class / Role", 16, new Vector2(0, 25));
+                hudCtrl.nameText = CreateText(card.transform, "NameText", "Hero Name", 36, new Vector2(20, 50)); 
+                // Adjusted positions for larger text (20 x offset to align leftish if alignment centered)
+                // Text creation sets alignment to Center, so we rely on that.
+                
+                hudCtrl.classText = CreateText(card.transform, "ClassText", "Class / Role", 22, new Vector2(0, 15));
 
-                hudCtrl.healthBar = CreateBar(card.transform, "HealthBar", Color.green, new Vector2(0, -10));
-                hudCtrl.staminaBar = CreateBar(card.transform, "StaminaBar", Color.red, new Vector2(-100, -50));
-                hudCtrl.focusBar = CreateBar(card.transform, "FocusBar", Color.blue, new Vector2(100, -50));
+                hudCtrl.healthBar = CreateBar(card.transform, "HealthBar", Color.green, new Vector2(0, -25));
+                hudCtrl.staminaBar = CreateBar(card.transform, "StaminaBar", Color.red, new Vector2(-120, -60));
+                hudCtrl.focusBar = CreateBar(card.transform, "FocusBar", Color.blue, new Vector2(120, -60));
             
                 // Status Panel
                 GameObject statusPnl = new GameObject("StatusPanel");
@@ -97,29 +100,29 @@ namespace ChaosCritters.UI
                 spRT.anchorMin = new Vector2(0, 0);
                 spRT.anchorMax = new Vector2(1, 0);
                 spRT.pivot = new Vector2(0.5f, 0f);
-                spRT.anchoredPosition = new Vector2(0, 10);
-                spRT.sizeDelta = new Vector2(-20, 30); // Padding left/right
+                spRT.anchoredPosition = new Vector2(0, 5);
+                spRT.sizeDelta = new Vector2(-20, 40); // Taller
                 
                 HorizontalLayoutGroup hlg = statusPnl.AddComponent<HorizontalLayoutGroup>();
                 hlg.childControlWidth = false;
                 hlg.childControlHeight = false;
                 hlg.childForceExpandWidth = false;
                 hlg.childForceExpandHeight = false;
-                hlg.spacing = 5;
-                hlg.alignment = TextAnchor.MiddleLeft;
+                hlg.spacing = 10;
+                hlg.childAlignment = TextAnchor.MiddleCenter; 
                 
                 hudCtrl.iconContainer = statusPnl.transform;
             }
 
-            // 5. Build Narrator
+            // 5. Build Narrator - Move to Bottom Right to avoid overlap
             if (narratorCtrl.feedText == null)
             {
-                 GameObject feed = CreatePanel(hudManager.transform, "NarratorFeed", new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(300, 200), new Vector2(-160, -110));
+                 GameObject feed = CreatePanel(hudManager.transform, "NarratorFeed", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(400, 200), new Vector2(-210, 110));
                  Image bg = feed.GetComponent<Image>();
-                 bg.color = new Color(0, 0, 0, 0.5f);
+                 bg.color = new Color(0, 0, 0, 0.6f);
                  
-                 narratorCtrl.feedText = CreateText(feed.transform, "FeedText", "Narrator Log...", 14, Vector2.zero);
-                 narratorCtrl.feedText.alignment = TextAnchor.UpperLeft;
+                 narratorCtrl.feedText = CreateText(feed.transform, "FeedText", "Narrator Log...", 16, Vector2.zero);
+                 narratorCtrl.feedText.alignment = TextAnchor.LowerLeft;
                  narratorCtrl.maxLines = 8;
             }
 

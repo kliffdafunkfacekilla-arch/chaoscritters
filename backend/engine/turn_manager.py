@@ -20,7 +20,9 @@ class EntityState(BaseModel):
     x: int = 0
     y: int = 0
     image_id: str = "default.png"
-    visual_tags: Dict[str, str] = {} 
+    lineage: str = "Unknown"
+    heritage: str = "Unknown" 
+    background: str = "Unknown"
     known_skills: List[str] = []
     status_effects: List[str] = []
 

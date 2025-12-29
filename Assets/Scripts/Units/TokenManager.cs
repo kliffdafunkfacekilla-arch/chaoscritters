@@ -118,6 +118,11 @@ namespace ChaosCritters.Units
             }
             
             // Initialize Systems
+            if (SkillDatabase.Instance == null)
+            {
+                var go = new GameObject("SkillDatabase");
+                go.AddComponent<SkillDatabase>();
+            }
             SkillDatabase.Instance.Initialize();
             
             // Add a small delay to ensure backend is ready/connected
