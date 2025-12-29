@@ -52,12 +52,18 @@ namespace ChaosCritters.UI
 
             // Bars
             if (healthBar != null) healthBar.SetValues(data.hp, data.max_hp);
-            // Assuming default AP is mixed Stamina/Focus for now, or just mapping AP to Stamina
-            if (staminaBar != null) staminaBar.SetValues(data.ap, 20); // Hardcoded max for now
-            if (focusBar != null) focusBar.SetValues(data.composure, data.max_composure);
+            if (staminaBar != null) staminaBar.SetValues(data.stamina, data.max_stamina);
+            if (focusBar != null) focusBar.SetValues(data.focus, data.max_focus);
 
             // Status (TODO: Add status list to EntityData)
         }
+        
+        public void SetCombatMode(bool inCombat)
+        {
+            var grid = GetComponent<AbilityGridController>();
+            if (grid != null) grid.SetCombatMode(inCombat);
+        }
+
         public void OnEndTurnClicked()
         {
             UnityEngine.UI.Button btn = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject?.GetComponent<UnityEngine.UI.Button>();

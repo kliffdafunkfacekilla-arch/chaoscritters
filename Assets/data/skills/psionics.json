@@ -1,0 +1,668 @@
+[
+  {
+    "id": "distract",
+    "name": "Distract",
+    "school": "Psionics",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Distracted (-1 All)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target 1 enemy. Suffer a -1 penalty to all actions for 1 round."
+  },
+  {
+    "id": "push__object",
+    "name": "Push Object",
+    "school": "Psionics",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Push Object (10kg, 5m)"
+      }
+    ],
+    "narrative": "Telekinetically move a small object (max weight 10kg) 5m."
+  },
+  {
+    "id": "daze",
+    "name": "Daze",
+    "school": "Psionics",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Staggered",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Target 1 enemy. Impose the Staggered status effect for 1 round (Willpower save DC 14 to resist)."
+  },
+  {
+    "id": "mental__confusion",
+    "name": "Mental Confusion",
+    "school": "Psionics",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Confused (-2 Will)",
+        "duration": 3,
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Target suffers a -2 penalty to all Willpower checks for 3 rounds (Willpower save DC 14 to resist)."
+  },
+  {
+    "id": "unravel__focus",
+    "name": "Unravel Focus",
+    "school": "Psionics",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Focus Broken",
+        "duration": 2,
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target immediately loses Focus and cannot use abilities that require concentration for 2 rounds (Willpower save DC 15 to resist)."
+  },
+  {
+    "id": "mind__spike",
+    "name": "Mind Spike",
+    "school": "Psionics",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage_roll",
+        "amount": "3d6",
+        "save_stat": "Willpower",
+        "dc": 15
+      },
+      {
+        "type": "resource_damage",
+        "resource": "Guile",
+        "amount": "1d4"
+      }
+    ],
+    "narrative": "Deal 3d6 direct Composure damage (Willpower save DC 15 for half) and drain 1d4 Guile."
+  },
+  {
+    "id": "brain__lock",
+    "name": "Brain Lock",
+    "school": "Psionics",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage",
+        "amount": "2d6"
+      },
+      {
+        "type": "special_effect",
+        "effect_id": "Brain Lock"
+      }
+    ],
+    "narrative": "Inflict 2d6 Composure damage. If this drops Composure to zero, the target is instantly Immobilized in Fear for 3 rounds."
+  },
+  {
+    "id": "puppet__master",
+    "name": "Puppet Master",
+    "school": "Psionics",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Dominated (Minor)",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Gain temporary control of a non-hostile NPC for 1 round (Willpower save DC 17 to resist)."
+  },
+  {
+    "id": "mindwipe",
+    "name": "Mindwipe",
+    "school": "Psionics",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action_roll",
+        "effect_id": "Mindwipe",
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Erase the target's memory of the last 10 minutes (Willpower save DC 18 to resist)."
+  },
+  {
+    "id": "mental__echo",
+    "name": "Mental Echo",
+    "school": "Psionics",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "Deal 1d6 direct Composure damage."
+  },
+  {
+    "id": "object__hurl",
+    "name": "Object Hurl",
+    "school": "Psionics",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "1d10",
+        "damage_type": "physical"
+      }
+    ],
+    "narrative": "Deal 1d10 damage by violently throwing a nearby object at the target."
+  },
+  {
+    "id": "psychic__drain",
+    "name": "Psychic Drain",
+    "school": "Psionics",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "resource_damage_roll",
+        "resource": "Instinct",
+        "amount": "1d6",
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Drain 1d6 from the target's Instinct pool (Willpower save DC 14 for half)."
+  },
+  {
+    "id": "psychic__crush",
+    "name": "Psychic Crush",
+    "school": "Psionics",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage_roll",
+        "amount": "3d6",
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Deal 3d6 direct Composure damage (Willpower save DC 14 for half)."
+  },
+  {
+    "id": "psychic__scream",
+    "name": "Psychic Scream",
+    "school": "Psionics",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_damage",
+        "shape": "cone",
+        "range": 5,
+        "amount": "2d6"
+      }
+    ],
+    "narrative": "Deal 2d6 damage to the Composure pools of all targets in a 5m cone."
+  },
+  {
+    "id": "targeted__concussion",
+    "name": "Targeted Concussion",
+    "school": "Psionics",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "3d6"
+      },
+      {
+        "type": "apply_status_roll",
+        "status_id": "Stunned",
+        "duration": 1,
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "Deal 3d6 damage. Target must pass a Vitality check (DC 15) or be Stunned for 1 round."
+  },
+  {
+    "id": "mental__disintegration",
+    "name": "Mental Disintegration",
+    "school": "Psionics",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_injury_roll",
+        "severity": "Major",
+        "location": "Armor",
+        "save_stat": "Willpower",
+        "dc": 16
+      }
+    ],
+    "narrative": "Target's armor suffers a Major Injury (becomes broken/unusable) as you telekinetically tear it apart (Willpower save DC 16 to resist)."
+  },
+  {
+    "id": "composure__collapse",
+    "name": "Composure Collapse",
+    "school": "Psionics",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage",
+        "amount": "5d6"
+      }
+    ],
+    "narrative": "Inflict 5d6 points of Major Composure damage."
+  },
+  {
+    "id": "mass__hurl",
+    "name": "Mass Hurl",
+    "school": "Psionics",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_move",
+        "shape": "radius",
+        "range": 10,
+        "num_targets": 3,
+        "distance": 5,
+        "direction": "away",
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Throw up to 3 enemies 5m away (Willpower save DC 18 to remain in place)."
+  },
+  {
+    "id": "mind__shield",
+    "name": "Mind Shield",
+    "school": "Psionics",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Mind Shield (+2)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Gain a +2 bonus defense to your next Composure check."
+  },
+  {
+    "id": "barrier",
+    "name": "Barrier",
+    "school": "Psionics",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "temp_hp",
+        "amount": "1d8"
+      }
+    ],
+    "narrative": "Create a temporary shield that absorbs the next 1d8 damage instances."
+  },
+  {
+    "id": "group__defense",
+    "name": "Group Defense",
+    "school": "Psionics",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Group Defense (+1)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Grant +1 defense to all allies within 5m for 1 round."
+  },
+  {
+    "id": "telekinetic__shield",
+    "name": "Telekinetic Shield",
+    "school": "Psionics",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "temp_hp",
+        "amount": 15,
+        "duration": 3
+      }
+    ],
+    "narrative": "Create a sustained barrier that absorbs up to 15 total points of damage for 3 rounds."
+  },
+  {
+    "id": "psychic__repulsion",
+    "name": "Psychic Repulsion",
+    "school": "Psionics",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Psychic Repulsion (1d6)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Enemies attempting to enter a 3m radius around you suffer 1d6 Composure damage."
+  },
+  {
+    "id": "clarity",
+    "name": "Clarity",
+    "school": "Psionics",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_heal",
+        "amount": "2d6"
+      },
+      {
+        "type": "remove_status",
+        "status_id": "Shaken"
+      }
+    ],
+    "narrative": "Restore 2d6 Composure to yourself or an ally and remove the Shaken status."
+  },
+  {
+    "id": "projected__will",
+    "name": "Projected Will",
+    "school": "Psionics",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Projected Will",
+        "duration": 3
+      }
+    ],
+    "narrative": "Transfer your Willpower score as a bonus to an ally's Defense for 3 rounds."
+  },
+  {
+    "id": "mass__clarity",
+    "name": "Mass Clarity",
+    "school": "Psionics",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_heal",
+        "shape": "radius",
+        "range": 5,
+        "amount": "3d6"
+      }
+    ],
+    "narrative": "Restore 3d6 Composure to all allies within 5m."
+  },
+  {
+    "id": "mind__fortress",
+    "name": "Mind Fortress",
+    "school": "Psionics",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Immunity (Mental)",
+        "duration": 3
+      },
+      {
+        "type": "apply_status",
+        "target": "self",
+        "status_id": "Willpower Boost (+5)",
+        "duration": 3
+      }
+    ],
+    "narrative": "(Full Action) Create a 10m aura for 3 rounds. All allies in the aura are immune to all Composure damage and mental status effects (Fear, Charm, Stun). You, the caster, gain +5 to your Willpower stat for the duration."
+  }
+]

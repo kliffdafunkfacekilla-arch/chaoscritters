@@ -1,0 +1,661 @@
+[
+  {
+    "id": "stifle__movement",
+    "name": "Stifle Movement",
+    "school": "Ki",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Stifled",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "On a successful hit, impose a -1 penalty on target's next Movement roll."
+  },
+  {
+    "id": "weakened__attack",
+    "name": "Weakened Attack",
+    "school": "Ki",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Weakened",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "On a successful hit, impose a -2 penalty on target's next attack roll."
+  },
+  {
+    "id": "pressure__stun",
+    "name": "Pressure Stun",
+    "school": "Ki",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Staggered",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "On a successful hit, impose the Staggered status effect."
+  },
+  {
+    "id": "nerve__pinch",
+    "name": "Nerve Pinch",
+    "school": "Ki",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Hindered",
+          "duration": 2
+        }
+      }
+    ],
+    "narrative": "On a successful hit, impose the Hinder status on one limb (e.g., Arm or Leg) for 2 rounds."
+  },
+  {
+    "id": "ap__drain",
+    "name": "AP Drain",
+    "school": "Ki",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "AP Drain (1)",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "On a successful hit, force them to spend 1 extra AP on their next action."
+  },
+  {
+    "id": "muscle__spasm",
+    "name": "Muscle Spasm",
+    "school": "Ki",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Hindered (Legs)",
+        "duration": 3,
+        "save_stat": "Fortitude",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target suffers the Hinder status on their legs for 3 rounds (Halved Movement). (Fortitude save DC 15 to resist)."
+  },
+  {
+    "id": "vital__lock",
+    "name": "Vital Lock",
+    "school": "Ki",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Immobilized",
+        "duration": 2,
+        "save_stat": "Willpower",
+        "dc": 16
+      }
+    ],
+    "narrative": "Immobilize target completely for 2 rounds (Willpower save DC 16 to resist)."
+  },
+  {
+    "id": "sensory__shutoff",
+    "name": "Sensory Shutoff",
+    "school": "Ki",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Blinded",
+        "duration": 3,
+        "save_stat": "Fortitude",
+        "dc": 17
+      }
+    ],
+    "narrative": "Blind or Deaf target for 3 rounds (Fortitude save DC 17)."
+  },
+  {
+    "id": "quivering__palm",
+    "name": "Quivering Palm",
+    "school": "Ki",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "condition": "unarmed",
+        "add_effect": {
+          "type": "apply_status_roll",
+          "status_id": "Quivering Palm",
+          "save_stat": "Vitality",
+          "dc": 18,
+          "fail_effect": "Delayed Death (1d4 rounds)",
+          "success_effect": "Direct Damage (6d6)"
+        }
+      }
+    ],
+    "narrative": "On a successful Unarmed strike, the target must make a Vitality save (DC 18). On a failure, they fall to 0 HP after 1d4 rounds. On a success, they take 6d6 direct damage."
+  },
+  {
+    "id": "clean__strike",
+    "name": "Clean Strike",
+    "school": "Ki",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "damage_boost": "1d4"
+      }
+    ],
+    "narrative": "Attack deals 1d4 extra damage."
+  },
+  {
+    "id": "ghost__strike",
+    "name": "Ghost Strike",
+    "school": "Ki",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "armor_pierce": 1,
+        "condition": "unarmed"
+      }
+    ],
+    "narrative": "Next Unarmed attack ignores T1 armor completely."
+  },
+  {
+    "id": "armor__flicker",
+    "name": "Armor Flicker",
+    "school": "Ki",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "armor_pierce": 2
+      }
+    ],
+    "narrative": "Attack treats target's armor as -2 tiers weaker."
+  },
+  {
+    "id": "internal__shock",
+    "name": "Internal Shock",
+    "school": "Ki",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "2d6",
+        "damage_type": "physical"
+      }
+    ],
+    "narrative": "Deal 2d6 damage directly to HP (ignoring outer armor)."
+  },
+  {
+    "id": "chain__hit",
+    "name": "Chain Hit",
+    "school": "Ki",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "chain_attack",
+          "range": 3
+        }
+      }
+    ],
+    "narrative": "If your attack hits, you may make a free follow-up attack against another target within 3m."
+  },
+  {
+    "id": "critical__pierce",
+    "name": "Critical Pierce",
+    "school": "Ki",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Crit Pierce",
+        "duration": 1
+      }
+    ],
+    "narrative": "Your next attack automatically converts a Solid Hit into a CriticalHit."
+  },
+  {
+    "id": "force__rupture",
+    "name": "Force Rupture",
+    "school": "Ki",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "damage_boost": "4d4",
+        "armor_pierce": 3
+      }
+    ],
+    "narrative": "Attack ignores T3 armor completely and inflicts 4d4 damage."
+  },
+  {
+    "id": "vital__organ__strike",
+    "name": "Vital Organ Strike",
+    "school": "Ki",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_injury",
+          "severity": "Minor",
+          "location": "Torso"
+        },
+        "limit": "once_per_encounter"
+      }
+    ],
+    "narrative": "Inflict a MinorInjury on the Torso/Head location of the target (Once per encounter)."
+  },
+  {
+    "id": "unblockable__ki__strike",
+    "name": "Unblockable Ki Strike",
+    "school": "Ki",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "damage_boost": "5d8",
+        "damage_add_stat": "Fortitude",
+        "armor_pierce": 99
+      }
+    ],
+    "narrative": "Attack ignores all passive defenses and deals damage equal to 5d8 plus your Fortitude score."
+  },
+  {
+    "id": "centered__mind",
+    "name": "Centered Mind",
+    "school": "Ki",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Centered (+2 Will)",
+        "duration": 3
+      }
+    ],
+    "narrative": "(Minor Action) You center your Ki. Gain +2 on all Willpower saves for 3 rounds."
+  },
+  {
+    "id": "deflect__missile",
+    "name": "Deflect Missile",
+    "school": "Ki",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Deflect Ranged (1)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Gain a bonus defense against the next single incoming RangedAttack."
+  },
+  {
+    "id": "purge__ailment",
+    "name": "Purge Ailment",
+    "school": "Ki",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_status",
+        "max_tier": 1,
+        "count": 1
+      }
+    ],
+    "narrative": "(Minor Action) You use your Ki to expel impurities. Instantly remove one T1 status effect (e.g., Staggered, Minor Poison) from yourself."
+  },
+  {
+    "id": "aura_of__purity",
+    "name": "Aura of Purity",
+    "school": "Ki",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 3,
+        "status_id": "Aura of Purity (+2 Resist)",
+        "duration": 3
+      }
+    ],
+    "narrative": "You project your inner calm. You and all allies within 3m gain +2 on all saves to resist T1 status effects for 3 rounds."
+  },
+  {
+    "id": "share__resilience",
+    "name": "Share Resilience",
+    "school": "Ki",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "reaction_damage_share",
+        "trigger": "ally_damaged",
+        "range": 2,
+        "multiplier": 0.5
+      }
+    ],
+    "narrative": "(Reaction) When an adjacent ally takes damage, you can use your reaction to take half of that damage for them (this damage cannot be reduced)."
+  },
+  {
+    "id": "inner__fire",
+    "name": "Inner Fire",
+    "school": "Ki",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Immunity (Env T1)",
+        "duration": 5
+      }
+    ],
+    "narrative": "Gain immunity to all T1 environmental effects (e.g., Minor Cold, Minor Heat) for 5 rounds."
+  },
+  {
+    "id": "mass__purge",
+    "name": "Mass Purge",
+    "school": "Ki",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "aoe_remove_status",
+        "shape": "radius",
+        "range": 3,
+        "max_tier": 1,
+        "count": 1
+      }
+    ],
+    "narrative": "(Minor Action) You expel all impurities in your area. Instantly remove one T1 status effect from yourself and all allies within 3m."
+  },
+  {
+    "id": "resilient__will",
+    "name": "Resilient Will",
+    "school": "Ki",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Immunity (Composure/2)",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "Grant an ally immunity to the next 2 instances of Composure damage they would suffer."
+  },
+  {
+    "id": "transcendent__self",
+    "name": "Transcendent Self",
+    "school": "Ki",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Uncorruptible",
+        "duration": 2
+      }
+    ],
+    "narrative": "(Full Action) For 2 rounds, you are immune to all negative status effects, damage-over-time, and Composure damage. (You can still be damaged)."
+  }
+]

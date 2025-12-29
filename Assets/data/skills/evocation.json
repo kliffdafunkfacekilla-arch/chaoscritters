@@ -1,0 +1,671 @@
+[
+    {
+        "id": "wall_of__mist",
+        "name": "Wall of Mist",
+        "school": "Evocation",
+        "tier": 1,
+        "costs": {
+            "ap": 1,
+            "resource": 1,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "create_area",
+                "shape": "wall",
+                "range": 5,
+                "duration": 3,
+                "effect_id": "Wall of Mist"
+            }
+        ],
+        "narrative": "Create a 5m area of fog; -2 penalty on ranged attacks passing through it."
+    },
+    {
+        "id": "minor__tremor",
+        "name": "Minor Tremor",
+        "school": "Evocation",
+        "tier": 2,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 3
+        },
+        "effects": [
+            {
+                "type": "aoe_status_roll",
+                "shape": "radius",
+                "range": 3,
+                "status_id": "Prone",
+                "duration": 1,
+                "save_stat": "Agility",
+                "dc": 13
+            }
+        ],
+        "narrative": "Create a small earthquake in a 3m area. Targets must pass an Agility save (DC 13) or be Prone."
+    },
+    {
+        "id": "elemental__snare",
+        "name": "Elemental Snare",
+        "school": "Evocation",
+        "tier": 3,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 3
+        },
+        "effects": [
+            {
+                "type": "create_area",
+                "shape": "radius",
+                "range": 3,
+                "duration": 3,
+                "effect_id": "Elemental Snare"
+            }
+        ],
+        "narrative": "Create a 3m area of fire/ice that hinders movement (T1 Hinder)."
+    },
+    {
+        "id": "elemental__wall",
+        "name": "Elemental Wall",
+        "school": "Evocation",
+        "tier": 4,
+        "costs": {
+            "ap": 1,
+            "resource": 3,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "create_area",
+                "shape": "wall",
+                "range": 5,
+                "duration": 3,
+                "effect_id": "Elemental Wall"
+            }
+        ],
+        "narrative": "Create a 5m wall of fire/ice that blocks movement and line of sight and deals 1d6 damage to those who pass."
+    },
+    {
+        "id": "flash__freeze",
+        "name": "Flash Freeze",
+        "school": "Evocation",
+        "tier": 5,
+        "costs": {
+            "ap": 1,
+            "resource": 4,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status_roll",
+                "status_id": "Immobilized (Ice)",
+                "duration": 2,
+                "save_stat": "Vitality",
+                "dc": 15
+            }
+        ],
+        "narrative": "Target an enemy (Vitality save DC 15). On a failure, they are Immobilized for 2 rounds, encased in ice. (Ice has 10 HP)."
+    },
+    {
+        "id": "toxic__fumes",
+        "name": "Toxic Fumes",
+        "school": "Evocation",
+        "tier": 6,
+        "costs": {
+            "ap": 1,
+            "resource": 5,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_status_roll",
+                "shape": "radius",
+                "range": 5,
+                "status_id": "Nausea",
+                "duration": 3,
+                "save_stat": "Vitality",
+                "dc": 15
+            }
+        ],
+        "narrative": "Create a 5m cloud. Targets in it suffer the Nausea status effect (Vitality save DC 15 to resist)."
+    },
+    {
+        "id": "mass__quake",
+        "name": "Mass Quake",
+        "school": "Evocation",
+        "tier": 7,
+        "costs": {
+            "ap": 1,
+            "resource": 6,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_status_roll",
+                "shape": "radius",
+                "range": 5,
+                "status_id": "Prone",
+                "duration": 1,
+                "save_stat": "Vitality",
+                "dc": 16
+            },
+            {
+                "type": "aoe_status_roll",
+                "shape": "radius",
+                "range": 5,
+                "status_id": "Stunned",
+                "duration": 1,
+                "save_stat": "Vitality",
+                "dc": 16
+            }
+        ],
+        "narrative": "Targets in a 5m area must pass a Vitality check (DC 16) or be knocked Prone and Stunned for 1 round."
+    },
+    {
+        "id": "absolute__darkness",
+        "name": "Absolute Darkness",
+        "school": "Evocation",
+        "tier": 8,
+        "costs": {
+            "ap": 1,
+            "resource": 7,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 10
+        },
+        "effects": [
+            {
+                "type": "create_area",
+                "shape": "radius",
+                "range": 10,
+                "duration": 3,
+                "effect_id": "Absolute Darkness"
+            }
+        ],
+        "narrative": "Plunge a 10m radius into total, magical darkness for 3 rounds."
+    },
+    {
+        "id": "elemental__dominance",
+        "name": "Elemental Dominance",
+        "school": "Evocation",
+        "tier": 9,
+        "costs": {
+            "ap": 1,
+            "resource": 8,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "special_action",
+                "effect_id": "Control Hazard"
+            }
+        ],
+        "narrative": "Instantly control a 10m environmental hazard (e.g., redirect a fire, freeze a river)."
+    },
+    {
+        "id": "focused__blast",
+        "name": "Focused Blast",
+        "school": "Evocation",
+        "tier": 1,
+        "costs": {
+            "ap": 1,
+            "resource": 1,
+            "type": "focus"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "direct_damage",
+                "amount": "1d10",
+                "damage_type": "elemental"
+            }
+        ],
+        "narrative": "Deal 1d10 single-target elemental damage."
+    },
+    {
+        "id": "elemental__cascade",
+        "name": "Elemental Cascade",
+        "school": "Evocation",
+        "tier": 2,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_damage",
+                "shape": "line",
+                "range": 5,
+                "damage": "1d8",
+                "damage_type": "elemental"
+            }
+        ],
+        "narrative": "Deal 1d8 damage to all targets in a 5m line."
+    },
+    {
+        "id": "elemental__weapon",
+        "name": "Elemental Weapon",
+        "school": "Evocation",
+        "tier": 3,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Elemental Weapon (1d4)",
+                "duration": 3
+            }
+        ],
+        "narrative": "Enchant your weapon to deal 1d4 extra elemental damage for 3 rounds."
+    },
+    {
+        "id": "elemental__brand",
+        "name": "Elemental Brand",
+        "school": "Evocation",
+        "tier": 4,
+        "costs": {
+            "ap": 1,
+            "resource": 3,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "direct_damage",
+                "amount": "2d6",
+                "damage_type": "elemental"
+            },
+            {
+                "type": "apply_status",
+                "status_id": "Branded (Fire)",
+                "duration": 1
+            }
+        ],
+        "narrative": "Deal 2d6 elemental damage (e.g., Fire). If the attack hits, the target is 'Branded' for 1 round. All subsequent 'Fire' damage from any source deals +1d4 bonus damage."
+    },
+    {
+        "id": "elemental__burst",
+        "name": "Elemental Burst",
+        "school": "Evocation",
+        "tier": 5,
+        "costs": {
+            "ap": 1,
+            "resource": 4,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 3
+        },
+        "effects": [
+            {
+                "type": "aoe_damage",
+                "shape": "radius",
+                "range": 3,
+                "damage": "2d6",
+                "damage_type": "elemental"
+            }
+        ],
+        "narrative": "Deal 2d6 AoE damage in a 3m radius."
+    },
+    {
+        "id": "penetrating__bolt",
+        "name": "Penetrating Bolt",
+        "school": "Evocation",
+        "tier": 6,
+        "costs": {
+            "ap": 1,
+            "resource": 5,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "modify_attack",
+                "armor_pierce": 2
+            }
+        ],
+        "narrative": "Attack ignores T2 armor against a target."
+    },
+    {
+        "id": "rune_of__destruction",
+        "name": "Rune of Destruction",
+        "school": "Evocation",
+        "tier": 7,
+        "costs": {
+            "ap": 1,
+            "resource": 6,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Rune of Destruction (4d6)",
+                "duration": 1
+            }
+        ],
+        "narrative": "Embed a rune that explodes on your next turn, dealing 4d6 AoE damage."
+    },
+    {
+        "id": "environmental__strike",
+        "name": "Environmental Strike",
+        "school": "Evocation",
+        "tier": 8,
+        "costs": {
+            "ap": 1,
+            "resource": 7,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_damage",
+                "shape": "radius",
+                "range": 5,
+                "damage": "5d6",
+                "damage_type": "elemental"
+            }
+        ],
+        "narrative": "Call down a massive elemental strike (e.g., lightning, meteor) that deals 5d6 damage to a 5m area."
+    },
+    {
+        "id": "arcane__annihilation",
+        "name": "Arcane Annihilation",
+        "school": "Evocation",
+        "tier": 9,
+        "costs": {
+            "ap": 1,
+            "resource": 9,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Melee",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "direct_damage_stat_mult",
+                "amount_formula": "Knowledge * 3",
+                "damage_type": "elemental"
+            }
+        ],
+        "narrative": "Deal damage equal to your Knowledge score multiplied by 3 as elemental damage."
+    },
+    {
+        "id": "warding",
+        "name": "Warding",
+        "school": "Evocation",
+        "tier": 1,
+        "costs": {
+            "ap": 1,
+            "resource": 1,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Warding (+1)",
+                "duration": 3
+            }
+        ],
+        "narrative": "Grant +1 defense to an ally against a specific damage type for 3 rounds."
+    },
+    {
+        "id": "arcane__shield",
+        "name": "Arcane Shield",
+        "school": "Evocation",
+        "tier": 2,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 10
+        },
+        "effects": [
+            {
+                "type": "reaction_temp_hp",
+                "trigger": "ally_hit",
+                "range": 10,
+                "amount_formula": "Knowledge"
+            }
+        ],
+        "narrative": "(Reaction) When an ally within 10m is hit, grant them Temporary HP equal to your Knowledge Score."
+    },
+    {
+        "id": "ranged__defense",
+        "name": "Ranged Defense",
+        "school": "Evocation",
+        "tier": 3,
+        "costs": {
+            "ap": 1,
+            "resource": 2,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_status",
+                "shape": "radius",
+                "range": 5,
+                "status_id": "Ranged Defense (+1)",
+                "duration": 1
+            }
+        ],
+        "narrative": "All allies in a 5m radius gain +1 defense against Ranged attacks for 1 round."
+    },
+    {
+        "id": "dispel__magic",
+        "name": "Dispel Magic",
+        "school": "Evocation",
+        "tier": 4,
+        "costs": {
+            "ap": 1,
+            "resource": 3,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "remove_status",
+                "max_tier": 2,
+                "status_type": "magical"
+            }
+        ],
+        "narrative": "Instantly remove one T2 or lower magical effect (buff or debuff) from a target."
+    },
+    {
+        "id": "energy__dampener",
+        "name": "Energy Dampener",
+        "school": "Evocation",
+        "tier": 5,
+        "costs": {
+            "ap": 1,
+            "resource": 4,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Energy Dampener (+5)",
+                "duration": 3
+            }
+        ],
+        "narrative": "Grant +5 resistance to 1 chosen elemental damage type for 3 rounds."
+    },
+    {
+        "id": "spell__siphon",
+        "name": "Spell Siphon",
+        "school": "Evocation",
+        "tier": 6,
+        "costs": {
+            "ap": 1,
+            "resource": 5,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 20
+        },
+        "effects": [
+            {
+                "type": "reaction_contest",
+                "trigger": "enemy_cast_spell",
+                "range": 20,
+                "user_stat": "Knowledge",
+                "contest": "user_stat",
+                "effect_on_win": "nullify_spell_and_restore"
+            }
+        ],
+        "narrative": "(Reaction) When an enemy casts a T4 or lower spell, make a contested Knowledge check. On a success, nullify their spell and restore Guile equal to its cost."
+    },
+    {
+        "id": "total__warding",
+        "name": "Total Warding",
+        "school": "Evocation",
+        "tier": 7,
+        "costs": {
+            "ap": 1,
+            "resource": 6,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Immunity (Status T2)",
+                "duration": 3
+            }
+        ],
+        "narrative": "Grant immunity to T2 status effects (e.g., Major Poison, Disease) for 3 rounds."
+    },
+    {
+        "id": "group__energy__dampener",
+        "name": "Group Energy Dampener",
+        "school": "Evocation",
+        "tier": 8,
+        "costs": {
+            "ap": 1,
+            "resource": 7,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 5
+        },
+        "effects": [
+            {
+                "type": "aoe_status",
+                "shape": "radius",
+                "range": 5,
+                "status_id": "Energy Dampener (+5)",
+                "duration": 3
+            }
+        ],
+        "narrative": "Grant all allies in a 5m radius +5 resistance to 1 chosen elemental damage type for 3 rounds."
+    },
+    {
+        "id": "prismatic__shell",
+        "name": "Prismatic Shell",
+        "school": "Evocation",
+        "tier": 9,
+        "costs": {
+            "ap": 1,
+            "resource": 9,
+            "type": "stamina"
+        },
+        "targeting": {
+            "type": "Ranged",
+            "range": 1
+        },
+        "effects": [
+            {
+                "type": "apply_status",
+                "status_id": "Prismatic Shell",
+                "duration": 3
+            }
+        ],
+        "narrative": "(Full Action) For 3 rounds, you are immune to all elemental damage and all T3 or lower status effects. Any enemy that strikes you in melee must pass a save or suffer a random T1 elemental status."
+    }
+]

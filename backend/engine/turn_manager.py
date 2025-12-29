@@ -11,6 +11,11 @@ class EntityState(BaseModel):
     max_hp: int
     composure: int
     max_composure: int
+    stamina: int = 10
+    max_stamina: int = 10
+    focus: int = 10
+    max_focus: int = 10
+    stats: Dict[str, int] = {} # Might, Finesse, etc.
     team: str = "Player" # Player vs Enemy
     x: int = 0
     y: int = 0
@@ -23,9 +28,16 @@ class TurnManager:
         self.turn_order: List[str] = []
         self.current_index: int = 0
         self.round: int = 1
+        self.combat_active: bool = False
         
     def add_entity(self, entity: EntityState):
         self.entities[entity.id] = entity
+        
+    def start_combat(self):
+        """Starts combat mode."""
+        self.combat_active = True
+        self.roll_initiative()
+        print("--- COMBAT STARTED ---")
         
     def roll_initiative(self):
         """Rolls initiative for all entities and sorts the turn order."""
@@ -44,12 +56,21 @@ class TurnManager:
         print(f"Initiative Rolled: {self.turn_order}")
 
     def get_current_actor(self) -> Optional[EntityState]:
+        if not self.combat_active:
+             # In Free Roam, default to P1 or context dependent. 
+             # But for turn logic, return None or P1?
+             # Let's return None to indicate no active turn.
+             return None
+             
         if not self.turn_order:
             return None
         return self.entities[self.turn_order[self.current_index]]
         
     def next_turn(self):
         """Advances to the next living actor."""
+        if not self.combat_active:
+            return None
+            
         # Loop until we find a living actor or exhaust list
         attempts = 0
         while attempts < len(self.turn_order):
@@ -80,8 +101,10 @@ class TurnManager:
         enemies_alive = any(e.hp > 0 and e.team == "Enemy" for e in self.entities.values())
         
         if not players_alive:
+            self.combat_active = False
             return "Defeat"
         if not enemies_alive:
+            self.combat_active = False
             return "Victory"
             
         return "Ongoing"

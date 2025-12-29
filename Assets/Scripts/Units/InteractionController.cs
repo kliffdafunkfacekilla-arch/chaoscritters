@@ -118,10 +118,29 @@ namespace ChaosCritters.Units
                 string targetId = TokenManager.Instance.GetTokenAt(cellPos.x, cellPos.y);
                 if (!string.IsNullOrEmpty(targetId))
                 {
-                    TokenManager.Instance.RequestAttack(myActorId, targetId);
+                    // Basic Mapping for Phase 1
+                    if (_pendingAbility == "Mental")
+                    {
+                        TokenManager.Instance.RequestAbility(myActorId, targetId, "focused__blast");
+                    }
+                    else if (_pendingAbility == "Heavy")
+                    {
+                        TokenManager.Instance.RequestAbility(myActorId, targetId, "concussive__strike");
+                    }
+                    else if (_pendingAbility == "Physical")
+                    {
+                         // Basic Attack (Standard)
+                        TokenManager.Instance.RequestAttack(myActorId, targetId);
+                    }
+                    else
+                    {
+                        // Fallback
+                        TokenManager.Instance.RequestAttack(myActorId, targetId);
+                    }
+                    
                     // Reset
                     _currentMode = InteractionMode.Normal;
-                    NarratorController.Instance?.AddLine("Target Selected.");
+                    NarratorController.Instance?.AddLine("Action Sent.");
                 }
                 else
                 {
@@ -135,13 +154,15 @@ namespace ChaosCritters.Units
                 // Normal Move Logic
                 if (TokenManager.Instance != null)
                 {
-                    if (TokenManager.Instance.CurrentActorId == myActorId)
+                    // Allow move if Turn is P1 OR if it's Free Roam (null/empty)
+                    string currentBtn = TokenManager.Instance.CurrentActorId;
+                    if (currentBtn == myActorId || string.IsNullOrEmpty(currentBtn))
                     {
                         TokenManager.Instance.RequestMove(myActorId, cellPos.x, cellPos.y);
                     }
                     else
                     {
-                        NarratorController.Instance?.AddLine($"Not your turn! Current: {TokenManager.Instance.CurrentActorId}");
+                        NarratorController.Instance?.AddLine($"Not your turn! Current: {currentBtn}");
                     }
                 }
                 else

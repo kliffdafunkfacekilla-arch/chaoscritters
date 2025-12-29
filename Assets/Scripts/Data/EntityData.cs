@@ -15,6 +15,10 @@ namespace ChaosCritters.Data
         public int ap;
         public int composure;
         public int max_composure;
+        public int stamina;
+        public int max_stamina;
+        public int focus;
+        public int max_focus;
         public string image_id; // For sprite lookup
         public VisualTags visual_tags;
     }

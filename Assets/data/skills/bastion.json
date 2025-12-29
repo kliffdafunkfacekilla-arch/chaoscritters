@@ -1,0 +1,653 @@
+[
+  {
+    "id": "taunt",
+    "name": "Taunt",
+    "school": "Bastion",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Taunted",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 10
+      }
+    ],
+    "narrative": "Force 1 enemy to target you (Willpower save DC 10)."
+  },
+  {
+    "id": "threat__zone",
+    "name": "Threat Zone",
+    "school": "Bastion",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Threat Zone",
+        "duration": 3
+      }
+    ],
+    "narrative": "All enemies leaving a 2m radius around you provoke an attack of opportunity for 3 rounds."
+  },
+  {
+    "id": "anchor__ally",
+    "name": "Anchor Ally",
+    "school": "Bastion",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "redirect_attack",
+        "trigger": "ally_attacked",
+        "range": 2
+      }
+    ],
+    "narrative": "(Reaction) Redirect the next single attack aimed at an adjacent ally to yourself."
+  },
+  {
+    "id": "mass__taunt",
+    "name": "Mass Taunt",
+    "school": "Bastion",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 5,
+        "target": "enemy",
+        "status_id": "Taunted",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 12
+      }
+    ],
+    "narrative": "Force all enemies in a 5m radius to target you (Willpower save DC 12)."
+  },
+  {
+    "id": "defensive__bind",
+    "name": "Defensive Bind",
+    "school": "Bastion",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Immobilized",
+        "duration": 1,
+        "save_stat": "Endurance",
+        "dc": 15
+      }
+    ],
+    "narrative": "Hold one enemy in place for 1 round (Endurance save DC 15)."
+  },
+  {
+    "id": "area__denial",
+    "name": "Area Denial",
+    "school": "Bastion",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "Area Denial"
+      }
+    ],
+    "narrative": "Create a 3m radius field; enemies attempting to enter suffer the Hindered (Movement) status."
+  },
+  {
+    "id": "immovable__object",
+    "name": "Immovable Object",
+    "school": "Bastion",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Immunity (Forced Movement/Prone)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Become immune to all forced movement and Prone status for 3 rounds."
+  },
+  {
+    "id": "ally__anchor",
+    "name": "Ally Anchor",
+    "school": "Bastion",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_target",
+        "status_id": "Ally Anchor",
+        "duration": 2
+      }
+    ],
+    "narrative": "Redirect all attacks aimed at one designated ally to yourself for 2 rounds."
+  },
+  {
+    "id": "absolute__rebuke",
+    "name": "Absolute Rebuke",
+    "school": "Bastion",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 5,
+        "duration": 3,
+        "effect_id": "Absolute Rebuke"
+      }
+    ],
+    "narrative": "Create an AoE 5m field for 3 rounds. Any enemy attempting to leave the field suffers 4d6 direct HP damage."
+  },
+  {
+    "id": "minor__reflect",
+    "name": "Minor Reflect",
+    "school": "Bastion",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Minor Reflect (1d4)",
+        "duration": 3
+      }
+    ],
+    "narrative": "For 3 rounds, when hit by a Melee attack, inflict 1d4 damage back to the attacker."
+  },
+  {
+    "id": "spiked__deflection",
+    "name": "Spiked Deflection",
+    "school": "Bastion",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_damage",
+        "trigger": "block_melee",
+        "damage_type": "reflect",
+        "multiplier": 0.25
+      }
+    ],
+    "narrative": "(Reaction) When you successfully block a melee attack, inflict 25% of the intended damage back to the attacker."
+  },
+  {
+    "id": "retaliatory__stun",
+    "name": "Retaliatory Stun",
+    "school": "Bastion",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_status_roll",
+        "trigger": "block_melee",
+        "status_id": "Staggered",
+        "duration": 1,
+        "save_stat": "Vitality",
+        "dc": 14
+      }
+    ],
+    "narrative": "(Reaction) Successfully block a Melee attack; attacker must pass a Vitality save (DC 14) or be Staggered."
+  },
+  {
+    "id": "reactive__guard",
+    "name": "Reactive Guard",
+    "school": "Bastion",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Reactive Guard",
+        "duration": 1
+      }
+    ],
+    "narrative": "After taking damage, add that damage (up to your Endurance score) to your next single attack."
+  },
+  {
+    "id": "shield__crash",
+    "name": "Shield Crash",
+    "school": "Bastion",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_status_roll",
+        "trigger": "block_melee",
+        "status_id": "Prone",
+        "duration": 1,
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "(Reaction) Successfully block a Melee attack; attacker must pass a Vitality save (DC 15) or be knocked Prone."
+  },
+  {
+    "id": "full__feedback",
+    "name": "Full Feedback",
+    "school": "Bastion",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_damage",
+        "trigger": "block_melee",
+        "damage_type": "reflect",
+        "multiplier": 0.5
+      }
+    ],
+    "narrative": "(Reaction) When you successfully block a melee attack, inflict 50% of the intended damage back to the attacker."
+  },
+  {
+    "id": "absolute__deflect",
+    "name": "Absolute Deflect",
+    "school": "Bastion",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "reaction_redirect_attack",
+        "trigger": "block_ranged",
+        "range": 10
+      }
+    ],
+    "narrative": "(Reaction) Successfully block a Ranged attack; redirect the attack at another target within 10m."
+  },
+  {
+    "id": "vengeful__aura",
+    "name": "Vengeful Aura",
+    "school": "Bastion",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Vengeful Aura (2d6)",
+        "duration": 3
+      }
+    ],
+    "narrative": "For 3 rounds, any enemy that successfully deals damage to you suffers 2d6 direct damage immediately."
+  },
+  {
+    "id": "damage__absorption",
+    "name": "Damage Absorption",
+    "school": "Bastion",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Damage Absorption",
+        "duration": 2
+      }
+    ],
+    "narrative": "Completely absorb the damage from the next 2 incoming attacks and add that damage (max 2x Endurance score) to your next attack's damage roll."
+  },
+  {
+    "id": "stalwart__mend",
+    "name": "Stalwart Mend",
+    "school": "Bastion",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "heal",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "Restore 1d6 HP to yourself."
+  },
+  {
+    "id": "aegis__reinforcement",
+    "name": "Aegis Reinforcement",
+    "school": "Bastion",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Reinforce Armor (+1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Increase the defense rating of your Shield or Plate armor by +1 for 3 rounds."
+  },
+  {
+    "id": "guardian's__ward",
+    "name": "Guardian's Ward",
+    "school": "Bastion",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Shield Ally (+2)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Grant an adjacent ally +2 Defense for 1 round."
+  },
+  {
+    "id": "guardian's__aegis",
+    "name": "Guardian's Aegis",
+    "school": "Bastion",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status_apply",
+        "shape": "radius",
+        "range": 5,
+        "target": "ally",
+        "status_id": "Aegis (+1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "All allies in a 5m radius gain +1 Defense for 3 rounds."
+  },
+  {
+    "id": "purifying__resilience",
+    "name": "Purifying Resilience",
+    "school": "Bastion",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Resist Status (T1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant an adjacent ally immunity to T1 status effects (e.g., Minor Poison) for 3 rounds."
+  },
+  {
+    "id": "elemental__bulwark",
+    "name": "Elemental Bulwark",
+    "school": "Bastion",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Energy Dampener (Elemental)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant yourself +5 resistance against 1 chosen elemental damage type for 3 rounds."
+  },
+  {
+    "id": "wall_of__stalwartness",
+    "name": "Wall of Stalwartness",
+    "school": "Bastion",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "wall",
+        "range": 5,
+        "duration": 3,
+        "effect_id": "Aegis Wall (+3 Cover)"
+      }
+    ],
+    "narrative": "Create a 5m long wall of force that grants +3 defense (cover) to all allies behind it."
+  },
+  {
+    "id": "shared__stalwartness",
+    "name": "Shared Stalwartness",
+    "school": "Bastion",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Shared Stalwartness (25%)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Create a magical link between yourself and all allies within 5m for 3 rounds. All damage taken by any linked ally is reduced by 25%, and you take that damage instead (this damage cannot be reduced by your own armor)."
+  },
+  {
+    "id": "unyielding__fortress",
+    "name": "Unyielding Fortress",
+    "school": "Bastion",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Invulnerable",
+        "duration": 1
+      },
+      {
+        "type": "apply_status",
+        "status_id": "Rooted (Self)",
+        "duration": 1
+      }
+    ],
+    "narrative": "As a Full Action, you and all allies within 3m become Invulnerable for 1 round (until the start of your next turn). You cannot be damaged, moved, or affected by any negative status effects. While this is active, you cannot move or take any other actions."
+  }
+]

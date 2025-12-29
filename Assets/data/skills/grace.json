@@ -1,0 +1,658 @@
+[
+  {
+    "id": "ankle__lock",
+    "name": "Ankle Lock",
+    "school": "Grace",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "reaction_status_roll",
+        "trigger": "enemy_move_near",
+        "range": 2,
+        "status_id": "Slowed (Half Speed)",
+        "duration": 1,
+        "save_stat": "Agility",
+        "dc": 12
+      }
+    ],
+    "narrative": "(Reaction) When an enemy moves within 2m of you, force an Agility save (DC 12) or their speed is halved for this turn."
+  },
+  {
+    "id": "hamstring",
+    "name": "Hamstring",
+    "school": "Grace",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Hamstrung (-2 Agi)",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "On a successful hit, impose a -2 penalty on target's next Agility check."
+  },
+  {
+    "id": "crippling__step",
+    "name": "Crippling Step",
+    "school": "Grace",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status_roll",
+          "status_id": "Rooted (Movement)",
+          "duration": 1,
+          "save_stat": "Agility",
+          "dc": 14
+        }
+      }
+    ],
+    "narrative": "On a successful hit, target must pass an Agility save (DC 14) or cannot take a Move action on their next turn."
+  },
+  {
+    "id": "binding__field",
+    "name": "Binding Field",
+    "school": "Grace",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "Binding Field"
+      }
+    ],
+    "narrative": "Create a 3m area for 3 rounds. Enemies entering suffer a -2 penalty to their Agility checks."
+  },
+  {
+    "id": "pinpoint__cage",
+    "name": "Pinpoint Cage",
+    "school": "Grace",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Pinpoint Cage"
+      }
+    ],
+    "narrative": "Instantly move to surround 1 target with up to 3 selected allies, preventing them from moving away."
+  },
+  {
+    "id": "mass__restriction",
+    "name": "Mass Restriction",
+    "school": "Grace",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Slowed (Half Speed)",
+        "duration": 2,
+        "save_stat": "Agility",
+        "dc": 15
+      }
+    ],
+    "narrative": "Halve the movement speed of all enemies within 5m for 2 rounds (Agility save DC 15 to resist)."
+  },
+  {
+    "id": "temporal__tether",
+    "name": "Temporal Tether",
+    "school": "Grace",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Lost Action (Move)",
+        "duration": 1,
+        "save_stat": "Agility",
+        "dc": 16
+      }
+    ],
+    "narrative": "Target loses their entire next Movement action (Agility save DC 16 to resist)."
+  },
+  {
+    "id": "kinetic__tether",
+    "name": "Kinetic Tether",
+    "school": "Grace",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Kinetic Tether",
+        "duration": 3,
+        "save_stat": "Agility",
+        "dc": 17
+      }
+    ],
+    "narrative": "Tether yourself to an enemy for 3 rounds (Agility save DC 17). Every time you use a Move action, the target is pulled 2m in your direction."
+  },
+  {
+    "id": "temporal__snare",
+    "name": "Temporal Snare",
+    "school": "Grace",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Temporal Snare",
+        "save_stat": "Agility",
+        "dc": 18,
+        "fail_effect": "Removed from Time (1d4 rounds)",
+        "success_effect": "Stunned (1 round)"
+      }
+    ],
+    "narrative": "(Full Action) Target must pass an Agility save (DC 18). On a failure, they are removed from initiative for 1d4 rounds. On a success, they are Stunned for 1 round."
+  },
+  {
+    "id": "riposte",
+    "name": "Riposte",
+    "school": "Grace",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_counter_attack",
+        "trigger": "evade_melee",
+        "damage": "1d4"
+      }
+    ],
+    "narrative": "(Reaction) Successfully evade a melee attack. Deliver a free T1 (1d4 damage) counter-attack."
+  },
+  {
+    "id": "fluid__strike",
+    "name": "Fluid Strike",
+    "school": "Grace",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Guaranteed Solid Hit",
+        "duration": 1
+      }
+    ],
+    "narrative": "Your next Dual Knives or Dueling Blade attack is automatically a Solid Hit."
+  },
+  {
+    "id": "evasion__burst",
+    "name": "Evasion Burst",
+    "school": "Grace",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Evasion Burst"
+      }
+    ],
+    "narrative": "Move through an enemy's threatened area and deal 1d6 damage to them as you pass (Agility save DC 14 for half)."
+  },
+  {
+    "id": "counter__stun",
+    "name": "Counter-Stun",
+    "school": "Grace",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_status_roll",
+        "trigger": "evade_any",
+        "status_id": "Stunned",
+        "duration": 1,
+        "save_stat": "Vitality",
+        "dc": 14
+      }
+    ],
+    "narrative": "(Reaction) Successfully evade an attack. Attacker must pass a Vitality save (DC 14) or be Stunned for 1 round."
+  },
+  {
+    "id": "whirlwind__attack",
+    "name": "Whirlwind Attack",
+    "school": "Grace",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "aoe_attack",
+        "shape": "radius",
+        "range": 2
+      }
+    ],
+    "narrative": "Attack all enemies within 2m of you. Gain a bonus 2m movement action if successful."
+  },
+  {
+    "id": "perfect__counter",
+    "name": "Perfect Counter",
+    "school": "Grace",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_counter_attack",
+        "trigger": "evade_ranged",
+        "damage": "1d8"
+      }
+    ],
+    "narrative": "(Reaction) Successfully evade a Ranged Attack and make a free T2 (1d8 damage) counter-attack against the attacker."
+  },
+  {
+    "id": "graceful__sever",
+    "name": "Graceful Sever",
+    "school": "Grace",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_injury",
+          "severity": "Minor",
+          "location": "Arm"
+        },
+        "limit": "once_per_encounter"
+      }
+    ],
+    "narrative": "On a successful strike, inflict a Minor Injury on the target's arm or leg (Once per encounter)."
+  },
+  {
+    "id": "chain__counter",
+    "name": "Chain Counter",
+    "school": "Grace",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "reaction_counter_attack",
+        "trigger": "evade_any",
+        "damage": "1d10",
+        "num_targets": 2
+      }
+    ],
+    "narrative": "(Reaction) Successfully evade an attack. Make a free T3 counter-attack (1d10 damage) against two different adjacent enemies."
+  },
+  {
+    "id": "thousand__cuts",
+    "name": "Thousand Cuts",
+    "school": "Grace",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "status_id": "Thousand Cuts",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "(Full Action) Make one attack roll. If you hit, the target is Hindered (All Limbs) for 1 round. At the start of their next turn, they suffer 8d6 Bleed damage."
+  },
+  {
+    "id": "quick__step",
+    "name": "Quick Step",
+    "school": "Grace",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "bonus_move",
+        "distance": 2
+      }
+    ],
+    "narrative": "Move 2m as a bonus action."
+  },
+  {
+    "id": "pull__aside",
+    "name": "Pull Aside",
+    "school": "Grace",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "reaction_move_ally",
+        "trigger": "ally_in_aoe",
+        "range": 2,
+        "distance": 2
+      }
+    ],
+    "narrative": "(Reaction) Instantly move an adjacent ally 2m out of an AoE threat."
+  },
+  {
+    "id": "shadow__step",
+    "name": "Shadow Step",
+    "school": "Grace",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "bonus_move",
+        "distance": 5,
+        "ignore_aoo": true
+      }
+    ],
+    "narrative": "Move up to 5m without provoking attacks of opportunity."
+  },
+  {
+    "id": "swap__position",
+    "name": "Swap Position",
+    "school": "Grace",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "swap_position",
+        "range": 10
+      }
+    ],
+    "narrative": "Instantly exchange positions with an ally within 10m."
+  },
+  {
+    "id": "blur",
+    "name": "Blur",
+    "school": "Grace",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 3,
+        "status_id": "Blur (50% miss)",
+        "duration": 1
+      }
+    ],
+    "narrative": "You and all allies within 3m move as a blur. The next single attack against each of you has a 50% chance to miss."
+  },
+  {
+    "id": "mass__dash",
+    "name": "Mass Dash",
+    "school": "Grace",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Velocity Boost (+3m)",
+        "duration": 1
+      }
+    ],
+    "narrative": "All allies within 5m gain a +3m bonus to their next Movement roll."
+  },
+  {
+    "id": "reposition__team",
+    "name": "Reposition Team",
+    "school": "Grace",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Reposition Team (5m)"
+      }
+    ],
+    "narrative": "Select up to 3 allies. Instantly move all selected allies 5m to new locations."
+  },
+  {
+    "id": "nullify__attack",
+    "name": "Nullify Attack",
+    "school": "Grace",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Immunity (Damage/2)",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "Instantly grant an ally immunity to the next 2 instances of damage."
+  },
+  {
+    "id": "phase__shift",
+    "name": "Phase Shift",
+    "school": "Grace",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Phase Shift (30m)"
+      }
+    ],
+    "narrative": "(Full Action) You and all allies within 5m instantly teleport to any location you can see within 30m."
+  }
+]

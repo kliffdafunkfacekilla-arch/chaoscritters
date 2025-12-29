@@ -58,6 +58,7 @@ namespace ChaosCritters.Units
         {
             public ActionResult result;
             public int attacker_ap;
+            public string battle_state; // Added
         }
 
         [System.Serializable]
@@ -166,8 +167,10 @@ namespace ChaosCritters.Units
                     // Update existing
                     // Debug.Log($"Syncing Token {data.id}: Pos ({data.x}, {data.y})");
                     _activeTokens[data.id].MoveTo(data.x, data.y);
+                    _activeTokens[data.id].UpdateHealth(data.hp, data.max_hp);
                     
-                    if (data.id == CurrentActorId && UI.HUDController.Instance != null)
+                    // Always update Player Card if this is P1 (Free Roam or Turn)
+                    if (data.id == "P1" && UI.HUDController.Instance != null)
                     {
                         UI.HUDController.Instance.UpdatePlayerCard(data);
                     }
@@ -217,6 +220,13 @@ namespace ChaosCritters.Units
                 }
             }
             foreach (var id in toRemove) _activeTokens.Remove(id);
+            
+            // Sync Combat State UI
+            if (UI.HUDController.Instance != null)
+            {
+                bool inCombat = !string.IsNullOrEmpty(CurrentActorId);
+                UI.HUDController.Instance.SetCombatMode(inCombat);
+            }
         }
 
         private void Update()
@@ -317,6 +327,22 @@ namespace ChaosCritters.Units
                         }
                         
                         RefreshEntities();
+                        
+                        // Check Victory/Defeat Immediately
+                        if (res.battle_state == "Victory")
+                        {
+                            Debug.Log("[TokenManager] VICTORY DETECTED!");
+                            UI.UIAssembler.ShowGameOver(true);
+                            CurrentActorId = null; // Exit Combat Mode locally
+                            if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                        }
+                        else if (res.battle_state == "Defeat")
+                        {
+                             Debug.Log("[TokenManager] DEFEAT DETECTED!");
+                             UI.UIAssembler.ShowGameOver(false);
+                             CurrentActorId = null;
+                             if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                        }
                     }
                     else
                     {
@@ -333,6 +359,61 @@ namespace ChaosCritters.Units
                          UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Full!"); // or Fail
                      }
                 }
+            );
+        }
+
+        public void RequestAbility(string actorId, string targetId, string abilityId)
+        {
+             // Construct JSON manually
+            string json = $"{{\"actor_id\": \"{actorId}\", \"target_id\": \"{targetId}\", \"ability_id\": \"{abilityId}\"}}";
+            Debug.Log($"Requesting Ability {abilityId}: {json}");
+            
+            NetworkManager.Instance.Post("/battle/action/ability", json,
+                onSuccess: (response) => 
+                {
+                    Debug.Log($"Ability Response: {response}");
+                    AttackResponse res = JsonUtility.FromJson<AttackResponse>(response); // Reuse AttackResponse struct
+                    
+                    if (res != null && res.result != null && res.result.success)
+                    {
+                         if (response.Contains("\"narrative\":"))
+                        {
+                             var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
+                             if (!string.IsNullOrEmpty(wrapper.narrative))
+                                 UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                        }
+
+                        if (_activeTokens.ContainsKey(targetId))
+                        {
+                            TokenController targetToken = _activeTokens[targetId];
+                            int dmg = res.result.mechanics.damage_amount;
+                            string type = res.result.mechanics.damage_type;
+                            Color col = (type == "Meat") ? Color.red : (type == "Burn") ? new Color(1f, 0.5f, 0f) : Color.yellow;
+                            
+                            UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col, (dmg > 0 ? "" : "Miss"));
+                        }
+                        
+                        RefreshEntities();
+                        
+                        if (res.battle_state == "Victory")
+                        {
+                            UI.UIAssembler.ShowGameOver(true);
+                            CurrentActorId = null;
+                            if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                        }
+                        else if (res.battle_state == "Defeat")
+                        {
+                             UI.UIAssembler.ShowGameOver(false);
+                             CurrentActorId = null;
+                             if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                        }
+                    }
+                    else
+                    {
+                         UI.NarratorController.Instance?.AddLine($"Ability Failed: {(res?.result?.message ?? "Unknown Error")}");
+                    }
+                },
+                onError: (err) => UI.NarratorController.Instance?.AddLine($"Ability Error: {err}")
             );
         }
 

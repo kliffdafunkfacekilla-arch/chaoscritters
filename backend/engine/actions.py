@@ -46,9 +46,16 @@ class ActionResolver:
         """
         Resolves an attack using the Mechanics Engine.
         """
-        cost = 2 # Standard Action Cost
+        cost = 1 # Standard Action Cost (AP)
+        stamina_cost = 0 # Basic Attack is Free (Stamina-wise)
+        
+        # 1. Check AP
         if attacker.ap < cost:
             return {"success": False, "message": "Not enough AP."}
+            
+        # 2. Check Stamina (Fuel)
+        if attacker.stamina < stamina_cost:
+            return {"success": False, "message": "Not enough Stamina!"}
             
         # Distance check (Range 1 for melee)
         start = Point(attacker.x, attacker.y)
@@ -63,14 +70,24 @@ class ActionResolver:
              return {"success": False, "message": f"Target out of range ({dist} > {attack_range})."}
         
         # Derived stats (Simple placeholder logic)
-        atk_stat = 12 # attacker.stats['Might']
-        def_stat = 10 # target.stats['Agility']
+        # Try to use stats from entity if they exist, else defaults
+        atk_stat = attacker.stats.get('Might', 12)
+        def_stat = target.stats.get('Reflexes', 10) # Reflex vs Might for Defense usually? Or Parrying?
         
         result = engine.resolve_attack(atk_stat, 0, def_stat, 0)
         
         # Apply Damage
         damage = result.get("damage_amount", 0)
         damage_type = result.get("damage_type", "None")
+        
+        # FORCE MIN DAMAGE FOR TESTING
+        if damage <= 0:
+            damage = 1
+            damage_type = "Meat" # Ensure it hurts HP if mechanics fail
+            
+        # Update Dictionary so Frontend sees it Correctly
+        result["damage_amount"] = damage
+        result["damage_type"] = damage_type
         
         if damage > 0:
             if damage_type == "Meat":
@@ -81,6 +98,8 @@ class ActionResolver:
         return {
             "success": True,
             "cost": cost,
+            "resource_cost": stamina_cost,
+            "resource_type": "stamina", 
             "mechanics": result,
             "target_state": {"hp": target.hp, "composure": target.composure}
         }

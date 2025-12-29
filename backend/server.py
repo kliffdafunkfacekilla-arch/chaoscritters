@@ -174,15 +174,27 @@ async def generate_map(request: MapRequest):
 @app.post("/battle/start")
 async def start_battle():
     # Setup dummy entities for testing
+    
+    # P1: Mammal Warrior
+    # Stamina=(12+10)/2=11. Focus=(10+8)/2=9. HP=10+11+8=29. Comp=5+10+12=27.
+    p1_stats = {"Might": 12, "Endurance": 10, "Vitality": 11, "Fortitude": 8, "Logic": 10, "Knowledge": 8, "Willpower": 10, "Charm": 12}
     p1 = EntityState(
         id="P1", name="Ursine Warrior", 
-        hp=30, max_hp=30, composure=15, max_composure=15, 
+        hp=29, max_hp=29, composure=27, max_composure=27, 
+        stamina=11, max_stamina=11, focus=9, max_focus=9,
+        stats=p1_stats,
         x=2, y=2, image_id="Warrior", initiative=100,
         visual_tags={"chassis": "Bear", "role": "Warrior", "infusion": "Nature"}
     )
+    
+    # E1: Gravity Bear
+    # Stamina=(14+12)/2=13. Focus=8. HP=32.
+    e1_stats = {"Might": 14, "Endurance": 12, "Vitality": 12, "Fortitude": 10, "Logic": 8, "Knowledge": 8}
     e1 = EntityState(
         id="E1", name="Gravity Bear", 
-        hp=40, max_hp=40, composure=10, max_composure=10, team="Enemy", 
+        hp=10, max_hp=32, composure=10, max_composure=10, team="Enemy", 
+        stamina=13, max_stamina=13, focus=8, max_focus=8,
+        stats=e1_stats,
         x=5, y=5, image_id="Bear",
         visual_tags={"chassis": "Bear", "role": "Breaker", "infusion": "Gravity"}
     )
@@ -191,14 +203,14 @@ async def start_battle():
     turn_manager.add_entity(p1)
     turn_manager.add_entity(e1)
     
-    turn_manager.roll_initiative()
-    current = turn_manager.get_current_actor()
+    # FREE ROAM START (No Initiative yet)
+    # turn_manager.start_combat() <--- Triggered by action now
     
     return {
-        "message": "Battle Started",
-        "turn_order": turn_manager.turn_order,
-        "current_turn": current.id,
-        "battle_state": turn_manager.check_victory_condition()
+        "message": "Battle Initialized (Free Roam)",
+        "turn_order": [],
+        "current_turn": None,
+        "battle_state": "Ongoing"
     }
 
 @app.get("/entities")
@@ -229,26 +241,31 @@ async def execute_move(req: MoveRequest):
     if not actor:
         raise HTTPException(status_code=404, detail="Actor not found")
         
-    # Placeholder for current position mechanism (would be in EntityState eventually)
     current_pos = (actor.x, actor.y)
-    print(f"[Move] Request for {req.actor_id}: {current_pos} -> {req.target_pos} | Current AP: {actor.ap}")
+    in_combat = turn_manager.combat_active
     
+    # Resolve Move (Validation)
+    # If Free Roam, ignored AP cost (pass 999)
     result = action_resolver.resolve_move(
         req.actor_id, 
         current_pos, 
         tuple(req.target_pos), 
-        actor.ap
+        actor.ap if in_combat else 999
     )
     
     if result["success"]:
-        actor.ap -= result["cost"]
+        # Only deduct AP if in combat
+        if in_combat:
+             actor.ap -= result["cost"]
+             
         new_pos = result.get("new_pos")
         if new_pos:
             actor.x = new_pos[0]
             actor.y = new_pos[1]
-            print(f"[Move] Success. New Pos: ({actor.x}, {actor.y}). Remaining AP: {actor.ap}")
+            print(f"[Move] Success ({'Combat' if in_combat else 'FreeRoam'}). New Pos: {actor.x},{actor.y}")
+            
     else:
-        print(f"[Move] Failed: {result.get('message')} | AP: {actor.ap}")
+        print(f"[Move] Failed: {result.get('message')}")
         
     return {"result": result, "remaining_ap": actor.ap}
 
@@ -268,22 +285,101 @@ async def execute_attack(req: BattleAttackRequest):
     if not attacker or not target:
         raise HTTPException(status_code=404, detail="Entity not found")
         
-    print(f"[Attack] Request: {attacker.id} -> {target.id} | AP: {attacker.ap}")
+    print(f"[Attack] Request: {attacker.id} -> {target.id}")
     
-    result = action_resolver.resolve_attack(attacker, target, engine)
+    # FREE ROAM ATTACK -> STARTS COMBAT
+    if not turn_manager.combat_active:
+        print("[Attack] Initiating Combat via First Strike!")
+        
+        # 1. Resolve Attack First (Ambush)
+        result = action_resolver.resolve_attack(attacker, target, engine)
+        
+        if result["success"]:
+            # Ambush: Free AP, but burns Stamina/Focus
+             r_cost = result.get("resource_cost", 0)
+             r_type = result.get("resource_type", "")
+             if r_type == "stamina": attacker.stamina = max(0, attacker.stamina - r_cost)
+             elif r_type == "focus": attacker.focus = max(0, attacker.focus - r_cost)
+        
+        # 2. Start Combat (Rolls initiative)
+        turn_manager.start_combat()
+        
+    else:
+        # Standard Combat Attack
+        print(f"AP Check: {attacker.ap}")
+        result = action_resolver.resolve_attack(attacker, target, engine)
+        if result["success"]:
+            attacker.ap -= result["cost"]
+            
+            # Deduct Resource
+            r_cost = result.get("resource_cost", 0)
+            r_type = result.get("resource_type", "")
+            if r_type == "stamina": attacker.stamina = max(0, attacker.stamina - r_cost)
+            elif r_type == "focus": attacker.focus = max(0, attacker.focus - r_cost)
+            
+            print(f"[Attack] Success. Damage: {result['mechanics'].get('damage_amount')}. Remaining AP: {attacker.ap}")
+    
+    if not result["success"]:
+         print(f"[Attack] Failed: {result.get('message')}")
+        
+    return {
+        "result": result, 
+        "attacker_ap": attacker.ap,
+        "battle_state": turn_manager.check_victory_condition()
+    }
+
+
+
+from backend.engine.abilities import AbilityResolver
+from backend.engine.ai_engine import AIEngine
+
+# ... inside startup or global ...
+ability_resolver = AbilityResolver(engine)
+ai_engine = AIEngine(action_resolver, engine)
+
+class BattleAbilityRequest(BaseModel):
+    actor_id: str
+    target_id: str
+    ability_id: str
+
+@app.post("/battle/action/ability")
+async def execute_ability(req: BattleAbilityRequest):
+    attacker = turn_manager.entities.get(req.actor_id)
+    target = turn_manager.entities.get(req.target_id)
+    
+    if not attacker or not target:
+        raise HTTPException(status_code=404, detail="Entity not found")
+        
+    print(f"[Ability] {req.ability_id}: {attacker.id} -> {target.id}")
+    
+    # Resolve
+    result = ability_resolver.resolve_ability(req.ability_id, attacker, target)
     
     if result["success"]:
+        # Deduct Costs
         attacker.ap -= result["cost"]
-        print(f"[Attack] Success. Damage: {result['mechanics'].get('damage_amount')}. Remaining AP: {attacker.ap}")
-    else:
-        print(f"[Attack] Failed: {result.get('message')} | AP: {attacker.ap}")
+        r_cost = result.get("resource_cost", 0)
+        r_type = result.get("resource_type", "")
         
-    return {"result": result, "attacker_ap": attacker.ap}
-
-
-
-from backend.engine.ai_engine import AIEngine
-ai_engine = AIEngine(action_resolver, engine)
+        if r_type == "stamina": attacker.stamina = max(0, attacker.stamina - r_cost)
+        elif r_type == "focus": attacker.focus = max(0, attacker.focus - r_cost)
+        
+        # Apply Damage
+        mech = result["mechanics"]
+        dmg = mech.get("damage_amount", 0)
+        dtype = mech.get("damage_type", "Meat")
+        
+        if dmg > 0:
+            if dtype == "Meat": target.hp = max(0, target.hp - dmg)
+            else: target.composure = max(0, target.composure - dmg) # Shock/Burn?
+            
+        print(f"[Ability] Success. Dmg: {dmg} ({dtype})")
+        
+    return {
+        "result": result,
+        "narrative": {"narrative": result.get("narrative", "")},
+        "battle_state": turn_manager.check_victory_condition()
+    }
 
 @app.post("/battle/turn/end")
 async def end_turn():

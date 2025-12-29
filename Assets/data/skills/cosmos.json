@@ -1,0 +1,646 @@
+[
+  {
+    "id": "slow__reaction",
+    "name": "Slow Reaction",
+    "school": "Cosmos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_initiative",
+        "amount": -3,
+        "duration": 1
+      }
+    ],
+    "narrative": "Impose a -3 penalty on target's next Initiative roll."
+  },
+  {
+    "id": "lagging__step",
+    "name": "Lagging Step",
+    "school": "Cosmos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Slowed (Half Speed)",
+        "duration": 2
+      }
+    ],
+    "narrative": "Halve target's movement speed on their next two turns."
+  },
+  {
+    "id": "ap__drain",
+    "name": "AP Drain",
+    "school": "Cosmos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Lost Action (Minor)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target loses their next Minor Action Point (AP)."
+  },
+  {
+    "id": "time__distortion",
+    "name": "Time Distortion",
+    "school": "Cosmos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Time Distortion (Act Last)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Force an enemy to act last in the initiative order for 3 rounds."
+  },
+  {
+    "id": "reverse__movement",
+    "name": "Reverse Movement",
+    "school": "Cosmos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Reverse Movement (5m)"
+      }
+    ],
+    "narrative": "Target must move 5m back towards their position from the previous turn."
+  },
+  {
+    "id": "delayed__action",
+    "name": "Delayed Action",
+    "school": "Cosmos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Delayed Action",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target an ally or enemy. Their next action is 'delayed' until the end of the round, after everyone else has gone."
+  },
+  {
+    "id": "time__lock",
+    "name": "Time Lock",
+    "school": "Cosmos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Lost Action (Full)",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 16
+      }
+    ],
+    "narrative": "Force one enemy to lose their entire next turn (Willpower save DC 16 to resist)."
+  },
+  {
+    "id": "area__stasis",
+    "name": "Area Stasis",
+    "school": "Cosmos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 3,
+        "status_id": "Immobilized",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Immobilize all targets in a 3m radius for 1 round (Willpower save DC 17 to resist)."
+  },
+  {
+    "id": "chronal__sever",
+    "name": "Chronal Sever",
+    "school": "Cosmos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Removed from Time",
+        "duration": 2,
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Remove one target from the timeline entirely for 2 rounds (Willpower save DC 18 to resist)."
+  },
+  {
+    "id": "minor__rust",
+    "name": "Minor Rust",
+    "school": "Cosmos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage",
+        "effect_id": "Armor Damage (1d4)"
+      }
+    ],
+    "narrative": "Inflict 1d4 damage on a target's armor or object (reduces DR by 1)."
+  },
+  {
+    "id": "ageing__touch",
+    "name": "Ageing Touch",
+    "school": "Cosmos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "1d6"
+      },
+      {
+        "type": "stat_damage",
+        "stat": "Endurance",
+        "amount": -1,
+        "duration": 2
+      }
+    ],
+    "narrative": "Inflict 1d6 direct damage. Target suffers a temporary -1 penalty to Endurance for 2 rounds."
+  },
+  {
+    "id": "rapid__decay",
+    "name": "Rapid Decay",
+    "school": "Cosmos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "destroy_terrain",
+        "max_resistance": 1
+      }
+    ],
+    "narrative": "Destroy a single non-magical object (weapon, door) if its material resistance is T1 or lower."
+  },
+  {
+    "id": "entropy__strike",
+    "name": "Entropy Strike",
+    "school": "Cosmos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "2d6"
+      },
+      {
+        "type": "apply_status",
+        "status_id": "Entropied (-1 Saves)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Attack deals 2d6 direct damage that bypasses armor. Target suffers -1 to all saves for 1 round."
+  },
+  {
+    "id": "temporal__fatigue",
+    "name": "Temporal Fatigue",
+    "school": "Cosmos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "resource_damage_roll",
+        "resource": "Stamina",
+        "amount": "1d6",
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Drain 1d6 points from target's Stamina or Chi pool (Willpower save DC 15 to resist)."
+  },
+  {
+    "id": "accelerated__entropy",
+    "name": "Accelerated Entropy",
+    "school": "Cosmos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action_roll",
+        "effect_id": "Accelerated Entropy",
+        "save_stat": "Logic",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target must make a Logic save (DC 15). On a failure, all non-magical effects on them (buffs, poisons, etc.) immediately advance 3 rounds."
+  },
+  {
+    "id": "age__weapon",
+    "name": "Age Weapon",
+    "school": "Cosmos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_injury_roll",
+        "severity": "Major",
+        "location": "Weapon",
+        "save_stat": "Logic",
+        "dc": 16
+      }
+    ],
+    "narrative": "Target an enemy's weapon. It suffers a Major Injury (becomes broken/unusable) until repaired (Logic save DC 16 to resist)."
+  },
+  {
+    "id": "mass__ageing",
+    "name": "Mass Ageing",
+    "school": "Cosmos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_damage_roll",
+        "shape": "radius",
+        "range": 5,
+        "damage": "3d6",
+        "save_stat": "Logic",
+        "dc": 17
+      },
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Aged (-1 Stats)",
+        "duration": 2,
+        "save_stat": "Logic",
+        "dc": 17
+      }
+    ],
+    "narrative": "All enemies in a 5m radius suffer 3d6 direct damage and a -1 penalty to all stats for 2 rounds (Logic save DC 17 for half/negate)."
+  },
+  {
+    "id": "event__echo",
+    "name": "Event Echo",
+    "school": "Cosmos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage",
+        "effect_id": "Event Echo"
+      }
+    ],
+    "narrative": "Target suffers damage equal to the maximum damage they suffered in the previous 2 rounds."
+  },
+  {
+    "id": "foresight",
+    "name": "Foresight",
+    "school": "Cosmos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Advantage (1)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Roll one check with Advantage before taking an action."
+  },
+  {
+    "id": "minor__repair",
+    "name": "Minor Repair",
+    "school": "Cosmos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "repair_object",
+        "amount": 2
+      }
+    ],
+    "narrative": "Partially reverse the damage done to an object, improving its defense rating by 2."
+  },
+  {
+    "id": "reset__step",
+    "name": "Reset Step",
+    "school": "Cosmos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Reset Step"
+      }
+    ],
+    "narrative": "Instantly move back to the position you occupied at the start of your turn."
+  },
+  {
+    "id": "minor__reversal",
+    "name": "Minor Reversal",
+    "school": "Cosmos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Reverse Damage"
+      }
+    ],
+    "narrative": "(Reaction) Reverse the damage from the last attack made against you in the previous round."
+  },
+  {
+    "id": "rewind__ally",
+    "name": "Rewind Ally",
+    "school": "Cosmos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_heal",
+        "effect_id": "Rewind HP"
+      }
+    ],
+    "narrative": "Restore an ally's HP to the amount it was at the end of the previous round."
+  },
+  {
+    "id": "perfect__calculation",
+    "name": "Perfect Calculation",
+    "school": "Cosmos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "gain_information",
+        "effect_id": "Roll Outcomes"
+      }
+    ],
+    "narrative": "Instantly know the highest and lowest possible roll outcome for the next contested roll."
+  },
+  {
+    "id": "moment_of__chance",
+    "name": "Moment of Chance",
+    "school": "Cosmos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Reverse Action",
+        "limit": "once_per_encounter"
+      }
+    ],
+    "narrative": "Reverse the outcome of the last action (not just damage) taken by yourself or an ally (once per encounter)."
+  },
+  {
+    "id": "temporal__cache",
+    "name": "Temporal Cache",
+    "school": "Cosmos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Instant Inventory"
+      }
+    ],
+    "narrative": "Draw a specific item (max size Medium) into your hands from your inventory, bypassing the inventory action cost."
+  },
+  {
+    "id": "full__reset",
+    "name": "Full Reset",
+    "school": "Cosmos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 10,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "aoe_restore_full",
+        "limit": "once_per_campaign"
+      }
+    ],
+    "narrative": "Restore all allies' HP, Stamina, and Chi to their starting amounts (once per campaign)."
+  }
+]

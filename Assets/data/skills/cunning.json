@@ -1,0 +1,648 @@
+[
+  {
+    "id": "minor__trip",
+    "name": "Minor Trip",
+    "school": "Cunning",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_trap",
+        "effect_id": "Minor Trip (Prone)",
+        "save_stat": "Agility",
+        "dc": 12
+      }
+    ],
+    "narrative": "Create a subtle snare on the ground. Next enemy crossing must pass Agility save (DC 12) or be Prone."
+  },
+  {
+    "id": "alarm__snare",
+    "name": "Alarm Snare",
+    "school": "Cunning",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_trap",
+        "effect_id": "Alarm Snare (Audible)",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "Create a subtle trip wire that creates a loud audible alert when triggered."
+  },
+  {
+    "id": "illusionary__wall",
+    "name": "Illusionary Wall",
+    "school": "Cunning",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "wall",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "Illusionary Wall"
+      }
+    ],
+    "narrative": "Create a non-physical 3m wall that prevents enemies from seeing through it (Tactics save DC 14 to disbelieve)."
+  },
+  {
+    "id": "explosive__trap",
+    "name": "Explosive Trap",
+    "school": "Cunning",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_trap",
+        "effect_id": "Explosive Trap (2d6)",
+        "damage": "2d6"
+      }
+    ],
+    "narrative": "Set a snare that deals 2d6 AoE damage when triggered."
+  },
+  {
+    "id": "complex__trap",
+    "name": "Complex Trap",
+    "school": "Cunning",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_trap",
+        "effect_id": "Complex Trap (Hinder)",
+        "save_stat": "Agility",
+        "dc": 15
+      }
+    ],
+    "narrative": "Create a snare that inflicts the Hinder status on a triggered limb for 3 rounds (Agility save DC 15 to resist)."
+  },
+  {
+    "id": "siphoning__trap",
+    "name": "Siphoning Trap",
+    "school": "Cunning",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_trap",
+        "effect_id": "Siphoning Trap (Drain)",
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Set a snare. When triggered, the target must pass a Willpower save (DC 15) or lose 1d6 of their primary resource (Chi, Stamina, etc.)."
+  },
+  {
+    "id": "mass__confusion",
+    "name": "Mass Confusion",
+    "school": "Cunning",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Confused (-2 Perc)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Create a widespread illusion that gives a -2 penalty to all enemy perception checks in a 10m radius."
+  },
+  {
+    "id": "sabotage",
+    "name": "Sabotage",
+    "school": "Cunning",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Sabotage (T3)"
+      }
+    ],
+    "narrative": "Render a complex mechanism (Artifice T3 difficulty or lower) inoperable until repaired."
+  },
+  {
+    "id": "absolute__deception",
+    "name": "Absolute Deception",
+    "school": "Cunning",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "summon",
+        "creature_id": "Illusionary Copy",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "Create a perfect illusionary copy of yourself or an ally that takes 1 hit before vanishing."
+  },
+  {
+    "id": "exposed__flank",
+    "name": "Exposed Flank",
+    "school": "Cunning",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "damage_boost": "1d4",
+        "condition": "flanking"
+      }
+    ],
+    "narrative": "Deal 1d4 extra damage when attacking a target engaged with an ally."
+  },
+  {
+    "id": "feint",
+    "name": "Feint",
+    "school": "Cunning",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Feinted (-2 Def)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target suffers -2 defense against your next attack."
+  },
+  {
+    "id": "trick__shot",
+    "name": "Trick Shot",
+    "school": "Cunning",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Guaranteed Solid Hit",
+        "duration": 1
+      }
+    ],
+    "narrative": "Your next Hand Crossbow attack is automatically a Solid Hit."
+  },
+  {
+    "id": "critical__opening",
+    "name": "Critical Opening",
+    "school": "Cunning",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Guaranteed Critical Hit",
+        "duration": 1
+      }
+    ],
+    "narrative": "Your next Dueling Blade attack is automatically a Critical Hit if the target is Staggered or Prone."
+  },
+  {
+    "id": "chain__reaction",
+    "name": "Chain Reaction",
+    "school": "Cunning",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "chain_attack",
+          "range": 3,
+          "damage": "T3"
+        }
+      }
+    ],
+    "narrative": "If your attack hits, you may make a free T3 follow-up attack against another target within 3m."
+  },
+  {
+    "id": "vicious__bleed",
+    "name": "Vicious Bleed",
+    "school": "Cunning",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Bleeding (T2)",
+        "duration": "scene",
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "Inflict a T2 Bleeding status effect on the target (Vitality save DC 15 to resist)."
+  },
+  {
+    "id": "exploit__fracture",
+    "name": "Exploit Fracture",
+    "school": "Cunning",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "armor_pierce": 3
+      }
+    ],
+    "narrative": "Attack treats target's armor as -3 tiers weaker for this strike."
+  },
+  {
+    "id": "targeted__sever",
+    "name": "Targeted Sever",
+    "school": "Cunning",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_injury",
+          "severity": "Minor",
+          "location": "Arm"
+        },
+        "limit": "once_per_encounter"
+      }
+    ],
+    "narrative": "Attack a limb. On a successful strike, the limb suffers a Minor Injury (Once per encounter)."
+  },
+  {
+    "id": "fatal__blow",
+    "name": "Fatal Blow",
+    "school": "Cunning",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_injury_roll",
+        "severity": "Major",
+        "location": "Torso",
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Automatically inflict a Major Injury on a target's Torso (Willpower save DC 18 to resist)."
+  },
+  {
+    "id": "conceal__object",
+    "name": "Conceal Object",
+    "school": "Cunning",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "skill_contest",
+        "user_stat": "Finesse",
+        "target_stat": "Awareness"
+      }
+    ],
+    "narrative": "Successfully hide a small object on a person or in a scene (Contested Finesse vs. Awareness check)."
+  },
+  {
+    "id": "shadow__step",
+    "name": "Shadow Step",
+    "school": "Cunning",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "bonus_move",
+        "distance": 5
+      },
+      {
+        "type": "apply_status",
+        "status_id": "Concealed",
+        "duration": 1
+      }
+    ],
+    "narrative": "Move up to 5m and immediately become Concealed."
+  },
+  {
+    "id": "mass__distraction",
+    "name": "Mass Distraction",
+    "school": "Cunning",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Cunning Boost (+2)",
+        "duration": 1
+      }
+    ],
+    "narrative": "All allies in a 10m radius gain a +2 bonus to their next Stealth or Sleight of Hand check."
+  },
+  {
+    "id": "group__concealment",
+    "name": "Group Concealment",
+    "school": "Cunning",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Concealed",
+        "duration": 3
+      }
+    ],
+    "narrative": "All allies within 5m gain the Concealed status for 3 rounds (as long as they are not in bright light)."
+  },
+  {
+    "id": "invert__senses",
+    "name": "Invert Senses",
+    "school": "Cunning",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Inverted",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target an enemy (Willpower save DC 15). On a fail, they see allies as enemies (and vice versa) for 1 round. They will not attack allies, but will not aid them."
+  },
+  {
+    "id": "perfect__shadow",
+    "name": "Perfect Shadow",
+    "school": "Cunning",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Invisible",
+        "duration": 1
+      }
+    ],
+    "narrative": "Become completely invisible for 1 round (until you take an offensive action)."
+  },
+  {
+    "id": "vanishing__act",
+    "name": "Vanishing Act",
+    "school": "Cunning",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_move",
+        "effect_id": "Vanish (10m)"
+      }
+    ],
+    "narrative": "Successfully disappear from an enemy's line of sight and instantly move up to 10m."
+  },
+  {
+    "id": "mass__invisibility",
+    "name": "Mass Invisibility",
+    "school": "Cunning",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Invisible",
+        "duration": 1
+      }
+    ],
+    "narrative": "Select up to 3 allies. All become invisible for 1 round (until they take an offensive action)."
+  },
+  {
+    "id": "absolute__concealment",
+    "name": "Absolute Concealment",
+    "school": "Cunning",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Invisible (Perfect)",
+        "duration": 3
+      }
+    ],
+    "narrative": "You become invisible for 3 rounds (until you take an offensive action), suffering no penalties for light/movement."
+  }
+]

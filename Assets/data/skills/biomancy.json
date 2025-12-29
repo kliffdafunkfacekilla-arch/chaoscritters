@@ -1,0 +1,667 @@
+[
+  {
+    "id": "nausea",
+    "name": "Nausea",
+    "school": "Biomancy",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Nausea",
+        "duration": 2,
+        "save_stat": "Vitality",
+        "dc": 12
+      }
+    ],
+    "narrative": "Impose a -1 penalty on all target's attack rolls for 2 rounds. (Vitality save DC 12 to resist)."
+  },
+  {
+    "id": "weaken__limbs",
+    "name": "Weaken Limbs",
+    "school": "Biomancy",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Hindered (Arms)",
+        "duration": 2,
+        "save_stat": "Vitality",
+        "dc": 13
+      }
+    ],
+    "narrative": "Target suffers the Hinder status on their arms for 2 rounds. (Vitality save DC 13 to resist)."
+  },
+  {
+    "id": "pain__block",
+    "name": "Pain Block",
+    "school": "Biomancy",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Pain Block",
+        "duration": 2,
+        "save_stat": "Vitality",
+        "dc": 14
+      }
+    ],
+    "narrative": "Target suffers a -2 penalty to all Agility checks for 2 rounds. (Vitality save DC 14 to resist)."
+  },
+  {
+    "id": "bio__toxin__cloud",
+    "name": "Bio-Toxin Cloud",
+    "school": "Biomancy",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "toxin_cloud_3m_1d4"
+      }
+    ],
+    "narrative": "Create a 3m cloud for 3 rounds; enemies suffer 1d4 damage when starting turn in it."
+  },
+  {
+    "id": "fatigue__drain",
+    "name": "Fatigue Drain",
+    "school": "Biomancy",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "resource_damage_roll",
+        "resource": "Fatigue",
+        "amount": "1d6",
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "Drain 1d6 points from target's Fatigue pool. (Vitality save DC 15 to resist)."
+  },
+  {
+    "id": "contagion__carrier",
+    "name": "Contagion Carrier",
+    "school": "Biomancy",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "spread_status_roll",
+        "status_type": "Poison",
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target must pass a Vitality check (DC 15) or spread their current T1 disease/poison to an adjacent ally."
+  },
+  {
+    "id": "rapid__wasting",
+    "name": "Rapid Wasting",
+    "school": "Biomancy",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Diseased (T2)",
+        "duration": "scene",
+        "save_stat": "Vitality",
+        "dc": 16
+      }
+    ],
+    "narrative": "Inflict a T2 Disease status effect that deals continuous HP damage. (Vitality save DC 16 to resist)."
+  },
+  {
+    "id": "organ__spasm",
+    "name": "Organ Spasm",
+    "school": "Biomancy",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Stunned",
+        "duration": 2,
+        "save_stat": "Vitality",
+        "dc": 17
+      }
+    ],
+    "narrative": "Target is Stunned for 2 rounds as their muscles and organs seize violently. (Vitality save DC 17 to resist)."
+  },
+  {
+    "id": "biological__collapse",
+    "name": "Biological Collapse",
+    "school": "Biomancy",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_injury_roll",
+        "severity": "Major",
+        "location": "Arms",
+        "save_stat": "Vitality",
+        "dc": 18
+      },
+      {
+        "type": "apply_injury_roll",
+        "severity": "Major",
+        "location": "Legs",
+        "save_stat": "Vitality",
+        "dc": 18
+      }
+    ],
+    "narrative": "Target suffers MajorInjuries to both Arms and both Legs (Vitality save DC 18 to resist)."
+  },
+  {
+    "id": "minor__poison",
+    "name": "Minor Poison",
+    "school": "Biomancy",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Poisoned (T1)",
+        "duration": 3,
+        "save_stat": "Vitality",
+        "dc": 12
+      }
+    ],
+    "narrative": "Inflict T1 Poison status effect. (Vitality save DC 12 to resist)."
+  },
+  {
+    "id": "pain__receptor__spike",
+    "name": "Pain Receptor Spike",
+    "school": "Biomancy",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "1d6",
+        "damage_type": "physical"
+      }
+    ],
+    "narrative": "Deal 1d6 direct damage that bypasses armor."
+  },
+  {
+    "id": "internal__bleed",
+    "name": "Internal Bleed",
+    "school": "Biomancy",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Bleeding (T1)",
+        "duration": "scene",
+        "save_stat": "Vitality",
+        "dc": 14
+      }
+    ],
+    "narrative": "Inflict a T1 Bleeding status effect that cannot be stabilized by basic First Aid. (Vitality save DC 14 to resist)."
+  },
+  {
+    "id": "toxic__coating",
+    "name": "Toxic Coating",
+    "school": "Biomancy",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Toxic Weapon (1d4)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Enchant your weapon to deal 1d4 bonus poison damage for 3 rounds."
+  },
+  {
+    "id": "vicious__poison",
+    "name": "Vicious Poison",
+    "school": "Biomancy",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Poisoned (T2)",
+        "duration": 3,
+        "save_stat": "Vitality",
+        "dc": 15
+      }
+    ],
+    "narrative": "Inflict T2 Poison status effect. (Vitality save DC 15 to resist)."
+  },
+  {
+    "id": "blood__boiling",
+    "name": "Blood Boiling",
+    "school": "Biomancy",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "3d4",
+        "damage_type": "fire"
+      }
+    ],
+    "narrative": "Deal 3d4 damage directly to the target's HP by rapidly elevating their core temperature."
+  },
+  {
+    "id": "rupture__vitals",
+    "name": "Rupture Vitals",
+    "school": "Biomancy",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_injury",
+          "severity": "Minor",
+          "location": "Torso"
+        },
+        "limit": "once_per_encounter"
+      }
+    ],
+    "narrative": "You strike at a critical organ. Inflict a Minor Injury on the Torso (Once per encounter)."
+  },
+  {
+    "id": "rapid__degeneration",
+    "name": "Rapid Degeneration",
+    "school": "Biomancy",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "stat_damage_roll",
+        "stat": "Vitality",
+        "amount": 1,
+        "duration": "scene",
+        "save_stat": "Vitality",
+        "dc": 17
+      }
+    ],
+    "narrative": "Target suffers a -1 penalty to their Vitality score for the duration of the encounter. (Vitality save DC 17 to resist)."
+  },
+  {
+    "id": "liquefy",
+    "name": "Liquefy",
+    "school": "Biomancy",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Liquefy",
+        "duration": "special",
+        "save_stat": "Vitality",
+        "dc": 18
+      }
+    ],
+    "narrative": "Target must make a Vitality save (DC 18). On a failure, they are Stunned for 1 round and take 4d6 direct damage. They must save again at the start of their next turn or repeat the effect."
+  },
+  {
+    "id": "stabilize",
+    "name": "Stabilize",
+    "school": "Biomancy",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_status",
+        "status_id": "Bleeding (T1)"
+      }
+    ],
+    "narrative": "Instantly remove the Bleeding (T1) status effect from a target."
+  },
+  {
+    "id": "minor__heal",
+    "name": "Minor Heal",
+    "school": "Biomancy",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "heal",
+        "amount": "1d8"
+      }
+    ],
+    "narrative": "Restore 1d8 HP to a target."
+  },
+  {
+    "id": "vitality__surge",
+    "name": "Vitality Surge",
+    "school": "Biomancy",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 0,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "heal",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "(Minor Action) Your body's natural resilience surges. Restore 1d6 HP to yourself. This ability costs 0 Stamina, but can only be used 3 times per encounter."
+  },
+  {
+    "id": "cure__toxin",
+    "name": "Cure Toxin",
+    "school": "Biomancy",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_status",
+        "status_id": "Poisoned (T1)"
+      },
+      {
+        "type": "remove_status",
+        "status_id": "Diseased (T1)"
+      }
+    ],
+    "narrative": "Cure the target of any T1 Poison or Disease effect."
+  },
+  {
+    "id": "repair__minor__injury",
+    "name": "Repair Minor Injury",
+    "school": "Biomancy",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_injury",
+        "severity": "Minor"
+      }
+    ],
+    "narrative": "Immediately remove a MinorInjury from a limb."
+  },
+  {
+    "id": "rapid__regeneration",
+    "name": "Rapid Regeneration",
+    "school": "Biomancy",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Regeneration (1d4)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Target restores 1d4 HP at the start of their turn for 3 rounds."
+  },
+  {
+    "id": "repair__major__injury",
+    "name": "Repair Major Injury",
+    "school": "Biomancy",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_injury",
+        "severity": "Major"
+      }
+    ],
+    "narrative": "Immediately reduce the severity of a MajorInjury to a MinorInjury."
+  },
+  {
+    "id": "mass__health",
+    "name": "Mass Health",
+    "school": "Biomancy",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_heal",
+        "shape": "radius",
+        "range": 5,
+        "amount": "2d8"
+      }
+    ],
+    "narrative": "Restore 2d8 HP to all allies within 5m."
+  },
+  {
+    "id": "full__life__restore",
+    "name": "Full Life Restore",
+    "school": "Biomancy",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "heal_full"
+      },
+      {
+        "type": "remove_status",
+        "status_id": "all_negative"
+      },
+      {
+        "type": "remove_injury",
+        "severity": "all"
+      }
+    ],
+    "narrative": "Instantly restore the target's HP to its maximum value and remove all negative status and injury effects."
+  }
+]

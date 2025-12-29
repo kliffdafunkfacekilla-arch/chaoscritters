@@ -1,0 +1,665 @@
+[
+  {
+    "id": "fluster",
+    "name": "Fluster",
+    "school": "Command",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Flustered (-1 Def)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target 1 enemy. They suffer a -1 penalty to their next Defense roll."
+  },
+  {
+    "id": "draw__gaze",
+    "name": "Draw Gaze",
+    "school": "Command",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Distracted (Self)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Compel target to only look at you for 1 round."
+  },
+  {
+    "id": "vulnerable__posture",
+    "name": "Vulnerable Posture",
+    "school": "Command",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Vulnerable (-2 Will)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target suffers a -2 penalty to their next Willpower check."
+  },
+  {
+    "id": "target__lock",
+    "name": "Target Lock",
+    "school": "Command",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 3,
+        "status_id": "Target Lock",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Compel a group of enemies (3m radius) to prioritize a single designated target (Willpower save DC 14)."
+  },
+  {
+    "id": "mass__confusion",
+    "name": "Mass Confusion",
+    "school": "Command",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Confused (-1 Awa)",
+        "duration": 3
+      }
+    ],
+    "narrative": "All enemies in a 5m radius suffer a -1 penalty to Awareness checks for 3 rounds."
+  },
+  {
+    "id": "opening__attack",
+    "name": "Opening Attack",
+    "school": "Command",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Marked (+2 Atk)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Grant the next ally attacking the target a +2 bonus to their attack roll."
+  },
+  {
+    "id": "mass__demoralize",
+    "name": "Mass Demoralize",
+    "school": "Command",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_damage",
+        "shape": "radius",
+        "range": 5,
+        "amount": "2d6"
+      }
+    ],
+    "narrative": "Target all enemies in a 5m radius. Inflict 2d6 Composure damage."
+  },
+  {
+    "id": "compel__surrender",
+    "name": "Compel Surrender",
+    "school": "Command",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action_roll",
+        "effect_id": "Surrender",
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Force a non-hostile NPC to immediately surrender (Willpower save DC 17)."
+  },
+  {
+    "id": "total__loyalty",
+    "name": "Total Loyalty",
+    "school": "Command",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Total Loyalty"
+      }
+    ],
+    "narrative": "Instantly turn a hostile NPC of T4 or lower into a temporary ally for the remainder of the encounter."
+  },
+  {
+    "id": "marked__target",
+    "name": "Marked Target",
+    "school": "Command",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Marked (+1 Atk)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Designate one target. The next ally to attack them gets a +1 bonus to their attack roll."
+  },
+  {
+    "id": "exploit__opportunity",
+    "name": "Exploit Opportunity",
+    "school": "Command",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Marked (+1d4 Dmg)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target an enemy. Grant the next ally attacking them a +1d4 bonus to their damage roll."
+  },
+  {
+    "id": "piercing__command",
+    "name": "Piercing Command",
+    "school": "Command",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "apply_status",
+          "target": "ally",
+          "status_id": "Piercing (+2 AP)",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "Your next attack also gives an adjacent ally +2 Armor Pierce against that target for 1 round."
+  },
+  {
+    "id": "coordinated__strike",
+    "name": "Coordinated Strike",
+    "school": "Command",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 2
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 2,
+        "status_id": "Coordinated (+1d4 Dmg)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Grant all adjacent allies a +1d4 bonus damage roll on their next successful attack against that target."
+  },
+  {
+    "id": "strategic__opening",
+    "name": "Strategic Opening",
+    "school": "Command",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Strategic Opening (-2 Def)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Target an enemy. The enemy suffers a -2 penalty to Defense against all incoming attacks for 1 round."
+  },
+  {
+    "id": "focus__fire",
+    "name": "Focus Fire",
+    "school": "Command",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Focus Fire (+1 Atk)"
+      }
+    ],
+    "narrative": "Grant all allies a +1 bonus to all attack rolls against a single designated target for 2 rounds."
+  },
+  {
+    "id": "leadership__momentum",
+    "name": "Leadership Momentum",
+    "school": "Command",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "aoe_status",
+          "target": "ally",
+          "shape": "radius",
+          "range": 99,
+          "status_id": "Momentum (+2m)",
+          "duration": 1
+        }
+      }
+    ],
+    "narrative": "Deliver an attack. If successful, all allies in the encounter gain +2m movement on their next turn."
+  },
+  {
+    "id": "coordinated__assault",
+    "name": "Coordinated Assault",
+    "school": "Command",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "special_action",
+          "target": "ally",
+          "effect_id": "Free Attack (T1)"
+        }
+      }
+    ],
+    "narrative": "Your successful attack also grants an adjacent ally a free T1 (1d4 damage) attack against the target."
+  },
+  {
+    "id": "rally__strike_of__annihilation",
+    "name": "Rally Strike of Annihilation",
+    "school": "Command",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "add_effect": {
+          "type": "special_action",
+          "target": "ally",
+          "effect_id": "Free Attack (T1)",
+          "all": true
+        }
+      }
+    ],
+    "narrative": "Your successful attack allows all allies to make a free T1 (1d4 damage) attack against the target immediately."
+  },
+  {
+    "id": "inspiring__word",
+    "name": "Inspiring Word",
+    "school": "Command",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "choice",
+        "options": [
+          {
+            "type": "composure_heal",
+            "amount": "1d6"
+          },
+          {
+            "type": "heal",
+            "amount": "1d4"
+          }
+        ]
+      }
+    ],
+    "narrative": "Restore 1d6 Composure OR 1d4 HP to yourself or an adjacent ally."
+  },
+  {
+    "id": "remove__shaken",
+    "name": "Remove Shaken",
+    "school": "Command",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "remove_status",
+        "status_id": "Shaken"
+      }
+    ],
+    "narrative": "Instantly remove the Shaken status from an ally."
+  },
+  {
+    "id": "rallying__cry",
+    "name": "Rallying Cry",
+    "school": "Command",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_heal",
+        "shape": "radius",
+        "range": 5,
+        "amount": "2d4"
+      }
+    ],
+    "narrative": "Restore 2d4 Composure to all allies within 5m."
+  },
+  {
+    "id": "unbreakable__morale",
+    "name": "Unbreakable Morale",
+    "school": "Command",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Immunity (Fear T1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant all allies immunity to T1 Fear effects for 3 rounds."
+  },
+  {
+    "id": "group__resolve",
+    "name": "Group Resolve",
+    "school": "Command",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Group Resolve (+2 Will)",
+        "duration": 3
+      }
+    ],
+    "narrative": "All allies within 5m gain a +2 bonus to all Willpower checks for 3 rounds."
+  },
+  {
+    "id": "battlefield__command",
+    "name": "Battlefield Command",
+    "school": "Command",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Momentum (+2m)",
+        "duration": 1
+      }
+    ],
+    "narrative": "Grant up to 2 allies a bonus 2m movement on their next turn."
+  },
+  {
+    "id": "mass__clarity",
+    "name": "Mass Clarity",
+    "school": "Command",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_heal",
+        "shape": "radius",
+        "range": 10,
+        "amount": "3d6"
+      }
+    ],
+    "narrative": "Restore 3d6 Composure to all allies within 10m."
+  },
+  {
+    "id": "immunity__aura",
+    "name": "Immunity Aura",
+    "school": "Command",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Immunity (Composure Loss)",
+        "duration": 2
+      }
+    ],
+    "narrative": "Grant all allies immunity to Composure loss for 2 rounds."
+  },
+  {
+    "id": "total__dominance",
+    "name": "Total Dominance",
+    "school": "Command",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Dominance (+2 Charm)",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "Grant all allies a temporary +2 increase to their Charm stat for the remainder of the encounter."
+  }
+]

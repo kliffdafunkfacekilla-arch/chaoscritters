@@ -1,0 +1,687 @@
+[
+  {
+    "id": "minor__shift",
+    "name": "Minor Shift",
+    "school": "Chaos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 1,
+        "duration": 3,
+        "effect_id": "Random Terrain"
+      }
+    ],
+    "narrative": "Create a 1m patch of random, chaotic terrain (e.g., ice, mud, thorns)."
+  },
+  {
+    "id": "random__stumble",
+    "name": "Random Stumble",
+    "school": "Chaos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "random_stat_debuff",
+        "amount": -1,
+        "duration": 1
+      }
+    ],
+    "narrative": "Inflict a random -1 penalty on one of target's Derived Stats (Con, End, Agi, Aware) for 1 round."
+  },
+  {
+    "id": "unstable__field",
+    "name": "Unstable Field",
+    "school": "Chaos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "Unstable Field"
+      }
+    ],
+    "narrative": "Create a 3m radius field. All characters (friend or foe) in it suffer a -1 penalty to one randomly determined core stat."
+  },
+  {
+    "id": "area__mutate",
+    "name": "Area Mutate",
+    "school": "Chaos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 5,
+        "duration": 2,
+        "effect_id": "Mutated Terrain"
+      }
+    ],
+    "narrative": "Create a 5m radius field of chaotic terrain, imposing a -1 penalty on Agility for 2 rounds."
+  },
+  {
+    "id": "psychic__feedback",
+    "name": "Psychic Feedback",
+    "school": "Chaos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action_roll",
+        "effect_id": "Psychic Feedback",
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target must pass a Willpower check (DC 15) or suffer Composure damage equal to the resource cost of their last ability used."
+  },
+  {
+    "id": "curse_of__probability",
+    "name": "Curse of Probability",
+    "school": "Chaos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Disadvantage",
+        "duration": 3,
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target an enemy (Willpower save DC 15). For 3 rounds, any time they roll a 1d20, they must roll twice and take the worse result (Disadvantage)."
+  },
+  {
+    "id": "reality__ripple",
+    "name": "Reality Ripple",
+    "school": "Chaos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Reality Ripple"
+      }
+    ],
+    "narrative": "All non-essential objects in a 10m area are randomly destroyed, moved, or turned into something else."
+  },
+  {
+    "id": "mass__instability",
+    "name": "Mass Instability",
+    "school": "Chaos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Stunned",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Create a 5m radius field. All characters (friend or foe) in it must pass a Willpower check (DC 17) or be Stunned for 1 round."
+  },
+  {
+    "id": "full__entropy",
+    "name": "Full Entropy",
+    "school": "Chaos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_injury_roll",
+        "severity": "Minor",
+        "location": "random",
+        "count": "1d4",
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Cause Minor Injuries to 1d4 randomly determined limbs on 1 target (Willpower save DC 18 to resist)."
+  },
+  {
+    "id": "random__blast",
+    "name": "Random Blast",
+    "school": "Chaos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "1d10",
+        "damage_type": "random"
+      }
+    ],
+    "narrative": "Deal 1d10 damage of a randomly determined type."
+  },
+  {
+    "id": "unstable__bolt",
+    "name": "Unstable Bolt",
+    "school": "Chaos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "2d6"
+      },
+      {
+        "type": "random_status",
+        "status_list": [
+          "Staggered",
+          "Hindered (Movement)"
+        ],
+        "duration": 1
+      }
+    ],
+    "narrative": "Deal 2d6 damage. If the damage roll is even, the target is Staggered. If it's odd, they are Hindered (Movement)."
+  },
+  {
+    "id": "chaos__field",
+    "name": "Chaos Field",
+    "school": "Chaos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 3
+    },
+    "effects": [
+      {
+        "type": "create_area",
+        "shape": "radius",
+        "range": 3,
+        "duration": 3,
+        "effect_id": "Chaos Field (1d6)"
+      }
+    ],
+    "narrative": "Create a 3m radius field that deals 1d6 random damage to any (friend or foe) character that starts its turn there."
+  },
+  {
+    "id": "volatile__charge",
+    "name": "Volatile Charge",
+    "school": "Chaos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "2d6"
+      },
+      {
+        "type": "apply_status_roll",
+        "status_id": "random_T1_dot",
+        "save_stat": "Vitality",
+        "dc": 14
+      }
+    ],
+    "narrative": "Attack deals 2d6 damage, and the target must pass a Vitality save (DC 14) or immediately suffer a T1 Poison or Bleed status (randomly determined)."
+  },
+  {
+    "id": "unpredictable__nova",
+    "name": "Unpredictable Nova",
+    "school": "Chaos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage",
+        "effect_id": "Unpredictable Nova (6d6)"
+      }
+    ],
+    "narrative": "Deal 6d6 damage, split randomly between 1d6 targets (friend or foe) in a 10m radius."
+  },
+  {
+    "id": "chain__chaos",
+    "name": "Chain Chaos",
+    "school": "Chaos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "modify_attack",
+        "damage_boost": "3d6",
+        "damage_type": "random",
+        "add_effect": {
+          "type": "chain_attack_random",
+          "range": 5,
+          "damage": "2d6"
+        }
+      }
+    ],
+    "narrative": "Your next attack deals 3d6 random elemental damage. If it hits, it immediately arcs to a random target within 5m (friend or foe) for 2d6 random damage."
+  },
+  {
+    "id": "full__cataclysm",
+    "name": "Full Cataclysm",
+    "school": "Chaos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage",
+        "effect_id": "Full Cataclysm (6d6)"
+      }
+    ],
+    "narrative": "Deal 6d6 damage that is randomly split between HP, Composure, and primary Resource pools of the target."
+  },
+  {
+    "id": "paradox__strike",
+    "name": "Paradox Strike",
+    "school": "Chaos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage_stat_mult",
+        "amount_formula": "Intuition * 3",
+        "target": "random"
+      }
+    ],
+    "narrative": "Deal damage equal to your Intuition score multiplied by 3 to a randomly determined target (friend or foe) within 10m."
+  },
+  {
+    "id": "dimensional__rift",
+    "name": "Dimensional Rift",
+    "school": "Chaos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_damage",
+        "shape": "radius",
+        "range": 5,
+        "damage": "5d6",
+        "damage_type": "random"
+      },
+      {
+        "type": "aoe_composure_damage",
+        "shape": "radius",
+        "range": 5,
+        "amount": "2d6"
+      }
+    ],
+    "narrative": "Create a 5m radius rift. All characters (friend or foe) in the area suffer 5d6 random damage and 2d6 Composure damage."
+  },
+  {
+    "id": "minor__surge",
+    "name": "Minor Surge",
+    "school": "Chaos",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "random_stat_buff",
+        "amount": 1,
+        "duration": 1
+      }
+    ],
+    "narrative": "Randomly boost one of your core stats (A-L) by +1 for 1 round."
+  },
+  {
+    "id": "resist__random",
+    "name": "Resist Random",
+    "school": "Chaos",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Resist Random (+2)",
+        "duration": 2
+      }
+    ],
+    "narrative": "Gain a +2 bonus resistance against the next 2 instances of random damage or status effects."
+  },
+  {
+    "id": "ally__mutation",
+    "name": "Ally Mutation",
+    "school": "Chaos",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "random_buff",
+        "tier": 2,
+        "duration": 3
+      }
+    ],
+    "narrative": "Target an ally. Randomly grant them a T2-level physical advantage (e.g., hardened skin, speed boost) for 3 rounds."
+  },
+  {
+    "id": "self__morph",
+    "name": "Self-Morph",
+    "school": "Chaos",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_choice",
+        "status_list": [
+          "Gills",
+          "Claws (1d6)",
+          "Wings (5m)"
+        ],
+        "duration": 3
+      }
+    ],
+    "narrative": "You mutate your form for 3 rounds. Choose one: Gills (breathe water), Claws (1d6 Unarmed damage), or Wings (Flight 5m)."
+  },
+  {
+    "id": "weapon__mutation",
+    "name": "Weapon Mutation",
+    "school": "Chaos",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_buff",
+        "effect_id": "Weapon Mutation"
+      }
+    ],
+    "narrative": "Permanently change your weapon's damage type (e.g., Slashing -> Impact) and grant it +1 damage bonus."
+  },
+  {
+    "id": "elemental__randomize",
+    "name": "Elemental Randomize",
+    "school": "Chaos",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Immunity (Random Element T1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant all allies immunity to a T1 elemental damage type (randomly determined) for 3 rounds."
+  },
+  {
+    "id": "reality__shift",
+    "name": "Reality Shift",
+    "school": "Chaos",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_action",
+        "effect_id": "Reality Shift (Weather)"
+      }
+    ],
+    "narrative": "Instantly change the weather or environmental lighting for the remainder of the encounter."
+  },
+  {
+    "id": "full__mutation",
+    "name": "Full Mutation",
+    "school": "Chaos",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "random_buff",
+        "tier": 3,
+        "count": "1d4",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant yourself 1d4 randomly determined T3 physical bonuses (e.g., Flight, Regeneration) for 3 rounds."
+  },
+  {
+    "id": "reality__inversion",
+    "name": "Reality Inversion",
+    "school": "Chaos",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_heal",
+        "shape": "radius",
+        "range": 10,
+        "target": "ally",
+        "amount": "4d6"
+      },
+      {
+        "type": "aoe_damage",
+        "shape": "radius",
+        "range": 10,
+        "target": "enemy",
+        "damage": "4d6",
+        "damage_type": "random"
+      },
+      {
+        "type": "apply_status_roll",
+        "target": "self",
+        "status_id": "Stunned",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 18,
+        "self_roll": true
+      }
+    ],
+    "narrative": "(Full Action) You tear a hole in reality. All allies in 10m are healed for 4d6 HP. All enemies in 10m suffer 4d6 direct damage. You, the caster, must pass a Willpower save (DC 18) or be Stunned for 1 round by the backlash."
+  }
+]

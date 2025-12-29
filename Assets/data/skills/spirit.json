@@ -1,0 +1,667 @@
+[
+  {
+    "id": "evil__eye",
+    "name": "Evil Eye",
+    "school": "Spirit",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "Target 1 enemy. They suffer 1d6 Composure Damage."
+  },
+  {
+    "id": "bad__juju",
+    "name": "Bad Juju",
+    "school": "Spirit",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "move_target_roll",
+        "distance": 2,
+        "direction": "away",
+        "save_stat": "Awareness",
+        "dc": 13
+      }
+    ],
+    "narrative": "Push 1 target 2m using spiritual force (Awareness save DC 13 to resist)."
+  },
+  {
+    "id": "vex",
+    "name": "Vex",
+    "school": "Spirit",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Vexed (-2 Awa)",
+        "duration": 3,
+        "save_stat": "Awareness",
+        "dc": 14
+      }
+    ],
+    "narrative": "Target suffers a -2 penalty to all Awareness checks for 3 rounds (Awareness save DC 14 to resist)."
+  },
+  {
+    "id": "aura_of__dread",
+    "name": "Aura of Dread",
+    "school": "Spirit",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_damage_roll",
+        "shape": "radius",
+        "range": 5,
+        "amount": "1d6",
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Target all enemies in a 5m radius. Inflict 1d6 Composure damage (Willpower save DC 14 for half)."
+  },
+  {
+    "id": "binding__curse",
+    "name": "Binding Curse",
+    "school": "Spirit",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Immobilized (Cursed)",
+        "duration": 2,
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Compel 1 enemy to remain stationary for 2 rounds (Willpower save DC 15 to resist)."
+  },
+  {
+    "id": "mark_of_the__loa",
+    "name": "Mark of the Loa",
+    "school": "Spirit",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Terror (-1 All)",
+        "duration": 3,
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Target suffers a -1 penalty to all actions for 3 rounds due to overwhelming dread (Willpower save DC 15 to resist)."
+  },
+  {
+    "id": "group__panic",
+    "name": "Group Panic",
+    "school": "Spirit",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_damage",
+        "shape": "radius",
+        "range": 5,
+        "amount": "2d6"
+      },
+      {
+        "type": "aoe_status_roll",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Flee",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 16
+      }
+    ],
+    "narrative": "Inflict 2d6 Composure damage on all enemies in a 5m radius and force them to attempt to Flee (Willpower save DC 16 to resist Flee)."
+  },
+  {
+    "id": "puppet's__curse",
+    "name": "Puppet's Curse",
+    "school": "Spirit",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Dominated (Minor)",
+        "duration": 1,
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Target must perform a single, non-harmful action of your choice on their next turn (Willpower save DC 17 to resist)."
+  },
+  {
+    "id": "soul__trap",
+    "name": "Soul Trap",
+    "school": "Spirit",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 8,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status_roll",
+        "status_id": "Immobilized (Cursed)",
+        "duration": 3,
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Immobilize 1 target completely for 3 rounds (Willpower save DC 18 to resist)."
+  },
+  {
+    "id": "hex__bolt",
+    "name": "Hex Bolt",
+    "school": "Spirit",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "Deal 1d6 damage to the target's Composure pool."
+  },
+  {
+    "id": "touch_of_the__grave",
+    "name": "Touch of the Grave",
+    "school": "Spirit",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "direct_damage",
+        "amount": "1d8",
+        "damage_type": "ethereal"
+      }
+    ],
+    "narrative": "Inflict 1d8 ethereal damage that bypasses physical armor."
+  },
+  {
+    "id": "siphon__essence",
+    "name": "Siphon Essence",
+    "school": "Spirit",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "resource_damage_roll",
+        "resource": "Chi",
+        "amount": "1d6",
+        "save_stat": "Willpower",
+        "dc": 14
+      }
+    ],
+    "narrative": "Deal 1d6 damage to the target's Chi or Stamina pool (Willpower save DC 14 for half)."
+  },
+  {
+    "id": "gris__gris",
+    "name": "Gris-Gris",
+    "school": "Spirit",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Gris-Gris (25%)",
+        "duration": 3
+      }
+    ],
+    "narrative": "(Minor Action) Place a 'bad luck' charm. For 3 rounds, 25% of all Ethereal damage you deal also deals damage to the target's Composure pool."
+  },
+  {
+    "id": "breath_of_the__grave",
+    "name": "Breath of the Grave",
+    "school": "Spirit",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_damage",
+        "shape": "line",
+        "range": 5,
+        "damage": "2d8",
+        "damage_type": "ethereal"
+      }
+    ],
+    "narrative": "Deal 2d8 ethereal damage to all targets in a 5m line."
+  },
+  {
+    "id": "shatter__will",
+    "name": "Shatter Will",
+    "school": "Spirit",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_damage_roll",
+        "amount": "3d6",
+        "save_stat": "Willpower",
+        "dc": 15
+      }
+    ],
+    "narrative": "Deal 3d6 damage to the target's Composure pool (Willpower save DC 15 for half)."
+  },
+  {
+    "id": "rend__spirit",
+    "name": "Rend Spirit",
+    "school": "Spirit",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage",
+        "effect_id": "Rend Spirit (4d6)"
+      }
+    ],
+    "narrative": "Deal 4d6 damage that splits equally between HP and target's primary Resource pool."
+  },
+  {
+    "id": "devour__spirit",
+    "name": "Devour Spirit",
+    "school": "Spirit",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "resource_damage_percent_current_roll",
+        "percent": 25,
+        "save_stat": "Willpower",
+        "dc": 17
+      }
+    ],
+    "narrative": "Drain 25% of the target's current primary Resource pool (Willpower save DC 17 to resist)."
+  },
+  {
+    "id": "feast_of_the__loa",
+    "name": "Feast of the Loa",
+    "school": "Spirit",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "special_damage_roll",
+        "effect_id": "Feast of the Loa",
+        "save_stat": "Willpower",
+        "dc": 18
+      }
+    ],
+    "narrative": "Target must pass a Willpower save (DC 18). On a failure, they suffer 8d6 Ethereal damage and you drain their entire primary resource pool to zero, restoring that amount to your Tactics pool."
+  },
+  {
+    "id": "ancestor's__blessing",
+    "name": "Ancestor's Blessing",
+    "school": "Spirit",
+    "tier": 1,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "composure_heal",
+        "amount": "1d6"
+      }
+    ],
+    "narrative": "Restore 1d6 Composure to an ally."
+  },
+  {
+    "id": "spirit__mend",
+    "name": "Spirit Mend",
+    "school": "Spirit",
+    "tier": 2,
+    "costs": {
+      "ap": 1,
+      "resource": 1,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "heal",
+        "amount": "1d8"
+      },
+      {
+        "type": "composure_damage",
+        "amount": "1d4",
+        "target": "self"
+      }
+    ],
+    "narrative": "Restore 1d8 HP to an ally, but you suffer 1d4 Composure damage yourself (a transfer of life force)."
+  },
+  {
+    "id": "ancestor's__ward",
+    "name": "Ancestor's Ward",
+    "school": "Spirit",
+    "tier": 3,
+    "costs": {
+      "ap": 1,
+      "resource": 2,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "apply_status",
+        "status_id": "Ancestor's Ward (+2 Will)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant an adjacent ally a +2 bonus to all Willpower saves for 3 rounds."
+  },
+  {
+    "id": "read_the__juju",
+    "name": "Read the Juju",
+    "school": "Spirit",
+    "tier": 4,
+    "costs": {
+      "ap": 1,
+      "resource": 3,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Melee",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "gain_information",
+        "effect_id": "Sense Vulnerability (Status)"
+      }
+    ],
+    "narrative": "Identify all status effect vulnerabilities (e.g., 'Vulnerable to Fire') of 1 target."
+  },
+  {
+    "id": "totemic__warden",
+    "name": "Totemic Warden",
+    "school": "Spirit",
+    "tier": 5,
+    "costs": {
+      "ap": 1,
+      "resource": 4,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 1
+    },
+    "effects": [
+      {
+        "type": "summon",
+        "creature_id": "Totemic Warden (Composure)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Summon a spirit totem for 3 rounds. At the start of your turn, it heals 1d4 Composure to the most 'shaken' ally within 5m."
+  },
+  {
+    "id": "ritual_of__courage",
+    "name": "Ritual of Courage",
+    "school": "Spirit",
+    "tier": 6,
+    "costs": {
+      "ap": 1,
+      "resource": 5,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 5
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 5,
+        "status_id": "Immunity (Fear T1)",
+        "duration": 3
+      }
+    ],
+    "narrative": "Grant all allies in a 5m radius immunity to T1 Fear effects for 3 rounds."
+  },
+  {
+    "id": "spirit__sight",
+    "name": "Spirit Sight",
+    "school": "Spirit",
+    "tier": 7,
+    "costs": {
+      "ap": 1,
+      "resource": 6,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Low-Light Vision",
+        "duration": "scene"
+      }
+    ],
+    "narrative": "All allies gain 'low-light vision' for the remainder of the encounter."
+  },
+  {
+    "id": "shaman's__chant",
+    "name": "Shaman's Chant",
+    "school": "Spirit",
+    "tier": 8,
+    "costs": {
+      "ap": 1,
+      "resource": 7,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_composure_heal",
+        "shape": "radius",
+        "range": 10,
+        "amount": "3d6"
+      }
+    ],
+    "narrative": "Restore 3d6 Composure to all allies within 10m."
+  },
+  {
+    "id": "ancestral__aegis",
+    "name": "Ancestral Aegis",
+    "school": "Spirit",
+    "tier": 9,
+    "costs": {
+      "ap": 1,
+      "resource": 9,
+      "type": "stamina"
+    },
+    "targeting": {
+      "type": "Ranged",
+      "range": 10
+    },
+    "effects": [
+      {
+        "type": "aoe_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Immunity (Composure/Fear)",
+        "duration": 3
+      },
+      {
+        "type": "aoe_remove_status",
+        "shape": "radius",
+        "range": 10,
+        "status_id": "Shaken"
+      }
+    ],
+    "narrative": "(Full Action) You and all allies within 10m are immune to all Composure damage and Fear effects for 3 rounds. All allies in the aura are immediately cured of the Shaken status."
+  }
+]

@@ -119,12 +119,18 @@ namespace ChaosCritters.UI
                  // Let's use simple hardcoded offsets from center 0.
                  
                  float yPos = 0;
+                 float btnW = 140;
+                 float btnH = 50;
                  
-                 gridCtrl.westBtn = CreateButton(grid.transform, "BtnAttack", "Attack", new Vector2(-180, yPos), new Vector2(100, 50));
-                 gridCtrl.eastBtn = CreateButton(grid.transform, "BtnSkill", "Skill", new Vector2(-60, yPos), new Vector2(100, 50));
-                 gridCtrl.northBtn = CreateButton(grid.transform, "BtnWait", "Wait", new Vector2(60, yPos), new Vector2(100, 50));
+                 // Centered layout logic:
+                 // Total width approx 4 buttons * 140 + padding.
+                 // Let's just place them nicely.
                  
-                 gridCtrl.southBtn = CreateButton(grid.transform, "BtnEndTurn", "End Turn", new Vector2(200, yPos), new Vector2(120, 60));
+                 gridCtrl.westBtn = CreateButton(grid.transform, "BtnAttack", "Attack [1]", new Vector2(-230, yPos), new Vector2(btnW, btnH));
+                 gridCtrl.eastBtn = CreateButton(grid.transform, "BtnSkill", "Skill [2]", new Vector2(-80, yPos), new Vector2(btnW, btnH));
+                 gridCtrl.northBtn = CreateButton(grid.transform, "BtnWait", "Wait [3]", new Vector2(70, yPos), new Vector2(btnW, btnH));
+                 
+                 gridCtrl.southBtn = CreateButton(grid.transform, "BtnEndTurn", "End Turn [Space]", new Vector2(230, yPos), new Vector2(160, 60));
                  
                  // Colors
                  gridCtrl.southBtn.GetComponent<Image>().color = new Color(0.8f, 0.3f, 0.3f); // Reddish
@@ -283,7 +289,9 @@ namespace ChaosCritters.UI
 
         public static void ShowGameOver(bool victory)
         {
-            Canvas canvas = FindFirstObjectByType<Canvas>();
+            GameObject canvasGO = GameObject.Find("MainCanvas");
+            Canvas canvas = canvasGO != null ? canvasGO.GetComponent<Canvas>() : FindFirstObjectByType<Canvas>();
+            
             if (canvas == null) return;
             
             // Remove existing HUD manager to cleanup? Or just overlay?
@@ -299,7 +307,19 @@ namespace ChaosCritters.UI
             Text txt = CreateText(pnl.transform, "Title", msg, 80, new Vector2(0, 50));
             txt.color = col;
             
-            Text sub = CreateText(pnl.transform, "Sub", "Press Alt+F4 to Quit (for now)", 20, new Vector2(0, -50));
+            if (victory)
+            {
+                // Create Continue Button
+                Button btn = CreateButton(pnl.transform, "BtnContinue", "Continue", new Vector2(0, -50), new Vector2(200, 60));
+                
+                btn.onClick.AddListener(() => {
+                    GameObject.Destroy(pnl);
+                });
+            }
+            else
+            {
+                CreateText(pnl.transform, "Sub", "Press Alt+F4 to Quit", 20, new Vector2(0, -50));
+            }
         }
     }
 }
