@@ -19,6 +19,28 @@ namespace ChaosCritters.UI
         [Header("Status Icons")]
         public Transform iconContainer;
         public GameObject iconPrefab; // Image with sprite
+        
+        // Clash UI
+        // Clash UI
+        public GameObject clashPanel;
+        public ClashUIController clashController;
+
+        public void OnClashCardClicked(string card)
+        {
+            if (clashController != null) clashController.OnCardSelected(card);
+        }
+
+        public void ShowClashUI(string attackerId, string defenderId)
+        {
+            if (clashController != null)
+            {
+                clashController.Show(attackerId, defenderId);
+            }
+            else
+            {
+                Debug.LogWarning("[HUD] Clash UI Controller not assigned!");
+            }
+        }
 
         private void Awake()
         {

@@ -69,7 +69,7 @@ namespace ChaosCritters.Units
         {
             _currentMode = InteractionMode.Targeting;
             _pendingAbility = abilityName;
-            NarratorController.Instance?.AddLine($"Select Target for {abilityName}...");
+            ChaosCritters.UI.NarratorController.Instance?.AddLine($"Select Target for {abilityName}...");
         }
 
         private void OnGUI()
@@ -119,7 +119,7 @@ namespace ChaosCritters.Units
                 if (!string.IsNullOrEmpty(targetId))
                 {
                     // Generic Handling
-                    if (_pendingAbility == "Attack" || _pendingAbility == "Basic Attack" || _pendingAbility == "Physical")
+                    if (_pendingAbility == "Attack" || _pendingAbility == "Basic Attack" || _pendingAbility == "Physical" || _pendingAbility == "basic_attack")
                     {
                          // Default Basic Attack
                         TokenManager.Instance.RequestAttack(myActorId, targetId);
@@ -132,11 +132,11 @@ namespace ChaosCritters.Units
                     
                     // Reset
                     _currentMode = InteractionMode.Normal;
-                    NarratorController.Instance?.AddLine("Action Sent.");
+                    ChaosCritters.UI.NarratorController.Instance?.AddLine("Action Sent.");
                 }
                 else
                 {
-                    NarratorController.Instance?.AddLine("No valid target there.");
+                    ChaosCritters.UI.NarratorController.Instance?.AddLine("No valid target there.");
                     // Optional: Cancel on empty click?
                     _currentMode = InteractionMode.Normal;
                 }
@@ -154,7 +154,7 @@ namespace ChaosCritters.Units
                     }
                     else
                     {
-                        NarratorController.Instance?.AddLine($"Not your turn! Current: {currentBtn}");
+                        ChaosCritters.UI.NarratorController.Instance?.AddLine($"Not your turn! Current: {currentBtn}");
                     }
                 }
                 else

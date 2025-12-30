@@ -190,7 +190,7 @@ async def start_battle():
         stats=p1_stats,
         x=2, y=2, image_id="Warrior", initiative=100,
         lineage="Ursine", heritage="Iron Caldera", background="Warrior",
-        known_skills=["concussive__strike", "focused__blast", "minor__shove", "quick__leap"]
+        known_skills=["basic_attack", "concussive__strike", "focused__blast", "minor__shove", "quick__leap"]
     )
     
     # E1: Gravity Bear
@@ -198,7 +198,7 @@ async def start_battle():
     e1_stats = {"Might": 14, "Endurance": 12, "Vitality": 12, "Fortitude": 10, "Logic": 8, "Knowledge": 8}
     e1 = EntityState(
         id="E1", name="Gravity Bear", 
-        hp=10, max_hp=32, composure=10, max_composure=10, team="Enemy", 
+        hp=32, max_hp=32, composure=10, max_composure=10, team="Enemy", 
         stamina=13, max_stamina=13, focus=8, max_focus=8,
         stats=e1_stats,
         x=5, y=5, image_id="Bear",
@@ -341,8 +341,9 @@ from backend.engine.abilities import AbilityResolver, DB
 from backend.engine.ai_engine import AIEngine
 
 # ... inside startup or global ...
+# ... inside startup or global ...
 ability_resolver = AbilityResolver(engine)
-ai_engine = AIEngine(action_resolver, engine)
+ai_engine = AIEngine(action_resolver, ability_resolver, engine)
 
 class BattleAbilityRequest(BaseModel):
     actor_id: str

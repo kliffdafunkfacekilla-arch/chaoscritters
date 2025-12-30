@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ChaosCritters.Network;
 using ChaosCritters.Data;
+using ChaosCritters.UI;
 
 namespace ChaosCritters.Units
 {
@@ -74,6 +75,7 @@ namespace ChaosCritters.Units
         {
             public int damage_amount;
             public string damage_type;
+            public string result;
         }
 
         private void Awake()
@@ -163,7 +165,7 @@ namespace ChaosCritters.Units
 
         private void SyncTokens(EntityData[] entities)
         {
-            // Debug.Log($"[TokenManager] Syncing {entities.Length} entities from backend.");
+            Debug.Log($"[TokenManager] Syncing {entities.Length} entities from backend.");
             // 1. Mark all for potential deletion
             HashSet<string> seenIds = new HashSet<string>();
 
@@ -182,15 +184,7 @@ namespace ChaosCritters.Units
                     // Always update Player Card if this is P1 (Free Roam or Turn)
                     if (data.id == "P1")
                     {
-                        if (UI.HUDController.Instance != null) UI.HUDController.Instance.UpdatePlayerCard(data);
-                        
-                        // Sync Hotbar
-                        var hotbar = FindFirstObjectByType<UI.AbilityGridController>();
-                        if (hotbar != null) hotbar.RefreshAbilities(data);
-                        
-                        // Sync Skill Menu
-                        var skillMenu = FindFirstObjectByType<UI.SkillMenuController>();
-                        if (skillMenu != null) skillMenu.LoadData(data);
+                        UpdatePlayerUI(data);
                     }
                     
                     // Auto-End Turn Check
@@ -224,6 +218,11 @@ namespace ChaosCritters.Units
                     
                     controller.Initialize(data);
                     _activeTokens.Add(data.id, controller);
+                    
+                    if (data.id == "P1")
+                    {
+                        UpdatePlayerUI(data);
+                    }
                 }
             }
 
@@ -240,11 +239,24 @@ namespace ChaosCritters.Units
             foreach (var id in toRemove) _activeTokens.Remove(id);
             
             // Sync Combat State UI
-            if (UI.HUDController.Instance != null)
+            if (ChaosCritters.UI.HUDController.Instance != null)
             {
                 bool inCombat = !string.IsNullOrEmpty(CurrentActorId);
-                UI.HUDController.Instance.SetCombatMode(inCombat);
+                ChaosCritters.UI.HUDController.Instance.SetCombatMode(inCombat);
             }
+        }
+        
+        private void UpdatePlayerUI(EntityData data)
+        {
+             if (ChaosCritters.UI.HUDController.Instance != null) ChaosCritters.UI.HUDController.Instance.UpdatePlayerCard(data);
+                        
+             // Sync Hotbar
+             var hotbar = FindFirstObjectByType<ChaosCritters.UI.AbilityGridController>();
+             if (hotbar != null) hotbar.RefreshAbilities(data);
+                        
+             // Sync Skill Menu
+             var skillMenu = FindFirstObjectByType<ChaosCritters.UI.SkillMenuController>();
+             if (skillMenu != null) skillMenu.LoadData(data);
         }
 
         private void Update()
@@ -282,7 +294,7 @@ namespace ChaosCritters.Units
                     {
                         var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
                         if (!string.IsNullOrEmpty(wrapper.narrative))
-                            UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                            ChaosCritters.UI.NarratorController.Instance?.AddLine(wrapper.narrative);
                     }
                     
                     RefreshEntities(); 
@@ -290,13 +302,13 @@ namespace ChaosCritters.Units
                 onError: (err) => 
                 {
                     Debug.LogError($"Move Rejected: {err}");
-                    UI.NarratorController.Instance?.AddLine($"Move Failed: {err}");
+                    ChaosCritters.UI.NarratorController.Instance?.AddLine($"Move Failed: {err}");
                     
                     // Visual Feedback
                     if (_activeTokens.ContainsKey(actorId))
                     {
                         var token = _activeTokens[actorId];
-                        UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Blocked!");
+                        ChaosCritters.UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Blocked!");
                     }
                 }
             );
@@ -318,29 +330,38 @@ namespace ChaosCritters.Units
                     
                     if (res != null && res.result != null && res.result.success)
                     {
+                        TokenController targetToken = _activeTokens.ContainsKey(targetId) ? _activeTokens[targetId] : null;
+
                         // Show Narrative
                         if (response.Contains("\"narrative\":"))
                         {
                              var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
                              if (!string.IsNullOrEmpty(wrapper.narrative))
-                                 UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                                 ChaosCritters.UI.NarratorController.Instance?.AddLine(wrapper.narrative);
                         }
 
-                        // Show Damage Popup
-                        if (_activeTokens.ContainsKey(targetId))
+                        // Check for CLASH
+                        if (res.result.mechanics.result == "CLASH")
                         {
-                            TokenController targetToken = _activeTokens[targetId];
+                            if (targetToken != null)
+                                ChaosCritters.UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, 0, Color.cyan, "CLASH!");
+                                
+                            ChaosCritters.UI.HUDController.Instance.ShowClashUI(actorId, targetId);
+                        }
+                        // Standard Damage
+                        else if (targetToken != null)
+                        {
                             int dmg = res.result.mechanics.damage_amount;
                             string type = res.result.mechanics.damage_type;
                             
                             if (dmg > 0)
                             {
                                 Color col = (type == "Meat") ? Color.red : Color.yellow;
-                                UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col);
+                                ChaosCritters.UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col);
                             }
                             else
                             {
-                                UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, 0, Color.gray);
+                                ChaosCritters.UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, 0, Color.gray);
                             }
                         }
                         
@@ -350,31 +371,31 @@ namespace ChaosCritters.Units
                         if (res.battle_state == "Victory")
                         {
                             Debug.Log("[TokenManager] VICTORY DETECTED!");
-                            UI.UIAssembler.ShowGameOver(true);
+                            ChaosCritters.UI.UIAssembler.ShowGameOver(true);
                             CurrentActorId = null; // Exit Combat Mode locally
-                            if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                            if (ChaosCritters.UI.HUDController.Instance != null) ChaosCritters.UI.HUDController.Instance.SetCombatMode(false);
                         }
                         else if (res.battle_state == "Defeat")
                         {
                              Debug.Log("[TokenManager] DEFEAT DETECTED!");
-                             UI.UIAssembler.ShowGameOver(false);
+                             ChaosCritters.UI.UIAssembler.ShowGameOver(false);
                              CurrentActorId = null;
-                             if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                             if (ChaosCritters.UI.HUDController.Instance != null) ChaosCritters.UI.HUDController.Instance.SetCombatMode(false);
                         }
                     }
                     else
                     {
-                         UI.NarratorController.Instance?.AddLine($"Attack Failed: {(res?.result?.message ?? "Unknown Error")}");
+                         ChaosCritters.UI.NarratorController.Instance?.AddLine($"Attack Failed: {(res?.result?.message ?? "Unknown Error")}");
                     }
                 },
                 onError: (err) => 
                 {
-                     UI.NarratorController.Instance?.AddLine($"Attack Error: {err}");
+                     ChaosCritters.UI.NarratorController.Instance?.AddLine($"Attack Error: {err}");
                      
                      if (_activeTokens.ContainsKey(actorId))
                      {
                          var token = _activeTokens[actorId];
-                         UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Full!"); // or Fail
+                         ChaosCritters.UI.DamagePopup.Create(token.transform.position + Vector3.up, 0, Color.gray, "Full!"); // or Fail
                      }
                 }
             );
@@ -398,7 +419,7 @@ namespace ChaosCritters.Units
                         {
                              var wrapper = JsonUtility.FromJson<NarrativeWrapper>(response);
                              if (!string.IsNullOrEmpty(wrapper.narrative))
-                                 UI.NarratorController.Instance?.AddLine(wrapper.narrative);
+                                 ChaosCritters.UI.NarratorController.Instance?.AddLine(wrapper.narrative);
                         }
 
                         if (_activeTokens.ContainsKey(targetId))
@@ -408,30 +429,30 @@ namespace ChaosCritters.Units
                             string type = res.result.mechanics.damage_type;
                             Color col = (type == "Meat") ? Color.red : (type == "Burn") ? new Color(1f, 0.5f, 0f) : Color.yellow;
                             
-                            UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col, (dmg > 0 ? "" : "Miss"));
+                            ChaosCritters.UI.DamagePopup.Create(targetToken.transform.position + Vector3.up, dmg, col, (dmg > 0 ? "" : "Miss"));
                         }
                         
                         RefreshEntities();
                         
                         if (res.battle_state == "Victory")
                         {
-                            UI.UIAssembler.ShowGameOver(true);
+                            ChaosCritters.UI.UIAssembler.ShowGameOver(true);
                             CurrentActorId = null;
-                            if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                            if (ChaosCritters.UI.HUDController.Instance != null) ChaosCritters.UI.HUDController.Instance.SetCombatMode(false);
                         }
                         else if (res.battle_state == "Defeat")
                         {
-                             UI.UIAssembler.ShowGameOver(false);
+                             ChaosCritters.UI.UIAssembler.ShowGameOver(false);
                              CurrentActorId = null;
-                             if (UI.HUDController.Instance != null) UI.HUDController.Instance.SetCombatMode(false);
+                             if (ChaosCritters.UI.HUDController.Instance != null) ChaosCritters.UI.HUDController.Instance.SetCombatMode(false);
                         }
                     }
                     else
                     {
-                         UI.NarratorController.Instance?.AddLine($"Ability Failed: {(res?.result?.message ?? "Unknown Error")}");
+                         ChaosCritters.UI.NarratorController.Instance?.AddLine($"Ability Failed: {(res?.result?.message ?? "Unknown Error")}");
                     }
                 },
-                onError: (err) => UI.NarratorController.Instance?.AddLine($"Ability Error: {err}")
+                onError: (err) => ChaosCritters.UI.NarratorController.Instance?.AddLine($"Ability Error: {err}")
             );
         }
 
@@ -445,12 +466,12 @@ namespace ChaosCritters.Units
                     CurrentActorId = res.current_turn;
                     Debug.Log($"Turn Ended. Next Actor: {CurrentActorId}");
                     
-                    if (UI.NarratorController.Instance != null)
+                    if (ChaosCritters.UI.NarratorController.Instance != null)
                     {
                         if (!string.IsNullOrEmpty(res.narrative))
-                            UI.NarratorController.Instance.AddLine(res.narrative);
+                            ChaosCritters.UI.NarratorController.Instance.AddLine(res.narrative);
                         
-                        UI.NarratorController.Instance.AddLine($"Turn: {CurrentActorId}");
+                        ChaosCritters.UI.NarratorController.Instance.AddLine($"Turn: {CurrentActorId}");
                     }
 
                     RefreshEntities();
@@ -479,8 +500,8 @@ namespace ChaosCritters.Units
                     onSuccess: (json) => {
                         BattleStartResponse res = JsonUtility.FromJson<BattleStartResponse>(json);
                         CurrentActorId = res.current_turn;
-                        if (UI.NarratorController.Instance != null && CurrentActorId == "P1")
-                            UI.NarratorController.Instance.AddLine("Your Turn!");
+                        if (ChaosCritters.UI.NarratorController.Instance != null && CurrentActorId == "P1")
+                            ChaosCritters.UI.NarratorController.Instance.AddLine("Your Turn!");
                     }
                 );
             }

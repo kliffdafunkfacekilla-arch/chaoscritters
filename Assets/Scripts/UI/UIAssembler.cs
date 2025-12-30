@@ -114,6 +114,28 @@ namespace ChaosCritters.UI
                 hudCtrl.iconContainer = statusPnl.transform;
             }
 
+            // 6. Clash Panel (Hidden by default)
+            GameObject clashObj = CreatePanel(hudManager.transform, "ClashPanel", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(400, 300), Vector2.zero);
+            Image clashBg = clashObj.GetComponent<Image>();
+            clashBg.color = new Color(0.2f, 0, 0, 0.95f); // Dark Red
+            
+            CreateText(clashObj.transform, "Title", "CLASH!", 32, new Vector2(0, 110));
+            CreateText(clashObj.transform, "SubTitle", "Choose your tactic...", 18, new Vector2(0, 70));
+            
+            string[] cards = new string[] { "PRESS", "MANEUVER", "DISENGAGE", "TACTIC" };
+            Vector2[] pos = new Vector2[] { new Vector2(-100, 10), new Vector2(100, 10), new Vector2(-100, -60), new Vector2(100, -60) };
+            
+            for(int i=0; i<4; i++)
+            {
+                string card = cards[i];
+                Button btn = CreateButton(clashObj.transform, card, card, pos[i], new Vector2(180, 50));
+                // Button returned directly
+                btn.onClick.AddListener(() => hudCtrl.OnClashCardClicked(card));
+            }
+            
+            hudCtrl.clashPanel = clashObj;
+            clashObj.SetActive(false); // Hide initially
+
             // 5. Build Narrator - Move to Bottom Right to avoid overlap
             if (narratorCtrl.feedText == null)
             {
@@ -222,6 +244,8 @@ namespace ChaosCritters.UI
                 
                 sr.content = cRt;
                 skillMenu.contentRoot = cRt;
+                
+                skillMenu.menuPanel.SetActive(false); // Hide by default
             }
             
             // Final Setup

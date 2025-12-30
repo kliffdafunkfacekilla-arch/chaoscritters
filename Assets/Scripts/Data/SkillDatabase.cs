@@ -82,6 +82,9 @@ namespace ChaosCritters.Data
         {
             if (_skills.ContainsKey(id)) return _skills[id];
             
+            // Special Cases
+            if (id == "basic_attack") return new SkillDef { id = "basic_attack", name = "Basic Attack", icon = "sword_slash", narrative = "Strike with weapon." };
+            
             // Fallback for unknown
             return new SkillDef { id = id, name = id, icon = "default_icon", narrative = "Unknown" };
         }

@@ -39,20 +39,24 @@ namespace ChaosCritters.Units
             var assembler = GetComponent<SpriteAssembler>();
             if (assembler == null) assembler = gameObject.AddComponent<SpriteAssembler>();
             
+            // Convert struct to dict for the assembler
+            var tags = new System.Collections.Generic.Dictionary<string, string>();
             if (data.visual_tags != null)
             {
-                // Convert struct to dict for the assembler
-                var tags = new System.Collections.Generic.Dictionary<string, string>();
                 if (!string.IsNullOrEmpty(data.visual_tags.chassis)) tags.Add("chassis", data.visual_tags.chassis);
                 if (!string.IsNullOrEmpty(data.visual_tags.role)) tags.Add("role", data.visual_tags.role);
                 if (!string.IsNullOrEmpty(data.visual_tags.infusion)) tags.Add("infusion", data.visual_tags.infusion);
-                
-                assembler.Assemble(tags);
             }
-            else
+            
+            // Always assemble! This ensures layers are setup and fallbacks are used if tags are missing
+            assembler.Assemble(tags);
+            
+            // Override color if no visual tags were present only?
+            // Actually Assembler handles fallback colors.
+            // But if we want team colors for basic shapes:
+            if (tags.Count == 0 && assembler.bodyLayer != null)
             {
-                // Fallback debug colors
-                spriteRenderer.color = data.team == "Player" ? Color.green : Color.red; 
+                 assembler.bodyLayer.color = data.team == "Player" ? Color.green : Color.red;
             }
             
             CreateHealthBar();

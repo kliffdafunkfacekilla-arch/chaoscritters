@@ -30,6 +30,14 @@ namespace ChaosCritters.Data
     }
 
     [Serializable]
+    public class VisualTags
+    {
+        public string role;
+        public string infusion;
+        public string chassis;
+    }
+
+    [Serializable]
     public class EntityListResponse
     {
         public EntityData[] entities;
